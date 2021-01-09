@@ -1,0 +1,176 @@
+exec.Command
+
+ipfs init
+
+/home/leyi/snap/ipfs/common
+
+
+==========================================
+【添加】
+
+1、
+添加文件
+ipfs add 1.txt 
+added QmdytmR4wULMd3SLo6ePF4s3WcRHWcpnJZ7bHhoj3QB13v 1.txt
+
+2、
+查看文件
+ipfs cat QmdytmR4wULMd3SLo6ePF4s3WcRHWcpnJZ7bHhoj3QB13v
+1
+ipfs cat /ipfs/QmdytmR4wULMd3SLo6ePF4s3WcRHWcpnJZ7bHhoj3QB13v
+1
+
+
+3、
+下载文件
+ipfs get QmdytmR4wULMd3SLo6ePF4s3WcRHWcpnJZ7bHhoj3QB13v
+ ~/ipfs$ ls
+QmdytmR4wULMd3SLo6ePF4s3WcRHWcpnJZ7bHhoj3QB13v
+
+【上传目录】
+ ipfs add -r test_2/
+added QmRKKfMtydmWoD5iXCKR35LJeZ7Ni6sJvuyLob6DsRCtLC test_2/1.c
+added QmfTz5DwzqdsngiwdZigQkE2Gr2KYX8gSx9eQ2CWuAgTox test_2/2.h
+added Qme8S2zGDXUQNzh63xR1ckdAsTVGhW1otxtvuAAe65oZKF test_2
+ 8 B / 8 B [===========================================================] 100.00%
+ 
+ http://127.0.0.1:8080/ipfs/Qme8S2zGDXUQNzh63xR1ckdAsTVGhW1otxtvuAAe65oZKF
+ 
+
+-----------
+
+上面的命令没有daemon后台，也能运行
+没有仓库，他会启动仓库
+
+【同步】
+4、
+ipfs daemon 
+
+ipfs file name
+
+【本地进程】
+
+
+leyi@leyi-System-Product-Name:~/snap/ipfs/common$ ps aux | grep 26065
+leyi     26065  1.0  0.4 1722160 75016 pts/2   SLl+ 15:01   0:32 /snap/ipfs/1682/ipfs daemon
+
+netstat -aptn| grep ipfs
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name 
+tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN      26065/ipfs       //web服务
+tcp        0      0 127.0.0.1:5001          0.0.0.0:*               LISTEN      26065/ipfs       //API服务        
+tcp        0      0 127.0.0.1:5001          127.0.0.1:37552         ESTABLISHED 26065/ipfs   
+
+
+//本地我的文件
+http://127.0.0.1:8080/ipfs/QmdytmR4wULMd3SLo6ePF4s3WcRHWcpnJZ7bHhoj3QB13v
+
+//本地目录
+http://127.0.0.1:8080/ipfs/Qme8S2zGDXUQNzh63xR1ckdAsTVGhW1otxtvuAAe65oZKF
+
+leyi@leyi-System-Product-Name:~/ipfs$ ipfs add -r test_2/
+added QmRKKfMtydmWoD5iXCKR35LJeZ7Ni6sJvuyLob6DsRCtLC test_2/1.c
+added QmfTz5DwzqdsngiwdZigQkE2Gr2KYX8gSx9eQ2CWuAgTox test_2/2.h
+added Qme8S2zGDXUQNzh63xR1ckdAsTVGhW1otxtvuAAe65oZKF test_2
+
+//
+ipfs pin ls QmdytmR4wULMd3SLo6ePF4s3WcRHWcpnJZ7bHhoj3QB13v
+QmdytmR4wULMd3SLo6ePF4s3WcRHWcpnJZ7bHhoj3QB13v recursive
+如果没有被pin，执行GC操作 ipfs repo gc 文件会被删除。
+
+===========================================
+
+http://127.0.0.1:8080/ipfs/Qme8S2zGDXUQNzh63xR1ckdAsTVGhW1otxtvuAAe65oZKF
+
+leyi@leyi-System-Product-Name:~/snap/ipfs/common$ netstat -aptn| grep ipfs
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+tcp        0      0 127.0.0.1:5001          0.0.0.0:*               LISTEN      3610/ipfs           
+tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN      3610/ipfs           
+tcp        0      0 127.0.0.1:8080          127.0.0.1:54148         ESTABLISHED 3610/ipfs           
+leyi@leyi-System-Product-Name:~/snap/ipfs/common$ netstat -aptn| grep ipfs
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+tcp        0      0 127.0.0.1:5001          0.0.0.0:*               LISTEN      3610/ipfs           
+tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN      3610/ipfs           
+tcp        0      0 127.0.0.1:8080          127.0.0.1:54168         ESTABLISHED 3610/ipfs       //新打开的网页    
+tcp        0      0 127.0.0.1:8080          127.0.0.1:54148         ESTABLISHED 3610/ipfs   
+
+/ipfs/QmUNLLsPACCz1vLxQVkXqqLX5R1X345qqfHbsf67hvA3Nn
+=============================================
+
+【网关访问】
+
+//网上
+//网关
+https://ipfs.leiyun.org/
+https://hardbin.com/ipfs/
+//文件
+https://hardbin.com/ipfs/QmP8jG5xo9LuZ9uwCJqzJSNh18UssHFEkTTUHKmzn7hVGZ
+
+
+
+【节点id指向hash】:
+
+> ipfs name publish QmQgMZKqHzyEdyJja5ioF8WaXrbUDVjqhJDoaUKDymgioi
+Published to QmYM36s4ut2TiufVvVUABSVWmx8VvmDU7xKUiVeswBuTva: /ipfs/QmQgMZKqHzyEdyJja5ioF8WaXrbUDVjqhJDoaUKDymgioi
+
+//QmQgMZKqHzyEdyJja5ioF8WaXrbUDVjqhJDoaUKDymgioi是文件id
+//QmYM36s4ut2TiufVvVUABSVWmx8VvmDU7xKUiVeswBuTva节点id
+
+//访问的是节点id指向的文件id
+http://127.0.0.1:8080/ipns/QmYM36s4ut2TiufVvVUABSVWmx8VvmDU7xKUiVeswBuTva 
+
+//节点id 指向的hash
+> ipfs name resolve
+/ipfs/QmUUiDN6tWtj89xmUw1iCK2NczBqE6m3zH9QnbhHoMvZ5
+
+============================================
+
+--------------
+migrateBin, "-to", fmt.Sprint(newv), "-y"
+
+
+bin, "-v"
+
+"sh", "-c", "ldd --version || true"
+
+"umount", point
+
+"diskutil", "umount", "force", point
+
+"fusermount", "-u", point
+
+"fuse-version", "-q", "-only", "agent", "-s", "OSXFUSE"
+
+"go", "get", "github.com/jbenet/go-fuse-version/fuse-version"
+
+-------------
+
+app, "add", url
+
+ipfs add log.202012182000 
+added QmTh8ZkBQw1VTiQJB3wfJdSyMyYYzGWFWHhhDQ44PpYrAH log.202012182000
+ 2.59 MiB / 2.59 MiB [=======================================================================================================================] 100.00%
+
+app, "files", "mv", "/"+match[2], "/"+match[1]
+
+app, "add", "-r", hlstmpdir
+
+app, "files", "rm", "-r", "/"+hash
+
+app, "files", "mv", "/"+m3u8dir, "/"+hash
+
+app, "files", "stat", "--hash", mfsname
+
+app, "get", "-o", pathname, hash
+
+app, "add", "-r", pathname
+
+app, "version", "-n"
+
+app, "del", "-r", v.FileHash
+
+
+
+
+

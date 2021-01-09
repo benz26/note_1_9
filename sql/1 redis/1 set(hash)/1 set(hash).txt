@@ -1,0 +1,29 @@
+1、添加一个或者多个元素
+//SADD KEY_NAME VALUE1..VALUEN
+redis 127.0.0.1:6379> SADD myset "hello"
+
+2、删除一个或者多个元素
+SREM KEY MEMBER1..MEMBERN
+
+3、返回所有
+//SMEMBERS KEY_NAME  
+redis 127.0.0.1:6379> SMEMBERS myset
+1) "hello"
+2) "foo"
+
+4、查询元素数量
+//SCARD KEY_NAME 
+redis 127.0.0.1:6379> SCARD myset
+(integer) 2
+
+5、判断元素是否存在
+//SISMEMBER KEY VALUE
+redis 127.0.0.1:6379> SADD myset1 "hello"
+(integer) 1
+redis 127.0.0.1:6379> SISMEMBER myset1 "hello"
+(integer) 1
+redis 127.0.0.1:6379> SISMEMBER myset1 "world"
+(integer) 0
+
+
+

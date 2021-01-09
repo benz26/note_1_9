@@ -1,0 +1,33 @@
+var OptionEncodingType = cmdkit.StringOption(EncLong, EncShort, "The encoding type the output should be encoded with (json, xml, or text)").WithDefault("text")
+{
+	EncShort     = "enc"
+	EncLong      = "encoding"
+
+	EncLong,
+	EncShort, 
+	"The encoding type the output should be encoded with (json, xml, or text)"  
+	
+}
+
+----------
+//每个入参都是string, 实参直接传入多个string
+//形参用names ...string接收，
+//names直接当做切片使用
+
+func StringOption(names ...string) Option {
+	return NewOption(String, names...)  
+}
+-----------
+
+desc = names[len(names)-1]          //names[len(names)-1] 最后一个元素
+names = names[:len(names)-1]       //0到最后元素，不包含最后元素
+
+
+type option struct {
+	names       []string
+	kind        reflect.Kind         string
+	description string
+	defaultVal  interface{}
+}
+
+==================================================

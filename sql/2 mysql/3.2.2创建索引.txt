@@ -1,0 +1,58 @@
+1、在已有的表上创建索引
+
+CREATE <索引名> ON <表名> (<列名> [<长度>] [ ASC | DESC])
+
+2、创建table时候创建索引
+
+CREATE TABLE ... PRIMARY KEY 
+UNIQUE [ INDEX | KEY] 
+FOREIGN KEY 
+
+例子：
+mysql> CREATE TABLE tb_stu_info
+    -> (
+    -> id INT NOT NULL,
+    -> name CHAR(45) DEFAULT NULL,
+    -> dept_id INT DEFAULT NULL,
+    -> age INT DEFAULT NULL,
+    -> height INT DEFAULT NULL,
+    -> INDEX(height)
+    -> );
+	
+mysql> CREATE TABLE tb_stu_info2
+    -> (
+    -> id INT NOT NULL,
+    -> name CHAR(45) DEFAULT NULL,
+    -> dept_id INT DEFAULT NULL,
+    -> age INT DEFAULT NULL,
+    -> height INT DEFAULT NULL,
+    -> UNIQUE INDEX(height)   //UNIQUE INDEX(height)
+    -> );
+	
+
+3、修改table时候添加索引
+ALTER TABLE 
+
+ADD INDEX 
+ADD PRIMARY KEY 
+ADD UNIQUE [ INDEX | KEY] [
+ADD FOREIGN KEY 
+
+
+4、查看索引
+SHOW INDEX FROM student FROM test; 语句表示查看 test 数据库中 student 数据表的索引。
+
+5、删除索引
+（1）、DROP INDEX <索引名> ON <表名>
+mysql> DROP INDEX height
+    -> ON tb_stu_info;
+	
+（2）、 ALTER TABLE 
+DROP PRIMARY KEY：表示删除表中的主键。一个表只有一个主键，主键也是一个索引。
+
+DROP INDEX index_name：表示删除名称为 index_name 的索引。
+mysql> ALTER TABLE tb_stu_info2
+    -> DROP INDEX height;
+	
+DROP FOREIGN KEY fk_symbol：表示删除外键。
+

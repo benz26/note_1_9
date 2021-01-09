@@ -1,0 +1,20 @@
+//测试带宽
+netspeed.TestISPSpeed()
+
+//查询isp bandwidth
+IspUpBW, IspDownBW := netspeed.GetIspBandwidth()
+{
+	speedLimiter.info.SpeedUp / 128.0   //fixme 为什么除以128	
+}
+
+//fixme
+select {}//起什么作用？一直阻塞？
+
+---------
+//rand
+"math/rand"
+
+该包中常用的是 func Read(b []byte) (n int, err error) 这个方法， 将随机的byte值填充到b 数组中，以供b使用。示例如下
+ 
+sendUploadBodyData := make([]byte, UploadLoadSize)
+rand.Read(sendUploadBodyData)

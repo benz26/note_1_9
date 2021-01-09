@@ -1,0 +1,36 @@
+Golang 和时间相关的：
+可以直接使用数字， 不能使用float 浮点类型， 
+也不能直接是数值型变量。
+
+time.Sleep(1 * time.Second)    //可以
+time.Sleep(1.1 * time.Second) //不可以
+time.Sleep(time.Duration(yourTime) * time.Second) //可以
+time.Sleep(yourTime * time.Second)                            //不可以
+
+time.Duration(configload.Cfg.LogConf.RotationTime)*time.Hour
+
+--------------
+
+startingTime := time.Now().UTC()
+time.Sleep(10 * time.Millisecond)
+endingTime := time.Now().UTC()
+
+var duration time.Duration = endingTime.Sub(startingTime)
+
+duration time.Duration 实际是纳秒为单位的整数
+
+-----
+
+var duration_Seconds time.Duration = (1250 * 10) * time.Millisecond
+var float64_Seconds float64 = duration_Seconds.Seconds()  //转换秒
+
+var duration_Minute time.Duration = 2 * time.Minute
+var float64_Minutes float64 = duration_Minute.Minutes()   //转换分钟
+
+
+var duration_Milliseconds time.Duration = 500 * time.Millisecond
+
+var castToInt64 int64 = duration_Milliseconds.Nanoseconds() / 1e6    //转换毫秒
+var castToFloat64 float64 = duration_Milliseconds.Seconds() * 1e3   //转换毫秒
+
+----

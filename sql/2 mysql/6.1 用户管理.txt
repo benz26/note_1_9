@@ -1,0 +1,66 @@
+user表
+用来记录允许连接到服务器的账号信息。
+1、用户列
+字段名					字段类型	是否为空	默认值	说明
+Host					char(60)	NO		无	主机名
+User					char(32)	NO		无	用户名
+authentication_string	text		YES		无	密码
+
+。。。。
+
+-----
+
+db表
+表中存储了用户对某个数据库的操作权限。
+
+-----
+
+1、创建用户
+语法：
+CREATE USER <用户> [ IDENTIFIED BY [ PASSWORD ] 'password' ] [ ,用户 [ IDENTIFIED BY [ PASSWORD ] 'password' ]]
+
+例子：
+（1）、CREATE USER 'test1'@'localhost' IDENTIFIED BY 'test1';
+test1 		用户名
+localhost   主机名
+test1       密码
+
+（2）、查看'test1'对应的hash值
+SELECT password('test1');
++-------------------------------------------+
+| password('test1')                         |
++-------------------------------------------+
+| *06C0BF5B64ECE2F648B5F048A71903906BA08E5C |
++-------------------------------------------+
+CREATE USER 'test1'@'localhost'IDENTIFIED BY PASSWORD '*06C0BF5B64ECE2F648B5F048A71903906BA08E5C';//使用PASSWORD关键字存储密文
+
+2、insert插入用户
+mysql> INSERT INTO mysql.user(Host, User, authentication_string, ssl_cipher, x509_issuer, x509_subject) VALUES ('localhost', 'test2', PASSWORD('test2'), '', '', '');
+
+FLUSH PRIVILEGES; //让用户生效
+
+3、新建用户 且可以设置用户权限
+语法：
+GRANT priv_type ON database.table TO user [IDENTIFIED BY [PASSWORD] 'password']
+
+priv_type 参数表示新用户的权限；
+database.table 参数表示新用户的权限范围，即只能在指定的数据库和表上使用自己的权限；
+user 参数指定新用户的账号，由用户名和主机名构成；
+IDENTIFIED BY 关键字用来设置密码；
+password 参数表示新用户的密码。
+
+mysql> GRANT SELECT ON*.* TO 'test3'@localhost IDENTIFIED BY 'test3'; //可以查看任何表
+
+4、修改用户名
+RENAME USER <旧用户> TO <新用户>
+
+mysql> RENAME USER 'test1'@'localhost'
+    -> TO 'testUser1'@'localhost';
+	
+5、删除用户
+（1）、
+mysql> DROP USER 'test1'@'localhost';
+（2）、
+DELETE FROM mysql.user WHERE Host='hostname' AND User='username';
+DELETE FROM mysql.user WHERE Host='localhost'AND User='test2';
+

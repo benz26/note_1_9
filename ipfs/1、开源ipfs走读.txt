@@ -1,0 +1,47 @@
+// ============ 检查是否已经初始化   【1】
+initialize, _ := req.Options[initOptionKwd].(bool)
+...
+// 打开初始化跟目录 /.ipfs   【2】
+repo, err := fsrepo.Open(cctx.ConfigRoot)
+...
+// ============ 读取配置         【3】
+cfg, err := cctx.GetConfig() 
+...
+// ============ 根据配置生成一个新节点   【4】
+node, err := core.NewNode(req.Context, ncfg)
+if err != nil {
+    log.Error("error from node construction: ", err)
+    re.SetError(err, cmdkit.ErrNormal)
+return
+}
+node.SetLocal(false)
+if node.PNetFingerprint != nil {
+    fmt.Println("Swarm is limited to private network of peers with the swarm key")
+    fmt.Printf("Swarm key fingerprint: %x\n", node.PNetFingerprint)
+}
+// ============ 连接到IPFS网络   【5】
+printSwarmAddrs(node)
+// ============  开启IPFS API服务   【6】
+// construct api endpoint - every time
+apiErrc, err := serveHTTPApi(req, cctx)
+if err != nil {
+    re.SetError(err, cmdkit.ErrNormal)
+return
+}
+// ============= 开启Gateway网关服务  【7】
+// construct http gateway - if it is set in the config
+var gwErrc <-chan error
+if len(cfg.Addresses.Gateway) > 0 {
+var err error
+    gwErrc, err = serveHTTPGateway(req, cctx)
+if err != nil {
+        re.SetError(err, cmdkit.ErrNormal)
+return
+    }
+}
+// ============= 输出IPFS Daemon ready 【8】
+fmt.Printf("Daemon is ready\n")
+
+以上从【1】- 【8】是整个IPFS Daemon的启动过程。
+
+lsof -i tcp:5001

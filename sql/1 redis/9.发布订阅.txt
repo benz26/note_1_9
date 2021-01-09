@@ -1,0 +1,8 @@
+【例子】
+（1）、
+客户端1
+SUBSCRIBE chat
+
+客户端2
+publish chat "let's go!"
+

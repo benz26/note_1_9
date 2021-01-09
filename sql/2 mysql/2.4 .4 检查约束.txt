@@ -1,0 +1,24 @@
+1、检查约束
+mysql> CREATE TABLE tb_emp7
+    -> (
+    -> id INT(11) PRIMARY KEY,
+    -> name VARCHAR(25),
+    -> deptId INT(11),
+    -> salary FLOAT,
+    -> CHECK(salary>0 AND salary<100),           //没有约束名
+    -> FOREIGN KEY(deptId) REFERENCES tb_dept1(id)
+    -> );
+
+2、修改时候增加约束
+mysql> ALTER TABLE tb_emp7
+    -> ADD CONSTRAINT check_id         //约束名
+    -> CHECK(id>0);	
+	
+	ALTER TABLE tb_emp7 ADD CONSTRAINT <检查约束名> CHECK(<检查约束>)
+	
+3、删除检查约束
+mysql> ALTER TABLE tb_emp7
+    -> DROP CONSTRAINT check_id;
+	
+	ALTER TABLE <数据表名> DROP CONSTRAINT <检查约束名>;
+	

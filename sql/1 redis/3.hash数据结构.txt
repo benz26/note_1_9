@@ -1,0 +1,112 @@
+【概念】
+在redis 中，hash 是一个 String 类型的 field 和 value 的映射表，
+因此我们存储的数据实际在 Redis 内存中都是一个个字符串而已。
+
+
+命令以h开头，代表操作的是hash结构；
+大多数命令多了一个层级field(内部key )
+
+-----------
+【语法】
+1、删除hash结构中的某些字段
+hdel key field1[fiedl2...]
+
+2、判断hash结构中是否存在field字段
+hexists key field,存在返回1，不存在返回0
+
+3、获取所有hash结构中的键值
+hgetall key,依次返回键和值
+
+4、给指定字段加上整数（要求该字段是整数字符串）
+hincrby key field increment
+
+5、给指定字段加上浮点数（要求该字段是数字型字符串）
+hincrbyfloat key field increment
+
+6、返回hash中所有的键
+hkeys key
+
+7、返回键值对数量
+hlen key
+
+8、返回键的值
+hmget key field1[field2...]
+
+9、设置多个键值对，（m就是member，9和10对应）
+hmset key field1 value1 [field2 value2....]
+
+10、设置单个键的值 ,可以是不存在的key（新增）
+hset key field value
+
+11、当hash结构中不存在对应的键，才设置值
+hsetnx key field value
+
+12、获取hash结构所有的值
+hvals key
+
+
+------------
+【例子：】
+1、hash 结构设置多个键值对
+语法：
+hmset key field1 value1 [field2 value2......]
+例子（1）：
+hmset role_1 id 001 roleName role_name_001 note note_001
+----
+
+//key
+role_1 
+
+//field   value
+id 			001
+roleName 	role_name_001
+note 		note_001
+
+----
+
+2、hgetall role_1
+1) id
+2) 001
+3) roleName
+4) role_name_001
+5) note
+6) note_001
+
+例子（2）、
+hmset hash f1 val1  f2 val2
+
+hset hash f3 6,成功返回1？？
+
+hexists hash f2，存在返回1 
+
+hgetall hash, 依次返回key value
+f1
+val1
+f2
+val2
+f3
+6
+
+hincrby hash f3 2,    6+2=8 返回8
+
+hincrbyfloat hash f3 0.88,   8+0.88返回8.88000001
+
+hkeys hash, 依次返回所有key
+f1
+f2
+f3
+
+hlen hash  ，返回键值对数量3
+
+hmget hash f1 f2
+val1
+val2
+
+hdel hash f1，成功返回1
+
+
+
+
+
+
+------------------

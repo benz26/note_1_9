@@ -1,0 +1,64 @@
+return结束当前函数,并返回指定值
+runtime.Goexit结束当前goroutine,其他的goroutine不受影响,主程序也一样继续运行
+os.Exit会结束当前程序
+
+-----------
+
+core commands.go是命令。
+
+daemonFunc 是服务
+
+n.CustomComm = custom.NewCustom(ctx, n.PeerHost, cfg, n.Exchange.(*bitswap.Bitswap), ping, n.Repo, n.Peerstore, n.Reporter, n)
+
+-----------
+
+os.Exit(mainRet()) {
+	err = cli.Run(ctx, Root, os.Args, os.Stdin, os.Stdout, os.Stderr, buildEnv, makeExecutor)
+}
+
+exctr, err := makeExecutor(req, env) {
+	err = exctr.Execute(req, re, env) {
+		runCloseErr := re.CloseWithError(cmd.Run(req, re, env))
+	}
+}
+
+//cmd.Run(req, re, env)
+func daemonFunc(req *cmds.Request, re cmds.ResponseEmitter, env cmds.Environment) (_err error) {
+	custom.NewCustom(req.Context, cctx)
+}
+
+custom.NewCustom(req.Context, cctx){
+
+	//收包处理
+	c.WebSocketClient.SetRecvCb(c.RecvRoot)
+	
+	// 开始定时上报状态(debug)
+	go c.ReportNodeInfo()
+	go c.ReportTaskInfo()
+}
+
+-----------------
+
+root_conn.go
+
+func (c *Custom) RecvLoop() {
+	go task.Do(c)
+}
+
+-------
+
+root_recv_command.go
+
+root_recv_command_back2src.go
+
+func (msg *BACK2SRCFromUrlMsg) Do(c *Custom) {
+
+-------
+
+
+
+
+
+
+
+

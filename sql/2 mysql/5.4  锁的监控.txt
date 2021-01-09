@@ -1,0 +1,27 @@
+锁的监控;
+
+例子：
+A:
+mysql> BEGIN;
+mysql> SELECT * FROM test.tb_student WHERE age<15 FOE UPDATE;
+
+B:
+在 tb_student 表中插入 age=14 的记录，出现锁等待超时。
+mysql> BEGIN;
+mysql> INSERT INTO tb_student(name,age) VALUES ('dd',14);
+
+查看：
+（1)、mysql> SELECT * FROM information_schema.innodb_trx \G
+可以查看哪些事务id号，处于等待状态；
+线程id；  SHOW FULL PROCESSLIST 也可以查看线程id;
+sql语句；
+
+（2）、 SHOW FULL PROCESSLIST 
+//查看当前线程处理情况
+可以查看线程id;
+执行的语句；
+host,是从哪个端口发出的语句
+db,哪个库
+state状态；
+
+.....

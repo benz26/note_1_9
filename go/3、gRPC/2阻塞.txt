@@ -1,0 +1,24 @@
+runtime.gopark at proc.go:305
+runtime.selectgo at select.go:313
+
+google.golang.org/grpc/internal/transport.(*Stream).waitOnHeader at transport.go:321
+google.golang.org/grpc/internal/transport.(*Stream).RecvCompress at transport.go:336
+google.golang.org/grpc.(*csAttempt).recvMsg at stream.go:894
+google.golang.org/grpc.(*clientStream).RecvMsg.func1 at stream.go:759
+google.golang.org/grpc.(*clientStream).withRetry at stream.go:617
+google.golang.org/grpc.(*clientStream).RecvMsg at stream.go:758
+google.golang.org/grpc.invoke at call.go:73
+google.golang.org/grpc.(*ClientConn).Invoke at call.go:37
+vodbackmgmtsrv/rpc.(*vodNodeMgmtServiceClient).QueryNode at vodnodemgmt_srv.pb.go:2976
+vodbackmgmtsrv/rpc.(*rpcClient).QueryNode at rpc_client.go:367
+vodbackmgmtsrv/srvlogic/nodemgmt.(*nodeManagement).httpProcMonitor at node_http_request_proc.go:150
+vodbackmgmtsrv/srvlogic/nodemgmt.(*nodeManagement).processHttpRequest at node_http_request_proc.go:77
+vodbackmgmtsrv/srvlogic/nodemgmt.(*nodeManagement).processCommonMsg at node_mgmt.go:74
+vodbackmgmtsrv/srvlogic/nodemgmt.(*nodeManagement).handleMsg at node_mgmt.go:63
+runtime.goexit at asm_amd64.s:1357
+ - Async stack trace
+vodbackmgmtsrv/srvlogic/nodemgmt.(*nodeManagement).Start at node_mgmt.go:54
+
+
+
+gopark(selparkcommit, nil, waitReasonSelect, traceEvGoBlockSelect, 1)

@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)https://www.cnblogs.com/Braveliu/p/12235618.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <meta name="description" content="【1】为什么引入完美转发？ 在函数模板编程中，常有一种场景是把模板参数转发给另一个调用函数，这时候如果只提供值传递版本会显得效率太低。看以下代码： 1 template&amp;lt;class TYPE, ">
+    <meta property="og:description" content="【1】为什么引入完美转发？ 在函数模板编程中，常有一种场景是把模板参数转发给另一个调用函数，这时候如果只提供值传递版本会显得效率太低。看以下代码： 1 template&amp;lt;class TYPE, ">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>C++11 完美转发 - kaizen - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.svg" type="image/svg+xml">
+    
+    <link rel="stylesheet" href="./C++11 完美转发 - kaizen - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./C++11 完美转发 - kaizen - 博客园_files/bundle-summergarden.min.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./C++11 完美转发 - kaizen - 博客园_files/bundle-summergarden-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/Braveliu/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/Braveliu/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/Braveliu/wlwmanifest.xml">
+    <script src="./C++11 完美转发 - kaizen - 博客园_files/osd.js"></script><script async="" src="./C++11 完美转发 - kaizen - 博客园_files/analytics.js"></script><script type="text/javascript" src="./C++11 完美转发 - kaizen - 博客园_files/encoder.js"></script><script>
+        var currentBlogId = 112522;
+        var currentBlogApp = 'Braveliu';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'summerGarden';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2020-01-27 11:46';
+        </script>
+    <script src="./C++11 完美转发 - kaizen - 博客园_files/jquery-2.2.0.min.js"></script>
+    <script src="./C++11 完美转发 - kaizen - 博客园_files/blog-common.min.js"></script>
+    
+    
+    
+<script src="./C++11 完美转发 - kaizen - 博客园_files/pubads_impl_2020120801.js" async=""></script><link rel="preload" href="./C++11 完美转发 - kaizen - 博客园_files/f.txt" as="script"><script type="text/javascript" src="./C++11 完美转发 - kaizen - 博客园_files/f.txt"></script><link rel="prefetch" href="https://5b75fec5efe1191ecfaf6540e33cb787.safeframe.googlesyndication.com/safeframe/1-0-37/html/container.html"><link rel="prefetch" href="https://tpc.googlesyndication.com/safeframe/1-0-37/html/container.html"></head>
+<body class="has-navbar has-bannerbar">
+    <a name="top"></a>
+            <a href="https://brands.cnblogs.com/aws/free?source=blog-bannerbar" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;aws-pc-bannerbar&#39;)">
+                <div class="bannerbar aws forpc">
+                    <img class="left" src="./C++11 完美转发 - kaizen - 博客园_files/bannerbar-aws-logo.png" alt="">
+                    <img class="right" src="./C++11 完美转发 - kaizen - 博客园_files/bannerbar-aws-ssh.png" alt="">
+                </div>
+            </a>
+        <div id="bannerbar" class="bannerbar-mobile formobile">
+            <a href="https://brands.cnblogs.com/aws/free?source=mobile-banner" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;aws-mobile-bannerbar&#39;)">
+            <img src="./C++11 完美转发 - kaizen - 博客园_files/35695-20201211073419417-355442931.jpg" alt="">
+            </a>
+        </div>
+    <div id="top_nav" class="navbar forpc">
+        <nav id="nav_main" class="navbar-main">
+            <ul id="nav_left" class="navbar-list navbar-left">
+                <li class="navbar-branding"><a href="https://www.cnblogs.com/" title="开发者的网上家园"><img src="./C++11 完美转发 - kaizen - 博客园_files/logo.svg" alt="博客园Logo"></a></li>
+                <li><a href="https://www.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-sitehome&#39;)">首页</a></li>
+                <li><a href="https://news.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-news&#39;)">新闻</a></li>
+                <li><a href="https://q.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-q&#39;)">博问</a></li>
+                <li><a id="nav_brandzone" href="https://brands.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-brands&#39;)">专区</a></li>
+                <li><a href="https://ing.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-ing&#39;)">闪存</a></li>
+                <li><a href="https://edu.cnblogs.com/" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;skin-navbar-edu&#39;)">班级</a></li>
+            </ul>
+            <ul id="nav_right" class="navbar-list navbar-right">
+                <li>
+                    <form id="zzk_search" class="navbar-search" action="https://zzk.cnblogs.com/s" method="get">
+                        <input name="w" id="zzk_search_input" placeholder="代码改变世界" type="text" tabindex="3">
+                        <button type="submit" id="zzk_search_button">
+                            <img src="./C++11 完美转发 - kaizen - 博客园_files/search.svg" alt="搜索">
+                        </button>
+                    </form>
+                </li>
+                <li id="navbar_login_status" class="navbar-list">
+                    <a id="navblog-myblog-icon" class="navbar-user-info navbar-blog" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx" alt="我的博客" title="我的博客" style="display: none;">
+                        <img id="myblog_icon" class="navbar-icon" src="./C++11 完美转发 - kaizen - 博客园_files/myblog.svg" alt="我的博客">
+                    </a>
+                    <a class="navbar-user-info navbar-message navbar-icon-wrapper" href="https://msg.cnblogs.com/" alt="短消息" title="短消息" style="display: none;">
+                        <img id="msg_icon" class="navbar-icon" src="./C++11 完美转发 - kaizen - 博客园_files/message.svg" alt="短消息">
+                        <span id="msg_count" style="display: none"></span>
+                    </a>
+                    <div id="user_info" class="navbar-user-info dropdown" style="display: none;">
+                        <a class="dropdown-button" href="https://home.cnblogs.com/">
+                            <img id="user_icon" class="navbar-avatar" src="./C++11 完美转发 - kaizen - 博客园_files/avatar-default.svg" alt="用户头像">
+                        </a>
+                        <div class="dropdown-menu">
+                            <a id="navblog-myblog-text" href="https://passport.cnblogs.com/GetBlogApplyStatus.aspx">我的博客</a>
+                            <a href="https://home.cnblogs.com/">我的园子</a>
+                            <a href="https://account.cnblogs.com/settings/account">账号设置</a>
+                            <a href="javascript:void(0)" onclick="logout();">退出登录</a>
+                        </div>
+                    </div>
+                    <a class="navbar-anonymous" href="https://account.cnblogs.com/signup/" style="display: inline;">注册</a>
+                    <a class="navbar-anonymous" href="javascript:void(0);" onclick="login()" style="display: inline;">登录</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a href="https://www.cnblogs.com/Braveliu/"><img id="blogLogo" src="./C++11 完美转发 - kaizen - 博客园_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/Braveliu/">kaizen</a>
+</h1>
+<h2>编码以明志  调试而致远</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+
+			<ul id="navList">
+				<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+				<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/Braveliu/">
+首页</a>
+</li>
+				<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+				<li>
+</li>
+				<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+				<li>
+
+				
+</li>
+			</ul>
+
+
+
+		<div class="blogStats">
+			
+			<!--done-->
+随笔 - 448&nbsp;
+文章 - 26&nbsp;
+评论 - 142&nbsp;
+
+
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/Braveliu/p/12235618.html">
+    <span>C++11 完美转发</span>
+    
+
+
+</a>
+
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			
+<div id="cnblogs_post_body" class="blogpost-body">
+    <p><span style="font-family: 宋体; font-size: 16px; color: rgba(255, 0, 0, 1)">【1】为什么引入完美转发？</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">在函数模板编程中，常有一种场景是把模板参数转发给另一个调用函数，这时候如果只提供值传递版本会显得效率太低。看以下代码：</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./C++11 完美转发 - kaizen - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> template&lt;<span style="color: rgba(0, 0, 255, 1)">class</span> TYPE, <span style="color: rgba(0, 0, 255, 1)">class</span> ARG&gt;
+<span style="color: rgba(0, 128, 128, 1)">2</span> TYPE*<span style="color: rgba(0, 0, 0, 1)"> getInstance(ARG arg)
+</span><span style="color: rgba(0, 128, 128, 1)">3</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">4</span>     TYPE* pRet =<span style="color: rgba(0, 0, 0, 1)"> nullptr;
+</span><span style="color: rgba(0, 128, 128, 1)">5</span>     pRet = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> TYPE(arg);
+</span><span style="color: rgba(0, 128, 128, 1)">6</span>     <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> pRet;
+</span><span style="color: rgba(0, 128, 128, 1)">7</span> }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./C++11 完美转发 - kaizen - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="font-family: 宋体; font-size: 16px">代码很简单，就是用ARG参数去初始化一个TYPE类型的对象，然后返回该对象指针。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">考虑一下，如果ARG类型是一个自定义类型，那么这样的值传递会是比较大的性能开销。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">有没有办法改进一下？再看以下代码：</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./C++11 完美转发 - kaizen - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> template&lt;<span style="color: rgba(0, 0, 255, 1)">class</span> TYPE, <span style="color: rgba(0, 0, 255, 1)">class</span> ARG&gt;
+<span style="color: rgba(0, 128, 128, 1)">2</span> TYPE* getInstance(<span style="color: rgba(0, 0, 255, 1)">const</span> ARG&amp;<span style="color: rgba(0, 0, 0, 1)"> arg)
+</span><span style="color: rgba(0, 128, 128, 1)">3</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">4</span>     TYPE* pRet =<span style="color: rgba(0, 0, 0, 1)"> nullptr;
+</span><span style="color: rgba(0, 128, 128, 1)">5</span>     pRet = <span style="color: rgba(0, 0, 255, 1)">new</span><span style="color: rgba(0, 0, 0, 1)"> TYPE(arg);
+</span><span style="color: rgba(0, 128, 128, 1)">6</span>     <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> pRet;
+</span><span style="color: rgba(0, 128, 128, 1)">7</span> }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./C++11 完美转发 - kaizen - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="font-family: 宋体; font-size: 16px">这段代码将传入参数类型改为了“万能”的常量左值引用，可以接受任何类型，可以解决性能开销的问题。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">但是，但是，还不够灵活，假如我们想TYPE接受一个右值去初始化呢？</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">那么有没有可以把参数连同类型一起转发的方案呢？当然有，没有C++办不到的。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">C++11就提供了这样能力既完美转发。代码如下：</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./C++11 完美转发 - kaizen - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> template&lt;<span style="color: rgba(0, 0, 255, 1)">class</span> TYPE, <span style="color: rgba(0, 0, 255, 1)">class</span> ARG&gt;
+<span style="color: rgba(0, 128, 128, 1)">2</span> TYPE* getInstance(ARG&amp;&amp;<span style="color: rgba(0, 0, 0, 1)"> arg)
+</span><span style="color: rgba(0, 128, 128, 1)">3</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">4</span>     TYPE* pRet =<span style="color: rgba(0, 0, 0, 1)"> nullptr;
+</span><span style="color: rgba(0, 128, 128, 1)">5</span>     pRet = <span style="color: rgba(0, 0, 255, 1)">new</span> TYPE(std::forward&lt;ARG&gt;<span style="color: rgba(0, 0, 0, 1)">(arg));
+</span><span style="color: rgba(0, 128, 128, 1)">6</span>     <span style="color: rgba(0, 0, 255, 1)">return</span><span style="color: rgba(0, 0, 0, 1)"> pRet;
+</span><span style="color: rgba(0, 128, 128, 1)">7</span> }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./C++11 完美转发 - kaizen - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="font-family: 宋体; font-size: 16px">嗯哼？难道把形参类型改为右值引用就可以了？懵圈....表示颠覆认知！看不懂无所谓，再往下看。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px; color: rgba(255, 0, 0, 1)">【2】引用折叠 与 模板推导</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">C++11是通过引入一条所谓“引用折叠”（reference collapsing）的新语言规则，并结合新的模板推导规则来实现的完美转发。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">先了解一下引用折叠。如下语句：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> typedef <span style="color: rgba(0, 0, 255, 1)">const</span> <span style="color: rgba(0, 0, 255, 1)">int</span><span style="color: rgba(0, 0, 0, 1)"> T;
+</span><span style="color: rgba(0, 128, 128, 1)">2</span> typedef T&amp;<span style="color: rgba(0, 0, 0, 1)"> TR;
+</span><span style="color: rgba(0, 128, 128, 1)">3</span> TR&amp; v = <span style="color: rgba(128, 0, 128, 1)">10</span>; <span style="color: rgba(255, 0, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"><span style="color: rgba(255, 0, 0, 1)"> 该声明在C++98中会导致编译错误</span> </span></pre>
+</div>
+<p><span style="font-family: 宋体; font-size: 16px">在C++11之前，其中TR&amp; v = 10;这样的表达式会被编译器认为是不合法的表达式。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">而在C++11中，一旦出现了这样的表达式，就会发生引用折叠，即将复杂的未知表达式折叠为已知的简单表达式，</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">具体规则，如下图所示：</span></p>
+<p><span style="font-family: 宋体; font-size: 16px"><img src="./C++11 完美转发 - kaizen - 博客园_files/389111-20200127201626941-1609526057.png" alt=""></span></p>
+<p><span style="font-family: 宋体; font-size: 16px">个人觉得，这个规则还是得深刻理解，记住一个原则：一旦定义中出现了左值引用，引用折叠总是优先将其折叠为左值引用。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">如下验证程序：</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./C++11 完美转发 - kaizen - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> #include &lt;iostream&gt;
+<span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 255, 1)">using</span> <span style="color: rgba(0, 0, 255, 1)">namespace</span><span style="color: rgba(0, 0, 0, 1)"> std;
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 4</span> typedef <span style="color: rgba(0, 0, 255, 1)">const</span> <span style="color: rgba(0, 0, 255, 1)">int</span><span style="color: rgba(0, 0, 0, 1)"> T;
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> typedef T&amp;<span style="color: rgba(0, 0, 0, 1)"> TR;
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> typedef T&amp;&amp;<span style="color: rgba(0, 0, 0, 1)"> TRR;
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 8</span> <span style="color: rgba(0, 0, 255, 1)">void</span><span style="color: rgba(0, 0, 0, 1)"> JudgeType()
+</span><span style="color: rgba(0, 128, 128, 1)"> 9</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">10</span>     cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">lvalue_ref_type?: </span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt; is_lvalue_reference&lt;TR&gt;::value &lt;&lt; endl;  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 1</span>
+<span style="color: rgba(0, 128, 128, 1)">11</span>     cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">rvalue_ref_type?: </span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt; is_rvalue_reference&lt;TR&gt;::value &lt;&lt; endl;  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 0</span>
+<span style="color: rgba(0, 128, 128, 1)">12</span> 
+<span style="color: rgba(0, 128, 128, 1)">13</span>     cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">lvalue_ref_type?: </span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt; is_lvalue_reference&lt;TR&amp;&gt;::value &lt;&lt; endl; <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 1</span>
+<span style="color: rgba(0, 128, 128, 1)">14</span>     cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">rvalue_ref_type?: </span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt; is_rvalue_reference&lt;TR&amp;&gt;::value &lt;&lt; endl; <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 0</span>
+<span style="color: rgba(0, 128, 128, 1)">15</span> 
+<span style="color: rgba(0, 128, 128, 1)">16</span>     cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">lvalue_ref_type?: </span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt; is_lvalue_reference&lt;TR&amp;&amp;&gt;::value &lt;&lt; endl; <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 1</span>
+<span style="color: rgba(0, 128, 128, 1)">17</span>     cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">rvalue_ref_type?: </span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt; is_rvalue_reference&lt;TR&amp;&amp;&gt;::value &lt;&lt; endl; <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 0</span>
+<span style="color: rgba(0, 128, 128, 1)">18</span> 
+<span style="color: rgba(0, 128, 128, 1)">19</span>     cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">lvalue_ref_type?: </span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt; is_lvalue_reference&lt;TRR&gt;::value &lt;&lt; endl;  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 0</span>
+<span style="color: rgba(0, 128, 128, 1)">20</span>     cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">rvalue_ref_type?: </span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt; is_rvalue_reference&lt;TRR&gt;::value &lt;&lt; endl;  <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 1</span>
+<span style="color: rgba(0, 128, 128, 1)">21</span> 
+<span style="color: rgba(0, 128, 128, 1)">22</span>     cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">lvalue_ref_type?: </span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt; is_lvalue_reference&lt;TRR&amp;&gt;::value &lt;&lt; endl; <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 1</span>
+<span style="color: rgba(0, 128, 128, 1)">23</span>     cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">rvalue_ref_type?: </span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt; is_rvalue_reference&lt;TRR&amp;&gt;::value &lt;&lt; endl; <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 0</span>
+<span style="color: rgba(0, 128, 128, 1)">24</span> 
+<span style="color: rgba(0, 128, 128, 1)">25</span>     cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">lvalue_ref_type?: </span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt; is_lvalue_reference&lt;TRR&amp;&amp;&gt;::value &lt;&lt; endl; <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 0</span>
+<span style="color: rgba(0, 128, 128, 1)">26</span>     cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">rvalue_ref_type?: </span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt; is_rvalue_reference&lt;TRR&amp;&amp;&gt;::value &lt;&lt; endl; <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> 1</span>
+<span style="color: rgba(0, 128, 128, 1)">27</span> <span style="color: rgba(0, 0, 0, 1)">}
+</span><span style="color: rgba(0, 128, 128, 1)">28</span> 
+<span style="color: rgba(0, 128, 128, 1)">29</span> <span style="color: rgba(0, 0, 255, 1)">int</span><span style="color: rgba(0, 0, 0, 1)"> main()
+</span><span style="color: rgba(0, 128, 128, 1)">30</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">31</span> <span style="color: rgba(0, 0, 0, 1)">    JudgeType();
+</span><span style="color: rgba(0, 128, 128, 1)">32</span>     system(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">pause</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">33</span> }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./C++11 完美转发 - kaizen - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="font-family: 宋体; font-size: 16px">模板推导。为了便于说明问题，下面我们把函数模板写为如下形式：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> template &lt;typename T&gt;
+<span style="color: rgba(0, 128, 128, 1)">2</span> <span style="color: rgba(0, 0, 255, 1)">void</span> IamForwording(T&amp;&amp;<span style="color: rgba(0, 0, 0, 1)"> t)
+</span><span style="color: rgba(0, 128, 128, 1)">3</span> <span style="color: rgba(0, 0, 0, 1)">{ 
+</span><span style="color: rgba(0, 128, 128, 1)">4</span>     IrunCodeActually(static_cast&lt;T&amp;&amp;&gt;<span style="color: rgba(0, 0, 0, 1)">(t));
+</span><span style="color: rgba(0, 128, 128, 1)">5</span> }</pre>
+</div>
+<p><span style="font-family: 宋体; font-size: 16px">说明：IamForwording为转发函数；IrunCodeActually为目标函数（即真正执行函数过程的目标）</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">模板对类型的推导规则就比较简单：</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">当转发函数的实参是类型X的一个左值引用，那么模板参数被推导为X&amp;类型；</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">当转发函数的实参是类型X的一个右值引用，那么模板的参数被推导为X&amp;&amp;类型。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">再结合以上的引用折叠规则，就能确定出参数的实际类型。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">尤其注意，我们不仅在参数部分使用了T&amp;&amp;这样的标识，在目标函数传参的强制类型转换中也使用了这样的形式。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">这个标识不是右值引用，它有专用的名字为转发引用（forwarding reference）。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">比如，我们调用转发函数时传入了一个X类型的左值引用，可以想象，转发函数将被实例化为如下形式：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 255, 1)">void</span> IamForwording(X&amp; &amp;&amp;<span style="color: rgba(0, 0, 0, 1)"> t) 
+</span><span style="color: rgba(0, 128, 128, 1)">2</span> <span style="color: rgba(0, 0, 0, 1)">{ 
+</span><span style="color: rgba(0, 128, 128, 1)">3</span>     IrunCodeActually(static_cast&lt;X&amp; &amp;&amp;&gt;<span style="color: rgba(0, 0, 0, 1)">(t)); 
+</span><span style="color: rgba(0, 128, 128, 1)">4</span> }</pre>
+</div>
+<p><span style="font-family: 宋体; font-size: 16px">应用上引用折叠规则，就是：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 255, 1)">void</span> IamForwording(X&amp;<span style="color: rgba(0, 0, 0, 1)"> t)
+</span><span style="color: rgba(0, 128, 128, 1)">2</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">3</span>     IrunCodeActually(static_cast&lt;X&amp;&gt;<span style="color: rgba(0, 0, 0, 1)">(t));
+</span><span style="color: rgba(0, 128, 128, 1)">4</span> }</pre>
+</div>
+<p><span style="font-family: 宋体; font-size: 16px">如此一来，左值传递就毫无问题了。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">实际使用的时候，IrunCodeActually如果接受左值引用的话，就可以直接调用转发函数。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">不过你可能会发现，这里调用前的static_cast没有什么作用。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">事实上，这里的static_cast是留给传递右值用的。如下分析。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">如果我们调用转发函数时传入了一个X类型的右值引用的话，我们的转发函数将被实例化为：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 255, 1)">void</span> IamForwording(X&amp;&amp; &amp;&amp;<span style="color: rgba(0, 0, 0, 1)"> t)
+</span><span style="color: rgba(0, 128, 128, 1)">2</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">3</span>     IrunCodeActually(static_cast&lt;X&amp;&amp; &amp;&amp;&gt;<span style="color: rgba(0, 0, 0, 1)">(t));
+</span><span style="color: rgba(0, 128, 128, 1)">4</span> }</pre>
+</div>
+<p><span style="font-family: 宋体; font-size: 16px">应用上引用折叠规则，就是：</span></p>
+<div class="cnblogs_code">
+<pre><span style="color: rgba(0, 128, 128, 1)">1</span> <span style="color: rgba(0, 0, 255, 1)">void</span> IamForwording(X&amp;&amp;<span style="color: rgba(0, 0, 0, 1)"> t)
+</span><span style="color: rgba(0, 128, 128, 1)">2</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">3</span>     IrunCodeActually(static_cast&lt;X&amp;&amp;&gt;<span style="color: rgba(0, 0, 0, 1)">(t));
+</span><span style="color: rgba(0, 128, 128, 1)">4</span> }</pre>
+</div>
+<p><span style="font-family: 宋体; font-size: 16px">这里我们就看到了static_cast的重要性。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">事实上，对于一个右值而言，当它使用右值引用表达式引用的时候，该右值引用却是个不折不扣的左值。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">那么我们想在函数调用中继续传递右值，就需要使用std::move来进行左值向右值的转换。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">而std::move通常就是一个static_cast。不过在C++11中，用于完美转发的函数却不再叫作move，而是另外一个名字：forward。</span></p>
+<p>&nbsp;<span style="font-family: 宋体; font-size: 16px">move和forward在实际实现上差别并不大。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">不过标准库这么设计，也许是为了让每个名字对应于不同的用途，以应对未来可能的扩展。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">推荐在实现完美转发时使用forward。</span></p>
+<p><span style="font-family: 宋体; font-size: 16px; color: rgba(255, 0, 0, 1)">【3】完美转发的应用</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">完美转发的应用示例：</span></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./C++11 完美转发 - kaizen - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: rgba(0, 128, 128, 1)"> 1</span> #include &lt;iostream&gt;
+<span style="color: rgba(0, 128, 128, 1)"> 2</span> <span style="color: rgba(0, 0, 255, 1)">using</span> <span style="color: rgba(0, 0, 255, 1)">namespace</span><span style="color: rgba(0, 0, 0, 1)"> std;
+</span><span style="color: rgba(0, 128, 128, 1)"> 3</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 4</span> <span style="color: rgba(0, 0, 255, 1)">void</span> fun(<span style="color: rgba(0, 0, 255, 1)">int</span>&amp; x) { cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">call lvalue ref</span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt;<span style="color: rgba(0, 0, 0, 1)"> endl; }
+</span><span style="color: rgba(0, 128, 128, 1)"> 5</span> <span style="color: rgba(0, 0, 255, 1)">void</span> fun(<span style="color: rgba(0, 0, 255, 1)">int</span>&amp;&amp; x) { cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">call rvalue ref</span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt;<span style="color: rgba(0, 0, 0, 1)"> endl; }
+</span><span style="color: rgba(0, 128, 128, 1)"> 6</span> <span style="color: rgba(0, 0, 255, 1)">void</span> fun(<span style="color: rgba(0, 0, 255, 1)">const</span> <span style="color: rgba(0, 0, 255, 1)">int</span>&amp; x) { cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">call const lvalue ref</span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt;<span style="color: rgba(0, 0, 0, 1)"> endl; }
+</span><span style="color: rgba(0, 128, 128, 1)"> 7</span> <span style="color: rgba(0, 0, 255, 1)">void</span> fun(<span style="color: rgba(0, 0, 255, 1)">const</span> <span style="color: rgba(0, 0, 255, 1)">int</span>&amp;&amp; x) { cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">call const rvalue ref</span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt;<span style="color: rgba(0, 0, 0, 1)"> endl; }
+</span><span style="color: rgba(0, 128, 128, 1)"> 8</span> 
+<span style="color: rgba(0, 128, 128, 1)"> 9</span> template&lt;typename T&gt;
+<span style="color: rgba(0, 128, 128, 1)">10</span> <span style="color: rgba(0, 0, 255, 1)">void</span> PerfectForward(T&amp;&amp;<span style="color: rgba(0, 0, 0, 1)"> t)
+</span><span style="color: rgba(0, 128, 128, 1)">11</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">12</span>     std::cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">T is a ref type?: </span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt; std::is_reference&lt;T&gt;::value &lt;&lt;<span style="color: rgba(0, 0, 0, 1)"> std::endl;
+</span><span style="color: rgba(0, 128, 128, 1)">13</span>     std::cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">T is a lvalue ref type?: </span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt; std::is_lvalue_reference&lt;T&gt;::value &lt;&lt;<span style="color: rgba(0, 0, 0, 1)"> std::endl;
+</span><span style="color: rgba(0, 128, 128, 1)">14</span>     std::cout &lt;&lt; <span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">T is a rvalue ref type?: </span><span style="color: rgba(128, 0, 0, 1)">"</span> &lt;&lt; std::is_rvalue_reference&lt;T&gt;::value &lt;&lt;<span style="color: rgba(0, 0, 0, 1)"> std::endl;
+</span><span style="color: rgba(0, 128, 128, 1)">15</span> 
+<span style="color: rgba(0, 128, 128, 1)">16</span>     fun(forward&lt;T&gt;<span style="color: rgba(0, 0, 0, 1)">(t));
+</span><span style="color: rgba(0, 128, 128, 1)">17</span> <span style="color: rgba(0, 0, 0, 1)">}
+</span><span style="color: rgba(0, 128, 128, 1)">18</span> 
+<span style="color: rgba(0, 128, 128, 1)">19</span> <span style="color: rgba(0, 0, 255, 1)">int</span><span style="color: rgba(0, 0, 0, 1)"> main()
+</span><span style="color: rgba(0, 128, 128, 1)">20</span> <span style="color: rgba(0, 0, 0, 1)">{
+</span><span style="color: rgba(0, 128, 128, 1)">21</span>     PerfectForward(<span style="color: rgba(128, 0, 128, 1)">10</span>);           <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> call rvalue ref</span>
+<span style="color: rgba(0, 128, 128, 1)">22</span> 
+<span style="color: rgba(0, 128, 128, 1)">23</span>     <span style="color: rgba(0, 0, 255, 1)">int</span> a = <span style="color: rgba(128, 0, 128, 1)">5</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">24</span>     PerfectForward(a);            <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> call lvalue ref</span>
+<span style="color: rgba(0, 128, 128, 1)">25</span>     PerfectForward(move(a));      <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> call rvalue ref</span>
+<span style="color: rgba(0, 128, 128, 1)">26</span> 
+<span style="color: rgba(0, 128, 128, 1)">27</span>     <span style="color: rgba(0, 0, 255, 1)">const</span> <span style="color: rgba(0, 0, 255, 1)">int</span> b = <span style="color: rgba(128, 0, 128, 1)">8</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">28</span>     PerfectForward(b);           <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> call const lvalue ref</span>
+<span style="color: rgba(0, 128, 128, 1)">29</span>     PerfectForward(move(b));     <span style="color: rgba(0, 128, 0, 1)">//</span><span style="color: rgba(0, 128, 0, 1)"> call const rvalue ref</span>
+<span style="color: rgba(0, 128, 128, 1)">30</span> 
+<span style="color: rgba(0, 128, 128, 1)">31</span>     system(<span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(128, 0, 0, 1)">pause</span><span style="color: rgba(128, 0, 0, 1)">"</span><span style="color: rgba(0, 0, 0, 1)">);
+</span><span style="color: rgba(0, 128, 128, 1)">32</span>     <span style="color: rgba(0, 0, 255, 1)">return</span> <span style="color: rgba(128, 0, 128, 1)">0</span><span style="color: rgba(0, 0, 0, 1)">;
+</span><span style="color: rgba(0, 128, 128, 1)">33</span> <span style="color: rgba(0, 0, 0, 1)">}
+</span><span style="color: rgba(0, 128, 128, 1)">34</span> 
+<span style="color: rgba(0, 128, 128, 1)">35</span> <span style="color: rgba(0, 128, 0, 1)">/*</span>
+<span style="color: rgba(0, 128, 128, 1)">36</span> <span style="color: rgba(0, 128, 0, 1)">T is a ref type?: 0
+</span><span style="color: rgba(0, 128, 128, 1)">37</span> <span style="color: rgba(0, 128, 0, 1)">T is a lvalue ref type?: 0
+</span><span style="color: rgba(0, 128, 128, 1)">38</span> <span style="color: rgba(0, 128, 0, 1)">T is a rvalue ref type?: 0
+</span><span style="color: rgba(0, 128, 128, 1)">39</span> <span style="color: rgba(0, 128, 0, 1)">call rvalue ref
+</span><span style="color: rgba(0, 128, 128, 1)">40</span> <span style="color: rgba(0, 128, 0, 1)">T is a ref type?: 1
+</span><span style="color: rgba(0, 128, 128, 1)">41</span> <span style="color: rgba(0, 128, 0, 1)">T is a lvalue ref type?: 1
+</span><span style="color: rgba(0, 128, 128, 1)">42</span> <span style="color: rgba(0, 128, 0, 1)">T is a rvalue ref type?: 0
+</span><span style="color: rgba(0, 128, 128, 1)">43</span> <span style="color: rgba(0, 128, 0, 1)">call lvalue ref
+</span><span style="color: rgba(0, 128, 128, 1)">44</span> <span style="color: rgba(0, 128, 0, 1)">T is a ref type?: 0
+</span><span style="color: rgba(0, 128, 128, 1)">45</span> <span style="color: rgba(0, 128, 0, 1)">T is a lvalue ref type?: 0
+</span><span style="color: rgba(0, 128, 128, 1)">46</span> <span style="color: rgba(0, 128, 0, 1)">T is a rvalue ref type?: 0
+</span><span style="color: rgba(0, 128, 128, 1)">47</span> <span style="color: rgba(0, 128, 0, 1)">call rvalue ref
+</span><span style="color: rgba(0, 128, 128, 1)">48</span> <span style="color: rgba(0, 128, 0, 1)">T is a ref type?: 1
+</span><span style="color: rgba(0, 128, 128, 1)">49</span> <span style="color: rgba(0, 128, 0, 1)">T is a lvalue ref type?: 1
+</span><span style="color: rgba(0, 128, 128, 1)">50</span> <span style="color: rgba(0, 128, 0, 1)">T is a rvalue ref type?: 0
+</span><span style="color: rgba(0, 128, 128, 1)">51</span> <span style="color: rgba(0, 128, 0, 1)">call const lvalue ref
+</span><span style="color: rgba(0, 128, 128, 1)">52</span> <span style="color: rgba(0, 128, 0, 1)">T is a ref type?: 0
+</span><span style="color: rgba(0, 128, 128, 1)">53</span> <span style="color: rgba(0, 128, 0, 1)">T is a lvalue ref type?: 0
+</span><span style="color: rgba(0, 128, 128, 1)">54</span> <span style="color: rgba(0, 128, 0, 1)">T is a rvalue ref type?: 0
+</span><span style="color: rgba(0, 128, 128, 1)">55</span> <span style="color: rgba(0, 128, 0, 1)">call const rvalue ref
+</span><span style="color: rgba(0, 128, 128, 1)">56</span> <span style="color: rgba(0, 128, 0, 1)">*/</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./C++11 完美转发 - kaizen - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><span style="font-size: 16px; font-family: 宋体">所有4种类型的值对完美转发进行测试，可以看到，所有的转发都被正确地送到了目的地。</span></p>
+<p><span style="font-size: 16px; font-family: 宋体">注意分析，加深理解。</span></p>
+<p>&nbsp;</p>
+<p><span style="font-family: 宋体; font-size: 16px">good good study, day day up.</span></p>
+<p><span style="font-family: 宋体; font-size: 16px">顺序 选择 循环 总结</span></p>
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/Braveliu/category/441584.html" target="_blank">【C/C++集】</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(12235618,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;29aeb0bc-3572-e111-aa3f-842b2b196315&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./C++11 完美转发 - kaizen - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./C++11 完美转发 - kaizen - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/Braveliu/" target="_blank"><img src="./C++11 完美转发 - kaizen - 博客园_files/20170221184202.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/Braveliu/">kaizen</a><br>
+            <a href="https://home.cnblogs.com/u/Braveliu/followees/">关注 - 13</a><br>
+            <a href="https://home.cnblogs.com/u/Braveliu/followers/">粉丝 - 259</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;29aeb0bc-3572-e111-aa3f-842b2b196315&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(12235618,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(12235618,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/Braveliu/p/12235292.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/Braveliu/p/12235292.html" title="发布于 2020-01-27 00:18">C++11 std::move 强制转换为右值</a>
+    <br>
+    <a href="https://www.cnblogs.com/Braveliu/p/12237127.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/Braveliu/p/12237127.html" title="发布于 2020-01-27 22:48">C++11 显式转换操作符</a>
+
+</div>
+</div>
+		</div>
+		<div class="postDesc">posted @ 
+<span id="post-date">2020-01-27 11:46</span>&nbsp;
+<a href="https://www.cnblogs.com/Braveliu/">kaizen</a>&nbsp;
+阅读(<span id="post_view_count">1571</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=12235618" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(12235618);return false;">收藏</a></div>
+	</div>
+	
+	
+</div>
+<script src="./C++11 完美转发 - kaizen - 博客园_files/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 112522, cb_blogApp = 'Braveliu', cb_blogUserGuid = '29aeb0bc-3572-e111-aa3f-842b2b196315';
+    var cb_entryId = 12235618, cb_entryCreatedDate = '2020-01-27 11:46', cb_postType = 1;
+    updatePostStats(
+        [cb_entryId],
+        function(id, count) { $("#post_view_count").text(count) },
+        function(id, count) { $("#post_comment_count").text(count) })
+</script>
+<a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/Braveliu/p/12235618.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/Braveliu/p/12235618.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    登录后才能发表评论，立即 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a> 或
+    <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，
+    <a href="https://www.cnblogs.com/">访问</a> 网站首页
+</div>
+<a href="https://www.cnblogs.com/cmt/p/14003277.html" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-login-tip-aws&#39;)">写给园友们的一封求助信</a>
+</div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"><a href="http://www.softbam.com/index.htm" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-ucancode-1103&#39;)">【推荐】News: 大型组态、工控、仿真、CADGIS 50万行VC++源码免费下载</a><br><a href="https://www.wenjuan.com/s/UZBZJvjEKs/#%E3%80%8A%E5%8D%9A%E5%AE%A2%E5%9B%AD%E7%94%A8%E6%88%B7%E6%B6%88%E8%B4%B9%E8%A7%82%E8%B0%83%E6%9F%A5%E3%80%8B%EF%BC%8C%E5%BF%AB%E6%9D%A5%E5%8F%82%E4%B8%8E%E5%90%A7%E3%80%82%E3%80%90%E9%97%AE%E5%8D%B7%E7%BD%91%E6%8F%90%E4%BE%9B%E6%94%AF%E6%8C%81%E3%80%91" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-博客园问卷&#39;)">【推荐】有你助力，更好为你——博客园用户消费观调查，附带小惊喜！</a><br><a href="https://brands.cnblogs.com/huawei" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-华为专区&#39;)">【推荐】了不起的开发者，挡不住的华为，园子里的品牌专区</a><br><a href="https://brands.cnblogs.com/aws/free?source=CH" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-AWS&#39;)">【福利】AWS携手博客园为开发者送免费套餐+50元京东E卡</a><br><a href="https://brands.cnblogs.com/agora" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-声网专区&#39;)">【推荐】未知数的距离，毫秒间的传递，声网与你实时互动</a><br><a href="https://www.slidestalk.com/m/334?__fuid=31832" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-示说网3-CH&#39;)">【推荐】博客园x示说网，AI实战系列公开课第三期</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="CO66rZu_zO0CFRkPKgod994DFw"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C1_0" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" data-google-container-id="1" style="border: 0px; vertical-align: bottom;" data-load-complete="true" src="./C++11 完美转发 - kaizen - 博客园_files/saved_resource.html"></iframe></div></div>
+    </div>
+    <div id="under_post_news"><div class="recomm-block"><b>相关博文：</b><br>·  <a title="11" href="https://www.cnblogs.com/luoguixin/p/12081879.html" target="_blank" onclick="clickRecomItmem(12081879)">11</a><br>·  <a title="11" href="https://www.cnblogs.com/znshao/p/12066590.html" target="_blank" onclick="clickRecomItmem(12066590)">11</a><br>·  <a title="2019/11/20-作业11" href="https://www.cnblogs.com/Roromiya/p/11908747.html" target="_blank" onclick="clickRecomItmem(11908747)">2019/11/20-作业11</a><br>·  <a title="TT-11" href="https://www.cnblogs.com/cm039/p/12067281.html" target="_blank" onclick="clickRecomItmem(12067281)">TT-11</a><br>·  <a title="leetcode-11" href="https://www.cnblogs.com/CherryTab/p/12076881.html" target="_blank" onclick="clickRecomItmem(12076881)">leetcode-11</a><br>»  <a target="_blank" href="https://recomm.cnblogs.com/blogpost/12235618">更多推荐...</a></div></div>
+    <div id="cnblogs_c2" class="c_ad_block"><a href="https://brands.cnblogs.com/agora" target="_blank"><img width="468" height="60" src="./C++11 完美转发 - kaizen - 博客园_files/35695-20200825173352536-363708157.png" alt="声网专区" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;C2-声网专区&#39;);"></a></div>
+    <div id="under_post_kb">
+<div class="itnews c_ad_block">
+    <b>最新 IT 新闻</b>:
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/683217/" target="_blank">我认识网红的速度，已经追不上TA们的过气速度了</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/683216/" target="_blank">警惕！除了蛋壳，这些都是“易碎”的长租公寓</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/683215/" target="_blank">对话Netflix首任CEO：这是罅隙中崛起的秘径</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/683213/" target="_blank">年内第三次增发，蔚来汽车将再融资26.5亿美元</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/683214/" target="_blank">黄仁勋、苏姿丰如何暴打消费主义？</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="c_ad_block">
+<b>历史上的今天：</b>
+<br>
+
+2020-01-27    <a href="https://www.cnblogs.com/Braveliu/p/12235292.html">C++11 std::move 强制转换为右值</a>
+    <br>
+</div>
+    <script type="text/javascript">
+       var commentManager = new blogCommentManager();
+       commentManager.renderComments(0);
+       fixPostBody();
+       deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);       deliverT2();
+       deliverC1C2();
+       loadNewsAndKb();
+       loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);       LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+       GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+       loadOptUnderPost();
+       GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+   </script>
+</div>
+
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			<div id="sidebar_news" class="newsItem"><!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	
+<div id="blog-news">
+    
+
+<p>
+<font size="2" color="#FF3030">
+★ 公告<br>
+</font>
+<font size="2">
+◆ 尽量保证无错别字<br>
+◆ 尽量保证内容靠谱<br>
+◆ 尽量保证代码有效<br>
+★多读书◆善思考◆勤实践★<br>
+</font> 
+<br>
+</p>
+
+
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/Braveliu/">
+            kaizen
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/Braveliu/" title="入园时间：2012-03-20">
+            8年8个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/Braveliu/followers/">
+            259
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/Braveliu/followees/">
+            13
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow(&#39;29aeb0bc-3572-e111-aa3f-842b2b196315&#39;)">+加关注</a></div>
+        <script>getFollowStatus('29aeb0bc-3572-e111-aa3f-842b2b196315');</script>
+    </div>
+</div>
+</div>
+
+</div>
+<div id="sidebar_c3"></div>
+			<div id="calendar"><div id="calendar"><div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2020/11/14&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2020年12月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2021/01/14&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">29</td>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="" align="center">
+                            <a href="https://www.cnblogs.com/Braveliu/archive/2020/12/03.html"><u>3</u></a>
+                        </td>
+                        <td class="" align="center">
+                            4
+                        </td>
+                    <td class="CalWeekendDay" align="center">
+                        5
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            6
+                        </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                            <td class="" align="center">
+                                11
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            <a href="https://www.cnblogs.com/Braveliu/archive/2020/12/13.html"><u>13</u></a>
+                        </td>
+                            <td class="CalTodayDay" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                            <td class="" align="center">
+                                18
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            20
+                        </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            27
+                        </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="" align="center">
+                                31
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            2
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            3
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                4
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                8
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            9
+                        </td>
+                </tr>
+    </tbody>
+</table></div></div>                
+                    <script>loadBlogDefaultCalendar();</script></div>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+
+
+<!-- 最新随笔 -->
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block"></div>
+
+<!-- 积分与排名 -->
+<div id="sidebar_scorerank" class="sidebar-block">
+<div class="catListBlogRank">
+<h3 class="catListTitle">积分与排名</h3>
+<ul>
+	<li class="liScore">
+    积分 -	
+600083
+    </li>
+	<li class="liRank">
+		排名 -	
+480
+	</li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+
+    <div class="catListPostCategory">
+        <h3 class="catListTitle">
+            
+随笔分类
+
+
+
+        </h3>
+        
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/441584.html" rel="" target="">
+    【C/C++集】(170)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/1614009.html" rel="" target="">
+    【CMake】(3)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/534745.html" rel="" target="">
+    【COM编程】(6)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/769334.html" rel="" target="">
+    【D批处理】(10)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/1450592.html" rel="" target="">
+    【FreeSWITCH】(5)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/944645.html" rel="" target="">
+    【Linux】(25)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/1303333.html" rel="" target="">
+    【Lua】(14)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/1439991.html" rel="" target="">
+    【OpenResty】(4)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/770764.html" rel="" target="">
+    【PHP】(10)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/804735.html" rel="" target="">
+    【Python】(1)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/441585.html" rel="" target="">
+    【QT】(42)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/365767.html" rel="" target="">
+    【SQL】(41)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/991301.html" rel="" target="">
+    【UML】(1)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/444203.html" rel="" target="">
+    【操作系统】(2)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/643178.html" rel="" target="">
+    【工作总结】(14)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/465354.html" rel="" target="">
+    【环境配置】(20)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/1610743.html" rel="" target="">
+    【架构设计】(1)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/447818.html" rel="" target="">
+    【结构算法】(32)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/1257107.html" rel="" target="">
+    【开源项目】(2)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/952498.html" rel="" target="">
+    【面经总结】(4)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/573448.html" rel="" target="">
+    【设计模式】(25)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/515099.html" rel="" target="">
+    【识计算机】(4)
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/1048307.html" rel="" target="">
+    【重构列表】(37)
+</a>
+ 
+
+                </li>                        <li><a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a></li>
+        </ul>
+
+    </div>    <div class="catListArticleCategory">
+        <h3 class="catListTitle">
+            
+文章分类
+
+
+
+        </h3>
+        
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.cnblogs.com/Braveliu/category/368348.html" rel="" target="">
+    经典转载(25)
+</a>
+ 
+
+                </li>                        
+        </ul>
+
+    </div>    <div class="catList">
+        <h3 class="catListTitle">
+            
+经典分享
+
+
+
+        </h3>
+        
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://blog.csdn.net/pongba/?viewmode=contents" rel="nofollow noopener noreferrer" target="">
+    刘未鹏（old）
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://blog.csdn.net/xiammy" rel="nofollow noopener noreferrer" target="">
+    小明专栏
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://blog.csdn.net/thinkinchaos?viewmode=contents" rel="nofollow noopener noreferrer" target="">
+    宗刚
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://www.cnblogs.com/zhuqil/" rel="nofollow noopener noreferrer" target="">
+    朱麒麟
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://blog.sina.com.cn/woxieguwozai" rel="nofollow noopener noreferrer" target="">
+    筱然
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://blog.sina.com.cn/fengjicai" rel="nofollow noopener noreferrer" target="">
+    冯骥才
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://blog.sina.com.cn/s/blog_493a84550100c5q0.html" rel="nofollow noopener noreferrer" target="">
+    人月神话
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://blog.csdn.net/hoya5121?viewmode=contents" rel="nofollow noopener noreferrer" target="">
+    老李
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://blog.csdn.net/love__coder?viewmode=contents" rel="nofollow noopener noreferrer" target="">
+    心灵净土
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://www.linuxdiyf.com/bbs/index.php" rel="nofollow noopener noreferrer" target="">
+    Linux110
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://yaqinzhang.blog.51cto.com/" rel="nofollow noopener noreferrer" target="">
+    张亚勤
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://blog.codingnow.com/" rel="nofollow noopener noreferrer" target="">
+    云风
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://blog.csdn.net/v_JULY_v" rel="nofollow noopener noreferrer" target="">
+    算法之道
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://www.cnblogs.com/JimmyZhang/" rel="nofollow noopener noreferrer" target="">
+    张子阳
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://www.cnblogs.com/TianFang/" rel="nofollow noopener noreferrer" target="">
+    天方
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="http://blog.sina.com.cn/liang19890820" rel="nofollow noopener noreferrer" target="">
+    王亮
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="http://mindhacks.cn/" rel="nofollow noopener noreferrer" target="">
+    刘未鹏（new）
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="http://www.cnblogs.com/AllBloggers.aspx" rel="nofollow noopener noreferrer" target="">
+    博客列表
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="https://www.cnblogs.com/chaogex/" rel="nofollow noopener noreferrer" target="">
+    Wonder-YYC
+</a>
+ 
+
+                </li>                        <li><a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a></li>
+        </ul>
+
+    </div>    <div class="catList">
+        <h3 class="catListTitle">
+            
+生活博客
+
+
+
+        </h3>
+        
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.jianshu.com/u/418713525128" rel="nofollow noopener noreferrer" target="">
+    kaizenly
+</a>
+ 
+
+                </li>                        
+        </ul>
+
+    </div>    <div class="catList">
+        <h3 class="catListTitle">
+            
+学习链接
+
+
+
+        </h3>
+        
+        <ul>
+                <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://www.sgi.com/tech/stl/" rel="nofollow noopener noreferrer" target="">
+    sgi
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://www.learncpp.com/" rel="nofollow noopener noreferrer" target="">
+    learncpp
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://www.cplusplus.com/" rel="nofollow noopener noreferrer" target="">
+    cplusplus 
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://www.unicode.org/" rel="nofollow noopener noreferrer" target="">
+    unicode
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://deerchao.net/tutorials/regex/regex.htm" rel="nofollow noopener noreferrer" target="">
+    regular expression
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://www.ccrun.com/" rel="nofollow noopener noreferrer" target="">
+    c++ builder
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://preshing.com/" rel="nofollow noopener noreferrer" target="">
+    preshing on programming
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://cmake.org/" rel="nofollow noopener noreferrer" target="">
+    cmake
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://www.freeswitch.org.cn/tags.html#book" rel="nofollow noopener noreferrer" target="">
+    freeswitch
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://www.stlport.org/" rel="nofollow noopener noreferrer" target="">
+    stlport
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="http://gee.cs.oswego.edu/dl/" rel="nofollow noopener noreferrer" target="">
+    doug lea
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.boost.org/" rel="nofollow noopener noreferrer" target="">
+    boost
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://zh.cppreference.com/w/" rel="nofollow noopener noreferrer" target="">
+    cppreference
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://gcc.gnu.org/" rel="nofollow noopener noreferrer" target="">
+    gcc.gun.org
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="true" style="display: block">
+                    
+<a href="https://www.runoob.com/cplusplus/cpp-tutorial.html" rel="nofollow noopener noreferrer" target="">
+    runoob.com
+</a>
+ 
+
+                </li>                            <li data-category-list-item-visible="false" style="display: none">
+                    
+<a href="http://c.biancheng.net/cplus/" rel="nofollow noopener noreferrer" target="">
+    cplus
+</a>
+ 
+
+                </li>                        <li><a href="javascript:void(0)" onclick="sideColumnManager.loadMore(this)">更多</a></li>
+        </ul>
+
+    </div></div>
+
+<!-- 最新评论 -->
+<div id="sidebar_recentcomments" class="sidebar-block"><div class="catListComment">
+<h3 class="catListTitle">Recent Comments</h3>
+
+	<div class="RecentCommentBlock">
+        <ul>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/Braveliu/p/10511343.html">1. Re:VSCode 打开文件tab键空格数量异常问题</a></li>
+                    <li class="recent_comment_body">@洛圣熙 不会吧？亲测有效，另外也有其他人操作有用，难道是您操作姿势不对？呵呵~...</li>
+                    <li class="recent_comment_author">--kaizen</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/Braveliu/p/10511343.html">2. Re:VSCode 打开文件tab键空格数量异常问题</a></li>
+                    <li class="recent_comment_body"><p>去掉之前混乱，去掉之后混乱</p>
+</li>
+                    <li class="recent_comment_author">--洛圣熙</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/Braveliu/p/12044496.html">3. Re:CentOS6.5  No CMAKE_CXX_COMPILER could be found</a></li>
+                    <li class="recent_comment_body"><p>感谢，问题已解决</p>
+</li>
+                    <li class="recent_comment_author">--covcc</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/Braveliu/p/10474200.html">4. Re:QT https 程序运行异常</a></li>
+                    <li class="recent_comment_body"><p>我也觉得是👍🏻</p>
+</li>
+                    <li class="recent_comment_author">--雪花酥</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/Braveliu/p/5078203.html">5. Re:批处理命令——rem 和 pause</a></li>
+                    <li class="recent_comment_body">@LiuyHuaq 个人理解，因为上一次已经执行了echo off, 所以把这个显示执行给关闭了 ，只有再执行完echo on之后（即打开），才能显示，也就是echo off显示执行的特别之所在。...</li>
+                    <li class="recent_comment_author">--kaizen</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/Braveliu/p/5078203.html">6. Re:批处理命令——rem 和 pause</a></li>
+                    <li class="recent_comment_body"><p>你好，为什么 第七行代码 在终端不显示执行呢？？  “7 echo on”</p>
+</li>
+                    <li class="recent_comment_author">--LiuyHuaq</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/Braveliu/p/10474200.html">7. Re:QT https 程序运行异常</a></li>
+                    <li class="recent_comment_body">@雪花酥 您知道是什么原因吗？个人认为是库不配套导致的异常！！！...</li>
+                    <li class="recent_comment_author">--kaizen</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/Braveliu/p/10474200.html">8. Re:QT https 程序运行异常</a></li>
+                    <li class="recent_comment_body"><p>你真是个人才！完美解决！白瞎我找了那么长时间的ssl的各种库</p>
+</li>
+                    <li class="recent_comment_author">--雪花酥</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/Braveliu/p/5055387.html">9. Re:利用Qt Assistant 定制帮助文档</a></li>
+                    <li class="recent_comment_body">@kaizen 博主你好，我检查了ref字段，应该是没有问题的，下面是我的代码： &lt;toc&gt; &lt;section title="首页" ref="./demoHtml/welcome.html"&gt; &lt;s...</li>
+                    <li class="recent_comment_author">--西街一枝花</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/Braveliu/p/5055387.html">10. Re:利用Qt Assistant 定制帮助文档</a></li>
+                    <li class="recent_comment_body">@西街一枝花 检查一下目录下的标签ref字段设置的是否正确，ref设置不正确就不会跳转到内容页面。...</li>
+                    <li class="recent_comment_author">--kaizen</li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+
+<!-- 阅读排行榜 -->
+
+
+<!-- 评论排行榜 -->
+
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">推荐排行榜</h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/Braveliu/archive/2013/01/21/2870201.html">
+                                1. 基数排序(14)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/Braveliu/p/5078283.html">
+                                2. 批处理命令——call 和 start(11)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/Braveliu/p/3458671.html">
+                                3. 数据结构图之三（最短路径--迪杰斯特拉算法）(11)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/Braveliu/p/5107550.html">
+                                4. Qt 工程 pro文件(8)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/Braveliu/archive/2013/01/15/2861201.html">
+                                5. 常用排序算法稳定性分析(6)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div></div></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2020 kaizen
+<br><span id="poweredby">Powered by .NET 5.0.1-servicing.20575.16 on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+
+<iframe id="google_osd_static_frame_3900895221881" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./C++11 完美转发 - kaizen - 博客园_files/saved_resource(1).html"></iframe></body></html>

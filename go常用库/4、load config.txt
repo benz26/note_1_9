@@ -1,0 +1,152 @@
+package config
+
+import (
+	"encoding/json"
+	"flag"
+	"github.com/sirupsen/logrus"
+	"os"
+)
+
+type  IdentityConf struct {
+	PeerId        string `json:"PeerId"`
+}
+
+type LogConf struct {
+	Level           string `json:"Level"`
+	StorageURL      string `json:"StorageURL"`
+	RotationTime    uint16 `json:"RotationTime"`
+	RotationCoun    uint16 `json:"RotationCount"`
+}
+
+type BasicConf struct {
+	// http后台通信域名
+	BaseURL string                `json:"BaseURL"`
+	// sdk连接后台地址
+	SdkServerAddress string       `json:"SdkServerAddress"`
+	// sdk连接后台端口
+	SdkServerPort int             `json:"SdkServerPort"`
+
+	IpfsHome   string             `json:"IpfsHome"`
+}
+
+type Config struct {
+	IdentityConf  IdentityConf   `json:"Identity"`
+	LogConf       LogConf        `json:"Log"`
+	BasicConf     BasicConf      `json:"Basic"`
+
+}
+
+var Cfg = Config{}
+
+
+func LoadConfig(configPathDefault string) error {
+	var configPath string
+	flag.StringVar(&configPath, "c", configPathDefault,"config path")
+	flag.Parse()
+
+	logrus.Infof("Load config:%s", configPath)
+
+	//open
+	f, err := os.Open(configPath)
+	if err != nil {
+		logrus.Errorf("Open config file failed![Err:%s]", err.Error())
+		return err
+	}
+	defer f.Close()
+
+	//create json decoder
+	decoder := json.NewDecoder(f)
+	//json to struct(Unmarshal)
+	err = decoder.Decode(&Cfg)
+	if err != nil {
+		logrus.Errorf("Unmarshal failed![Err:%s]", err.Error())
+		return err
+	} else {
+		logrus.Info("Unmarshal success!")
+	}
+
+	return nil
+}
+
+-------
+
+{
+  "Identity": {
+    "PeerId": "CiRkAeae9dhgTjvqni9fiNy6uGsWdKQCQeUg2c8k4VcUR4"
+  },
+  "Log": {
+    "Level": "debug",
+    "StorageURL": "./metalog",
+    "RotationTime": 2,
+    "RotationCount": 84
+  },
+  "Basic":
+  {
+    "BaseURL": "http://abc.onezen.net/",
+    "SdkServerAddress": "10.0.1.28",
+    "SdkServerPort": 5555,
+    "IpfsHome": "./"
+  }
+}
+
+---------------
+
+package config
+
+import (
+	"encoding/json"
+	log "github.com/sirupsen/logrus"
+	"os"
+	"testing"
+)
+func PrintConfig() {
+	bytes, _ := json.Marshal(Cfg)
+	log.Infof("config show:\n %s \n", string(bytes))
+	//logrus.Infof("config show:\n %v \n", Cfg)
+	//logrus.Infof("config show:\n %+v \n", Cfg)
+	//logrus.Infof("config show:\n %#v \n", Cfg)
+	//logrus.Infof("config show:\n %T \n", Cfg)
+}
+
+func TestParseConfig(t *testing.T) {
+	//LoadConfig("conf.json")
+	//PrintConfig()
+
+	//log.WithFields(log.Fields{
+	//	"animal": "walrus",
+	//}).Info("A walrus appears")
+
+
+	// 设置日志格式为json格式
+	log.SetFormatter(&log.TextFormatter{
+		ForceQuote:      false,
+		FullTimestamp:   true,
+		TimestampFormat: "2006-01-02 15:04:05",
+	})
+
+
+	// 设置将日志输出到标准输出（默认的输出为stderr，标准错误）
+	// 日志消息输出可以是任意的io.writer类型
+	log.SetOutput(os.Stdout)
+
+	// 设置日志级别为warn以上
+	log.SetLevel(log.DebugLevel)
+
+	log.SetReportCaller(false)
+
+
+	log.WithFields(log.Fields{
+		"animal": "walrus",
+		"size":   10,
+	}).Info("A group of walrus emerges from the ocean")
+
+	log.WithFields(log.Fields{
+		"omg":    true,
+		"number": 122,
+	}).Warn("The group's number increased tremendously!")
+
+	log.WithFields(log.Fields{
+		"omg":    true,
+		"number": 100,
+	}).Fatal("The ice breaks!")
+}

@@ -1,0 +1,68 @@
+【概念】：
+RDB 
+
+快照恢复，通过快照（snapshotting）实现的，它是备份当前瞬间 Redis 在内存中的数据记录。
+
+对于快照备份而言，如果当前 Redis 的数据量大，备份可能造成 Redis 卡顿，但是恢复重启是比较快速的；
+
+------
+
+AOF
+
+只追加文件（Append-Only File，AOF），其作用就是当 Redis 执行写命令后，
+在一定的条件下将执行过的写命令依次保存在 Redis 的文件中，
+将来就可以依次执行那些保存的命令恢复 Redis 的数据了。
+
+对于 AOF 备份而言，它只是追加写入命令，所以备份一般不会造成 Redis 卡顿，
+但是恢复重启要执行更多的命令，备份文件可能也很大，
+
+----------
+=====================================================
+
+################################## SNAPSHOTTING###################################
+......
+save 900 1
+save 300 10
+save 60 10000
+......
+stop-writes-on-bgsave-error yes
+......
+rdbcompression yes
+......
+dbfilename dump.rdb
+############################## APPEND ONLY MODE ###############################
+......
+appendonly no
+......
+appendfilename "appendonly.aof"
+......
+#appendfsync always
+appendfsync everysec
+# appendfsync no......
+......
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 64mb
+......
+aof-load-truncated yes
+......
+==================================================
+
+
+----------
+
+SNAPSHOTTING
+
+save 900 1  
+save 300 10
+save 60 10000
+
+当 900 秒执行 1 个写命令时，启用快照备份。
+当 300 秒执行 10 个写命令时，启用快照备份。
+当 60 秒内执行 10000 个写命令时，启用快照备份。
+
+根据时长和频率来的
+
+-----
+AOF
+
+如果 appendonly 配置为 no，则不启用 AOF 方式进行备份。如果 appendonly 配置为 yes，则以 AOF 方式备份 Redis 数据，

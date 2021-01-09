@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<!-- saved from url=(0039)https://www.jb51.net/article/164869.htm -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+    
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="dns-prefetch" href="https://img.jbzj.com/">
+    <link rel="dns-prefetch" href="https://icws.jb51.net/">
+    <link rel="dns-prefetch" href="https://files.jb51.net/">
+    <meta name="applicable-device" content="pc">
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <title>go时间/时间戳操作大全(小结)_Golang_脚本之家</title>
+    <meta name="keywords" content="go,时间操作,go,时间戳操作">
+    <meta name="description" content="这篇文章主要介绍了go时间/时间戳操作大全，文中通过示例代码介绍的非常详细，对大家的学习或者工作具有一定的参考学习价值，需要的朋友们下面随着小编来一起学习学习吧">
+    <link rel="alternate" media="only screen and(max-width: 640px)" href="https://m.jb51.net/article/164869.htm">
+    <meta http-equiv="mobile-agent" content="format=html5; url=https://m.jb51.net/article/164869.htm">
+    <meta http-equiv="mobile-agent" content="format=xhtml; url=https://m.jb51.net/article/164869.htm">
+    <script type="text/javascript" async="" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/auto_ds"></script><script src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/hm.js"></script><script src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/osd.js"></script><script src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/f(5).txt"></script><script src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/f(6).txt" id="google_shimpl"></script><script type="text/javascript" async="" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/pr.js"></script><script type="text/javascript" async="" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/iegkxge.js"></script><script src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/push.js"></script><script type="text/javascript">
+var tougao = "zx",lmname = "Golang",suoyin = "no";
+(function(){if(/Android|webOS|iPhone|iPad|Windows Phone|iPod|BlackBerry|SymbianOS|Nokia|Mobile|Opera Mini/i.test(navigator.userAgent)){var siteName=window.location.pathname,url=window.location.href;if(url.indexOf("?pc")<0){try{if(typeof siteName!=="undefined"){window.location.href="https://m.jb51.net"+siteName}}catch(e){}}}})();
+    </script>
+    <meta name="referrer" content="always">
+<link type="text/css" href="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/base.css" rel="stylesheet">
+<link type="text/css" href="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/common.css" rel="stylesheet">
+<link type="text/css" href="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/viewer.min.css" rel="stylesheet">
+<script type="text/javascript" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/jquery.min.js"></script>
+<script type="text/javascript">
+    if (typeof jQuery == 'undefined') {
+        document.write(unescape("%3Cscript src='/skin/js/jquery.js' type='text/javascript'%3E%3C/script%3E"));
+    }
+</script>
+<script type="text/javascript" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/function.js"></script>
+<link rel="preload" href="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/f(7).txt" as="script"><script type="text/javascript" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/f(7).txt"></script></head>
+
+<body><div id="BAIDU_DUP_fp_wrapper" style="position: absolute; left: -1px; bottom: -1px; z-index: 0; width: 0px; height: 0px; overflow: hidden; visibility: hidden; display: none;"><iframe id="BAIDU_DUP_fp_iframe" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/o.html" style="width: 0px; height: 0px; visibility: hidden; display: none;"></iframe></div>
+    <!--topTools Start -->
+    <div id="topbar">
+        <div id="wrap">
+            <div class="topbarleft">
+                <a href="https://shequ.jb51.net/" target="_blank">脚本之家社区</a>
+                <a href="http://s.jb51.net/" target="_blank" rel="nofollow">服务器常用软件</a>
+            <a href="https://www.yuanshichang.com/" target="_blank" style="color:red">源码商城</a><a href="http://www.8bit.xin/" target="_blank" style="color:red">4折影视会员</a></div>
+            <div class="fr">
+                <ul>
+                    <li><i class="ico-mobile"></i><a target="_blank" href="https://m.jb51.net/" rel="nofollow">手机版</a></li>
+                    <li><i class="ico-contribute"></i><a href="http://tougao.jb51.net/" rel="nofollow" target="_blank">投稿中心</a></li>
+                    <li id="wxHide"><i class="ico-wechat"></i><a href="javascript:void(0)" target="_blank">关注微信</a>
+                        <div id="wxShow" class="wxHide_box"><img src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/erwm.jpg" alt="扫一扫" width="84" hight="84" data-baiduimageplus-ignore=""></div>
+                    </li>
+                </ul>
+                <!--快捷导航 开始 -->
+                <div class="text_d right" id="navHide">
+                    <a rel="nofollow" href="javascript:void(0);">快捷导航 <i class="arrowright"></i></a>
+                    <div id="navBox" class="nwebnav">
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="https://www.jb51.net/softs/" target="_blank">软件下载</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/softs/android.html" target="_blank">android</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/softs/mac.html" target="_blank">MAC</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/qudong/" target="_blank">驱动下载</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/fonts/" target="_blank">字体下载</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/dll/" target="_blank">DLL</a>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="https://www.jb51.net/codes/" target="_blank">源码下载</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/codes/php.html" target="_blank">PHP</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/codes/aspnet.html" target="_blank">ASP.NET</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/codes/asp.html" target="_blank">ASP</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/codes/jsp.html" target="_blank">JSP</a>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="https://www.jb51.net/list/index_84.htm" target="_blank">软件编程</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_85_1.htm" target="_blank">C#</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_134_1.htm" target="_blank">JAVA</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_159_1.htm" target="_blank">C 语言</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_206_1.htm" target="_blank">Delphi</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_233_1.htm" target="_blank">Android</a>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="https://www.jb51.net/list/index_1.htm" target="_blank">网络编程</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_15_1.htm" target="_blank">PHP</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_21_1.htm" target="_blank">ASP.NET</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_2_1.htm" target="_blank">ASP</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_3_1.htm" target="_blank">JavaScript</a>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="http://tools.jb51.net/" target="_blank">在线工具</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/tools/cssyasuo.shtml" target="_blank">CSS格式化</a>
+                                    <a rel="nofollow" href="http://tools.jb51.net/tools/js_geshihua.asp" target="_blank">JS格式化</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/tools/html-js.htm" target="_blank">Html转化为Js</a>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="https://www.jb51.net/list/index_104.htm" target="_blank">数据库</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_112_1.htm" target="_blank">MYSQL</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_113_1.htm" target="_blank">MSSQL</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_154_1.htm" target="_blank">oracle</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_155_1.htm" target="_blank">DB2</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/list/list_252_1.htm" target="_blank">MARIADB</a>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="https://www.jb51.net/cms/" target="_blank">CMS</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/cms/list411_1.html" target="_blank">PHPCMS</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/cms/list408_1.html" target="_blank">DEDECMS</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/cms/list578_1.html" target="_blank">帝国CMS</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/cms/list419_1.html" target="_blank">WordPress</a>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="ndeallist clear_fix">
+                            <h4><a rel="nofollow" href="javascript:0;" target="_blank">常用工具</a></h4>
+                            <dl>
+                                <dd>
+                                    <a rel="nofollow" href="https://www.jb51.net/zt/phphuanjing.html" target="_blank">PHP开发工具</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/zt/python.html" target="_blank">python</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/zt/photoshopxz.html" target="_blank">Photoshop</a>
+                                    <a rel="nofollow" href="https://www.jb51.net/bibei/win/index.html" target="_blank">必备软件</a>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <!--快捷导航 结束 -->
+            </div>
+        </div>
+    </div>
+    <!--topTools end -->
+
+    <div id="header">
+        <!-- Logo start -->
+        <div id="logo"><a href="https://www.jb51.net/"><img src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/logo.gif" title="脚本之家" alt="脚本之家"></a></div>
+        <div class="logom fl"><a href="http://dakawm.net:10802/" target="_blank"><img src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/dkwm370.gif" width="430" height="60"></a>
+</div>
+        <div class="logor fr"><a href="http://www.huokesoft.com/" target="_blank"><img src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/huoke_430.gif" width="430" height="60"></a>
+</div>
+        <!--Logo end -->
+    </div>
+    <!--Logo end -->
+
+    <!-- 导航开始 -->
+    <div id="nav">
+        <ul>
+            <li><a href="https://www.jb51.net/">网站首页</a></li>
+            <li><a href="https://www.jb51.net/web/">网页制作</a></li>
+            <li><a href="https://www.jb51.net/list/index_1.htm">网络编程</a></li>
+            <li><a href="https://www.jb51.net/list/index_96.htm">脚本专栏</a></li>
+            <li><a href="https://www.jb51.net/jiaoben/">脚本下载</a></li>
+            <li><a href="https://www.jb51.net/list/index_104.htm">数据库</a></li>
+            <li><a href="https://www.jb51.net/list/list_82_1.htm">服务器</a></li>
+            <li><a href="https://www.jb51.net/books/">电子书籍</a></li>
+            <li><a href="https://www.jb51.net/os/">操作系统</a></li>
+            <li><a href="https://www.jb51.net/yunying/">网站运营</a></li>
+            <li><a href="https://www.jb51.net/pingmian/">平面设计</a></li>
+            <li>
+                <p><i>其它</i><span>
+                        <a href="https://www.jb51.net/media/">媒体动画</a>
+                        <a href="https://www.jb51.net/diannaojichu/">电脑基础</a>
+                        <a href="https://www.jb51.net/hardware/">硬件教程</a>
+                        <a href="https://www.jb51.net/hack/">网络安全</a>
+                    </span></p>
+            </li>
+        </ul>
+    </div>
+    <!--导航结束-->
+    
+
+    <!-- 二级菜单开始 -->
+    <div id="submenu">
+        <div class="subnav clearfix">
+            <ul><li><a href="https://www.jb51.net/list/list_114_1.htm" title="vbs">vbs</a></li>
+<li><a href="https://www.jb51.net/list/list_106_1.htm" title="DOS/BAT">DOS/BAT</a></li>
+<li><a href="https://www.jb51.net/list/list_110_1.htm" title="hta">hta</a></li>
+<li><a href="https://www.jb51.net/list/list_111_1.htm" title="htc">htc</a></li>
+<li><a href="https://www.jb51.net/list/list_97_1.htm" title="python">python</a></li>
+<li><a href="https://www.jb51.net/list/list_125_1.htm" title="perl">perl</a></li>
+<li><a href="https://www.jb51.net/list/list_138_1.htm" title="游戏相关">游戏相关</a></li>
+<li><a href="https://www.jb51.net/list/list_161_1.htm" title="VBA">VBA</a></li>
+<li><a href="https://www.jb51.net/list/list_163_1.htm" title="远程脚本">远程脚本</a></li>
+<li><a href="https://www.jb51.net/list/list_178_1.htm" title="ColdFusion">ColdFusion</a></li>
+<li><a href="https://www.jb51.net/list/list_201_1.htm" title="ruby专题">ruby专题</a></li>
+<li><a href="https://www.jb51.net/list/list_213_1.htm" title="autoit">autoit</a></li>
+<li><a href="https://www.jb51.net/list/list_214_1.htm" title="seraphzone">seraphzone</a></li>
+<li><a href="https://www.jb51.net/list/list_234_1.htm" title="PowerShell">PowerShell</a></li>
+<li><a href="https://www.jb51.net/list/list_235_1.htm" title="linux shell">linux shell</a></li>
+<li><a href="https://www.jb51.net/list/list_245_1.htm" title="Lua">Lua</a></li>
+<li><a href="https://www.jb51.net/list/list_246_1.htm" title="Golang">Golang</a></li>
+<li><a href="https://www.jb51.net/list/list_249_1.htm" title="Erlang">Erlang</a></li>
+<li><a href="https://www.jb51.net/list/list_130_1.htm" title="其它">其它</a></li>
+</ul>
+        </div>
+    </div>
+    <!-- 二级菜单结束 -->
+
+    <!--content Star -->
+    <div id="wrapper">
+        <div id="container">
+            <div class="pt10 clearfix">
+                <div class="clearfix"><div class="mainlr"><a href="https://mp.weixin.qq.com/s/HFvRM6gpaACettv5ffM0tg" target="_blank"><img src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/msb1200.jpg" alt="" width="1200" height="50"><span><img src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/tu.jpg" width="29" height="16" alt=""></span></a></div><div class="blank5"></div><div class="mainlr"><a href="https://www.zkeys.com/act?utm_source=YG&amp;utm_medium=cpc&amp;utm_term=zkeys&amp;utm_content=hd&amp;utm_campaign=51jb" target="_blank"><img src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/zkeys1200.png" alt="" width="1200" height="50"><span><img src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/tu.jpg" width="29" height="16" alt=""></span></a></div><div class="blank5"></div><div id="txtlink"><ul><li><a href="https://www.lanyunhost.com/" target="_blank"><span style="color: red;">香港云服务器39起三网优化至20MS免费试用</span></a></li><li><a href="http://www.uuwaf.com/" target="_blank"><span style="color: red;">网站全球加速和超级防御[优优加速]</span></a></li><li><a href="http://52google.cn/?f=jb51" target="_blank"><span style="color: red;">$新手0基础赚美元教程点击免费下载$</span></a></li><li><a href="https://www.jb51.net/s/idc/" target="_blank"><span style="color: red;">脚本之家高防服务器 2020会员特价</span></a></li><li><a href="https://www.jb51.net/s/idc/" target="_blank"><span style="color: blue;">脚本之家高防服务器 2020会员特价</span></a></li><li><a href="http://www.zoneidc.com/" target="_blank"><span style="color: blue;">香港/美国/韩国等十五国云服务器9.9元/月起</span></a></li><li><a href="http://www.xiaozhiyun.com/2016/" target="_blank"><span style="color: blue;">韩国香港美国站群服务器 巨牛网络</span></a></li><li><a href="http://tianyi.jb51.net/" target="_blank"><span style="color: blue;">天翼云，云主机，云存储，云安全</span></a></li><li><a href="https://www.henghost.com/?s=zz&amp;jiaobenzhijia-wenzi" target="_blank"><span style="color: red;">██恒创科技██◆香港服务器·CN2极速稳定◆</span></a></li><li><a href="http://www.gwidc.com/rent/home/index.html" target="_blank"><span style="color: red;">港湾网络徐州百独800/月,100G高防云150</span></a></li><li><a href="http://www.hostspaceidc.com/front/products/datacenter?from=jb51-pic" target="_blank"><span style="color: red;">海外大带宽 站群 高防服务器</span></a></li><li><a href="http://www.centcc.com/" target="_blank"><span style="color: red;">北京闪迅 机架3900元 BGP带宽</span></a></li><li><a href="https://www.wsisp.net/clientcenter/shownews_852.html?indexjb" target="_blank"><span style="color: blue;">█▇▆5M独享云主机599/年▆▇█</span></a></li><li><a href="http://www.qy.com.cn/" target="_blank"><span style="color: blue;">群英云服务器送10M带宽30G防御,49元起</span></a></li><li><a href="http://www.tuidc.com/" target="_blank"><span style="color: blue;">服务器租用/托管-域名空间/认准腾佑科技</span></a></li><li><a href="http://www.vzidc.com/cloud/" target="_blank"><span style="color: blue;">华为云4核8g限时免费送另有代金券免费送</span></a></li><li><a href="http://www.ushk.net/server.html" target="_blank"><span style="color: red;">██美港数据██高端香港服务器租用</span></a></li><li><a href="http://vps.zzidc.com/tongji/jb51w.html" target="_blank"><span style="color: red;">★☆云服务器5折，天天抽红包抵扣☆★</span></a></li><li><a href="https://www.tzidc.com/dist/highDefense.html#jb51" target="_blank"><span style="color: red;">██高防ip██高防服务器租用</span></a></li><li><a href="https://www.dzisp.cn/" target="_blank"><span style="color: red;">成都|德阳|电信100G高防24核物理机500元</span></a></li><li><a href="http://www.pppoevps.com/" target="_blank"><span style="color: blue;">█动态拨号IP云主机，电信ADSL独享20M█ </span></a></li><li><a href="http://www.360jq.com/hkshuang.htm" target="_blank"><span style="color: blue;">[香港双高防]无视CC★DDOS/堪比广东！</span></a></li><li><a href="http://www.cyidc.cc/" target="_blank"><span style="color: blue;">畅游网络 百独服务器 包跑满 998元</span></a></li><li><a href="http://www.wdw6.com/" target="_blank"><span style="color: blue;">bgp多线机房、大带宽</span></a></li><li><a href="http://www.ssf.cc/" target="_blank"><span style="color: red;">免备vps20/百独799/双线350/45互联</span></a></li><li><a href="http://www.zitian.cn/" target="_blank"><span style="color: red;">中原地区核心数据中心，月付299元起</span></a></li><li><a href="http://www.qy.cn/gfhd.html" target="_blank"><span style="color: red;">██群英网络██◆◆◆300G高防仅需599元◆◆◆</span></a></li><li><a href="https://yun.zj-idc.com/" target="_blank"><span style="color: red;">华晨云服务器4折起免费100G金盾防御</span></a></li><li><a href="https://www.jb51.net/s/idc/" target="_blank"><span style="color: blue;">脚本之家高防服务器 2020会员特价</span></a></li><li><a href="http://www.hkcn2.com/51.htm" target="_blank"><span style="color: blue;">**香港高防10m大带宽独服，低至999元**</span></a></li><li><a href="http://www.xiaozhiyun.com/2016/" target="_blank"><span style="color: blue;">韩国香港美国站群服务器 巨牛网络</span></a></li><li><a href="http://tianyi.jb51.net/" target="_blank"><span style="color: blue;">天翼云，云主机，云存储，云安全</span></a></li></ul><div class="clearfix"></div></div><div class="blank5"></div><div class="topimg"><ul><li><a href="https://www.88888vps.com/" target="_blank"><img alt="" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/88888vps235.gif" width="235" height="50"></a></li><li><a href="http://www.xinnet.com/composite/zt/activity/20201212.html?utm_source=zj&amp;utm_medium=sns&amp;utm_term=%E5%8F%8C12&amp;utm_content=%E5%8F%8C12&amp;utm_campaign=%E5%8F%8C12" target="_blank"><img alt="" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/xinnet235.gif" width="235" height="50"></a></li><li><a href="https://www.7e.hk/act/sale/" target="_blank"><img alt="" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/7ehk235.gif" width="235" height="50"></a></li><li><a href="https://www.yiyangidc.com/" target="_blank"><img alt="" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/yy235.gif" width="235" height="50"></a></li><li><a href="https://www.8a.hk/server/" target="_blank"><img alt="" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/8a210.gif" width="235" height="50"></a></li></ul></div><div class="blank5"></div>
+</div>
+            </div>
+
+            <div class="clearfix">
+                <div class="breadcrumb">
+                    <i class="ico-path"></i>您的位置：<a href="https://www.jb51.net/">首页</a> → <a href="https://www.jb51.net/list/index_96.htm" title="脚本专栏">脚本专栏</a> → <a href="https://www.jb51.net/list/list_246_1.htm" title="Golang">Golang</a> → go时间/时间戳操作
+                </div>
+                <div class="search">
+                    <form action="https://www.jb51.net/do/search.php" target="_blank">
+                        <input type="hidden" name="s" value="10520733385329581432">
+                        <input type="hidden" name="ie" value="gbk">
+                        <input type="text" name="q" class="searchinput" placeholder="请输入关键词">
+                        <input type="submit" value=" " class="search-button">
+                    </form>
+                </div>
+            </div>
+
+            <div id="main" class="clearfix">
+                <div class="main-left">
+                    <div id="article">
+                        <h1 class="title">go时间/时间戳操作大全(小结)</h1>
+                        <div class="info"> &nbsp;更新时间：2019年07月08日 14:28:52 &nbsp; 作者：李昊天 &nbsp; </div>
+                        <div class="lbd clearfix">
+</div>
+                        <div class="summary">这篇文章主要介绍了go时间/时间戳操作大全，文中通过示例代码介绍的非常详细，对大家的学习或者工作具有一定的参考学习价值，需要的朋友们下面随着小编来一起学习学习吧</div>
+                        <div class="lbd clearfix"><a href="https://mp.weixin.qq.com/s/HFvRM6gpaACettv5ffM0tg" target="_blank"><img src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/msb8001.jpg" alt="java" width="820"></a>
+</div>
+                        <div id="content">
+                            <p><strong>基本操作</strong><br>
+</p>
+<p>01: 获取当前时间</p>
+<div class="jb51code">
+<div><div id="highlighter_77022" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="https://www.jb51.net/article/164869.htm#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">dateTime := time.Now()</code></div><div class="line number2 index1 alt1"><code class="plain plain">fmt.Println(dateTime)</code></div></div></td></tr></tbody></table></div></div>
+<div class="codetool" id="codetool"><a href="javascript:;" class="selall" title="全选"></a><a href="javascript:;" class="copy" title="复制文本代码"></a><div class="code_n"><textarea></textarea></div></div></div>
+<p>02: 获取年 月 日 时 分 秒 纳秒</p>
+<div class="jb51code">
+<div><div id="highlighter_340973" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="https://www.jb51.net/article/164869.htm#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div><div class="line number16 index15 alt1">16</div><div class="line number17 index16 alt2">17</div><div class="line number18 index17 alt1">18</div><div class="line number19 index18 alt2">19</div><div class="line number20 index19 alt1">20</div><div class="line number21 index20 alt2">21</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">year := time.Now().Year() //年</code></div><div class="line number2 index1 alt1">&nbsp;</div><div class="line number3 index2 alt2"><code class="plain plain">fmt.Println(year)</code></div><div class="line number4 index3 alt1">&nbsp;</div><div class="line number5 index4 alt2"><code class="plain plain">month := time.Now().Month() //月</code></div><div class="line number6 index5 alt1"><code class="plain plain">fmt.Println(month)</code></div><div class="line number7 index6 alt2">&nbsp;</div><div class="line number8 index7 alt1"><code class="plain plain">day := time.Now().Day() //日</code></div><div class="line number9 index8 alt2"><code class="plain plain">fmt.Println(day)</code></div><div class="line number10 index9 alt1">&nbsp;</div><div class="line number11 index10 alt2"><code class="plain plain">hour := time.Now().Hour() //小时</code></div><div class="line number12 index11 alt1"><code class="plain plain">fmt.Println(hour)</code></div><div class="line number13 index12 alt2">&nbsp;</div><div class="line number14 index13 alt1"><code class="plain plain">minute := time.Now().Minute() //分钟</code></div><div class="line number15 index14 alt2"><code class="plain plain">fmt.Println(minute)</code></div><div class="line number16 index15 alt1">&nbsp;</div><div class="line number17 index16 alt2"><code class="plain plain">second := time.Now().Second() //秒</code></div><div class="line number18 index17 alt1"><code class="plain plain">fmt.Println(second)</code></div><div class="line number19 index18 alt2">&nbsp;</div><div class="line number20 index19 alt1"><code class="plain plain">nanosecond := time.Now().Nanosecond() //纳秒</code></div><div class="line number21 index20 alt2"><code class="plain plain">fmt.Println(nanosecond)</code></div></div></td></tr></tbody></table></div></div>
+<div class="codetool" id="codetool"><a href="javascript:;" class="selall" title="全选"></a><a href="javascript:;" class="copy" title="复制文本代码"></a><div class="code_n"><textarea></textarea></div></div></div>
+<p>03: 获取当前时间戳</p>
+<div class="jb51code">
+<div><div id="highlighter_512778" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="https://www.jb51.net/article/164869.htm#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">timeUnix := time.Now().Unix()&nbsp;&nbsp;&nbsp;&nbsp; //单位秒</code></div><div class="line number2 index1 alt1"><code class="plain plain">timeUnixNano := time.Now().UnixNano() //单位纳秒</code></div><div class="line number3 index2 alt2"><code class="plain spaces">&nbsp;&nbsp;</code>&nbsp;</div><div class="line number4 index3 alt1"><code class="plain plain">fmt.Println(timeUnix)</code></div><div class="line number5 index4 alt2"><code class="plain plain">fmt.Println(timeUnixNano)</code></div></div></td></tr></tbody></table></div></div>
+<div class="codetool" id="codetool"><a href="javascript:;" class="selall" title="全选"></a><a href="javascript:;" class="copy" title="复制文本代码"></a><div class="code_n"><textarea></textarea></div></div></div>
+<p>04: 将时间戳格式化</p>
+<div class="jb51code">
+<div><div id="highlighter_189584" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="https://www.jb51.net/article/164869.htm#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">fmt.Println(time.Now().Format("2006-01-02 15:04:05"))</code></div></div></td></tr></tbody></table></div></div>
+<div class="codetool" id="codetool"><a href="javascript:;" class="selall" title="全选"></a><a href="javascript:;" class="copy" title="复制文本代码"></a><div class="code_n"><textarea></textarea></div></div></div>
+<p>05: 时间戳转为go格式的时间</p>
+<div class="jb51code">
+<div><div id="highlighter_574012" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="https://www.jb51.net/article/164869.htm#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">var timeUnix int64 = 1562555859</code></div><div class="line number2 index1 alt1"><code class="plain plain">fmt.Println(time.Unix(timeUnix,0))</code></div><div class="line number3 index2 alt2">&nbsp;</div><div class="line number4 index3 alt1"><code class="plain plain">// 之后可以用Format 比如</code></div><div class="line number5 index4 alt2"><code class="plain plain">fmt.Println(time.Unix(timeUnix, 0).Format("2006-01-02 15:04:05"))</code></div></div></td></tr></tbody></table></div></div>
+<div class="codetool" id="codetool"><a href="javascript:;" class="selall" title="全选"></a><a href="javascript:;" class="copy" title="复制文本代码"></a><div class="code_n"><textarea></textarea></div></div></div>
+<p>06: str格式化时间转时间戳</p>
+<div class="jb51code">
+<div><div id="highlighter_121771" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="https://www.jb51.net/article/164869.htm#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">t := time.Date(2014, 1, 7, 5, 50, 4, 0, time.Local).Unix()</code></div><div class="line number2 index1 alt1">&nbsp;</div><div class="line number3 index2 alt2"><code class="plain plain">fmt.Println(t)</code></div></div></td></tr></tbody></table></div></div>
+<div class="codetool" id="codetool"><a href="javascript:;" class="selall" title="全选"></a><a href="javascript:;" class="copy" title="复制文本代码"></a><div class="code_n"><textarea></textarea></div></div></div>
+<p><span style="color: #ff0000"><strong>时间的计算</strong></span><br>
+</p>
+<p>01: 获取今天0点0时0分的时间戳</p>
+<div class="jb51code">
+<div><div id="highlighter_217608" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="https://www.jb51.net/article/164869.htm#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">currentTime := time.Now()</code></div><div class="line number2 index1 alt1"><code class="plain plain">startTime := time.Date(currentTime.Year(), currentTime.Month(), currentTime.Day(), 0, 0, 0, 0, currentTime.Location())</code></div><div class="line number3 index2 alt2"><code class="plain plain">fmt.Println(startTime)</code></div><div class="line number4 index3 alt1"><code class="plain plain">fmt.Println(startTime.Format("2006/01/02 15:04:05"))</code></div></div></td></tr></tbody></table></div></div>
+<div class="codetool" id="codetool"><a href="javascript:;" class="selall" title="全选"></a><a href="javascript:;" class="copy" title="复制文本代码"></a><div class="code_n"><textarea></textarea></div></div></div>
+<p>02: 获取今天23:59:59秒的时间戳</p>
+<div class="jb51code">
+<div><div id="highlighter_475632" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="https://www.jb51.net/article/164869.htm#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">currentTime := time.Now()</code></div><div class="line number2 index1 alt1"><code class="plain plain">endTime := time.Date(currentTime.Year(), currentTime.Month(), currentTime.Day(), 23, 59, 59, 0, currentTime.Location())</code></div><div class="line number3 index2 alt2"><code class="plain plain">fmt.Println(endTime)</code></div><div class="line number4 index3 alt1"><code class="plain plain">fmt.Println(endTime.Format("2006/01/02 15:04:05"))</code></div></div></td></tr></tbody></table></div></div>
+<div class="codetool" id="codetool"><a href="javascript:;" class="selall" title="全选"></a><a href="javascript:;" class="copy" title="复制文本代码"></a><div class="code_n"><textarea></textarea></div></div></div>
+<p>03: 获取1分钟之前的时间</p>
+<div class="jb51code">
+<div><div id="highlighter_105903" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="https://www.jb51.net/article/164869.htm#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">m, _ := time.ParseDuration("-1m")</code></div><div class="line number2 index1 alt1"><code class="plain plain">result := currentTime.Add(m)</code></div><div class="line number3 index2 alt2">&nbsp;</div><div class="line number4 index3 alt1"><code class="plain plain">fmt.Println(result)</code></div><div class="line number5 index4 alt2"><code class="plain plain">fmt.Println(result.Format("2006/01/02 15:04:05"))</code></div></div></td></tr></tbody></table></div></div>
+<div class="codetool" id="codetool"><a href="javascript:;" class="selall" title="全选"></a><a href="javascript:;" class="copy" title="复制文本代码"></a><div class="code_n"><textarea></textarea></div></div></div>
+<p>04: 获取1小时之前的时间</p>
+<div class="jb51code">
+<div><div id="highlighter_633945" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="https://www.jb51.net/article/164869.htm#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">m, _ := time.ParseDuration("-1h")</code></div><div class="line number2 index1 alt1"><code class="plain plain">result := currentTime.Add(m)</code></div><div class="line number3 index2 alt2"><code class="plain plain">fmt.Println(result)</code></div><div class="line number4 index3 alt1"><code class="plain plain">fmt.Println(result.Format("2006/01/02 15:04:05"))</code></div></div></td></tr></tbody></table></div></div>
+<div class="codetool" id="codetool"><a href="javascript:;" class="selall" title="全选"></a><a href="javascript:;" class="copy" title="复制文本代码"></a><div class="code_n"><textarea></textarea></div></div></div>
+<p>05: 获取1分钟之后的时间</p>
+<div class="jb51code">
+<div><div id="highlighter_272144" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="https://www.jb51.net/article/164869.htm#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">m, _ := time.ParseDuration("1m")</code></div><div class="line number2 index1 alt1"><code class="plain plain">result := currentTime.Add(m)</code></div><div class="line number3 index2 alt2">&nbsp;</div><div class="line number4 index3 alt1"><code class="plain plain">fmt.Println(result)</code></div><div class="line number5 index4 alt2"><code class="plain plain">fmt.Println(result.Format("2006/01/02 15:04:05"))</code></div></div></td></tr></tbody></table></div></div>
+<div class="codetool" id="codetool"><a href="javascript:;" class="selall" title="全选"></a><a href="javascript:;" class="copy" title="复制文本代码"></a><div class="code_n"><textarea></textarea></div></div></div>
+<p>06: 获取1小时之后的时间</p>
+<div class="jb51code">
+<div><div id="highlighter_48625" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="https://www.jb51.net/article/164869.htm#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">m, _ := time.ParseDuration("1h")</code></div><div class="line number2 index1 alt1"><code class="plain plain">result := currentTime.Add(m)</code></div><div class="line number3 index2 alt2"><code class="plain plain">fmt.Println(result)</code></div><div class="line number4 index3 alt1"><code class="plain plain">fmt.Println(result.Format("2006/01/02 15:04:05"))</code></div></div></td></tr></tbody></table></div></div>
+<div class="codetool" id="codetool"><a href="javascript:;" class="selall" title="全选"></a><a href="javascript:;" class="copy" title="复制文本代码"></a><div class="code_n"><textarea></textarea></div></div></div>
+<p>07 :计算两个时间戳</p>
+<div class="jb51code">
+<div><div id="highlighter_969706" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="https://www.jb51.net/article/164869.htm#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">afterTime, _ := time.ParseDuration("1h")</code></div><div class="line number2 index1 alt1"><code class="plain plain">result := currentTime.Add(afterTime)</code></div><div class="line number3 index2 alt2">&nbsp;</div><div class="line number4 index3 alt1"><code class="plain plain">beforeTime, _ := time.ParseDuration("-1h")</code></div><div class="line number5 index4 alt2"><code class="plain plain">result2 := currentTime.Add(beforeTime)</code></div><div class="line number6 index5 alt1">&nbsp;</div><div class="line number7 index6 alt2"><code class="plain plain">m := result.Sub(result2)</code></div><div class="line number8 index7 alt1"><code class="plain plain">fmt.Printf("%v 分钟 \n", m.Minutes())</code></div><div class="line number9 index8 alt2">&nbsp;</div><div class="line number10 index9 alt1"><code class="plain plain">h := result.Sub(result2)</code></div><div class="line number11 index10 alt2"><code class="plain plain">fmt.Printf("%v小时 \n", h.Hours())</code></div><div class="line number12 index11 alt1">&nbsp;</div><div class="line number13 index12 alt2"><code class="plain plain">d := result.Sub(result2)</code></div><div class="line number14 index13 alt1"><code class="plain plain">fmt.Printf("%v 天\n", d.Hours()/24)</code></div></div></td></tr></tbody></table></div></div>
+<div class="codetool" id="codetool"><a href="javascript:;" class="selall" title="全选"></a><a href="javascript:;" class="copy" title="复制文本代码"></a><div class="code_n"><textarea></textarea></div></div></div>
+<p>08: 判断一个时间是否在一个时间之后</p>
+<div class="jb51code">
+<div><div id="highlighter_473813" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="https://www.jb51.net/article/164869.htm#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">stringTime, _ := time.Parse("2006-01-02 15:04:05", "2019-12-12 12:00:00")</code></div><div class="line number2 index1 alt1"><code class="plain plain">beforeOrAfter := stringTime.After(time.Now())</code></div><div class="line number3 index2 alt2">&nbsp;</div><div class="line number4 index3 alt1"><code class="plain plain">if true == beforeOrAfter {</code></div><div class="line number5 index4 alt2"><code class="plain spaces">&nbsp;&nbsp;</code><code class="plain plain">fmt.Println("2019-12-12 12:00:00在当前时间之后!")</code></div><div class="line number6 index5 alt1"><code class="plain plain">} else {</code></div><div class="line number7 index6 alt2"><code class="plain spaces">&nbsp;&nbsp;</code><code class="plain plain">fmt.Println("2019-12-12 12:00:00在当前时间之前!")</code></div><div class="line number8 index7 alt1"><code class="plain plain">}</code></div></div></td></tr></tbody></table></div></div>
+<div class="codetool" id="codetool"><a href="javascript:;" class="selall" title="全选"></a><a href="javascript:;" class="copy" title="复制文本代码"></a><div class="code_n"><textarea></textarea></div></div></div>
+<p>09: 判断一个时间相比另外一个时间过去了多久</p>
+<div class="jb51code">
+<div><div id="highlighter_953805" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="https://www.jb51.net/article/164869.htm#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">startTime := time.Now()</code></div><div class="line number2 index1 alt1"><code class="plain plain">time.Sleep(time.Second * 5)</code></div><div class="line number3 index2 alt2">&nbsp;</div><div class="line number4 index3 alt1"><code class="plain plain">fmt.Println("离现在过去了：", time.Since(startTime))</code></div></div></td></tr></tbody></table></div></div>
+<div class="codetool" id="codetool"><a href="javascript:;" class="selall" title="全选"></a><a href="javascript:;" class="copy" title="复制文本代码"></a><div class="code_n"><textarea></textarea></div></div></div>
+<p>以上就是本文的全部内容，希望对大家的学习有所帮助，也希望大家多多支持脚本之家。</p>
+                            
+                            <div class="art_xg">
+                                <b>您可能感兴趣的文章:</b><ul><li><a href="https://www.jb51.net/article/61748.htm" title="go语言中时间戳格式化的方法" target="_blank">go语言中时间戳格式化的方法</a></li><li><a href="https://www.jb51.net/article/158799.htm" title="golang时间、时区、格式的使用方法" target="_blank">golang时间、时区、格式的使用方法</a></li><li><a href="https://www.jb51.net/article/157983.htm" title="Golang 函数执行时间统计装饰器的一个实现详解" target="_blank">Golang 函数执行时间统计装饰器的一个实现详解</a></li><li><a href="https://www.jb51.net/article/157709.htm" title="Golang 日期/时间包的使用详解" target="_blank">Golang 日期/时间包的使用详解</a></li></ul>
+                            </div>
+
+                        <p class="tip">也许是最全java资料！（文档+项目+资料）<a href="https://mp.weixin.qq.com/s/HFvRM6gpaACettv5ffM0tg" target="_blank">【点击下载】</a> 和努力的人一起学习Java！</p></div>
+                        <!--endmain-->
+                        <div class="lbd_bot clearfix">
+                            <a href="https://mp.weixin.qq.com/s/HFvRM6gpaACettv5ffM0tg" target="_blank"><img src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/msb800.jpg" alt="java" width="820"></a>
+
+                        </div><div id="ewm"><div class="jb51ewm"><div class="fl"><img src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/jb51ewm.png"></div><div class="fr"><p>微信公众号搜索 “ <span>脚本之家</span> ” ，选择关注</p><p>程序猿的那些事、送书等活动等着你</p></div></div></div><p>原文链接：https://segmentfault.com/a/1190000019694913</p>
+                        <div class="tags clearfix">
+                            <i class="icon-tag"></i>
+                            <ul class="meta-tags">
+                                <li class="tag item"><a href="http://common.jb51.net/tag/go/1.htm" target="_blank" title="搜索关于go的文章" rel="nofollow">go</a></li>
+<li class="tag item"><a href="http://common.jb51.net/tag/%E6%97%B6%E9%97%B4%E6%93%8D%E4%BD%9C/1.htm" target="_blank" title="搜索关于时间操作的文章" rel="nofollow">时间操作</a></li>
+<li class="tag item"><a href="http://common.jb51.net/tag/%E6%97%B6%E9%97%B4%E6%88%B3%E6%93%8D%E4%BD%9C/1.htm" target="_blank" title="搜索关于时间戳操作的文章" rel="nofollow">时间戳操作</a></li>
+
+                            </ul>
+                        </div>
+                        <div class="lbd clearfix">
+                            <script async="" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/f(8).txt"></script><ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-6384567588307613" data-ad-slot="3921475131" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_0_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;"><iframe id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;border:0;width:728px;height:90px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="728" height="90" frameborder="0" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/ads.html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!1" data-google-query-id="CKuC5qT64O0CFUs_lgodLPYLyw" data-load-complete="true"></iframe></ins></ins></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+                        </div>
+                        <div id="shoucang"></div>
+                        <div class="xgcomm clearfix">
+                            <h2>相关文章</h2>
+                            <ul><li class="lbd clearfix"><div style=""><em style="display:none;"></em><iframe width="820" frameborder="0" height="120" scrolling="no" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/s.html"></iframe></div><script type="text/javascript" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/hak_cq.js"></script>
+</li><li><div class="item-inner"><a href="https://www.jb51.net/article/61748.htm" title="go语言中时间戳格式化的方法" class="img-wrap" target="_blank"> <img alt="go语言中时间戳格式化的方法" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/bcimg0.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/61748.htm" title="go语言中时间戳格式化的方法">go语言中时间戳格式化的方法</a></p><div class="item-info"><div class="js">这篇文章主要介绍了go语言中时间戳格式化的方法,涉及Go语言中time的使用技巧,具有一定参考借鉴价值,需要的朋友可以参考下</div><span class="lbtn" style="float:right"> 2015-03-03 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/158901.htm" title="使用go gin来操作cookie的讲解" class="img-wrap" target="_blank"> <img alt="使用go gin来操作cookie的讲解" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/bcimg1.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/158901.htm" title="使用go gin来操作cookie的讲解">使用go gin来操作cookie的讲解</a></p><div class="item-info"><div class="js">今天小编就为大家分享一篇关于使用go gin来操作cookie的讲解，小编觉得内容挺不错的，现在分享给大家，具有很好的参考价值，需要的朋友一起跟随小编来看看吧</div><span class="lbtn" style="float:right"> 2019-04-04 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/200627.htm" title="goland2020.2.x永久激活码破解详细教程亲测可用(Windows Linux Mac)" class="img-wrap" target="_blank"> <img alt="goland2020.2.x永久激活码破解详细教程亲测可用(Windows Linux Mac)" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/bcimg2.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/200627.htm" title="goland2020.2.x永久激活码破解详细教程亲测可用(Windows Linux Mac)">goland2020.2.x永久激活码破解详细教程亲测可用(Windows Linux M</a></p><div class="item-info"><div class="js">这篇文章主要介绍了goland2020.2.x永久激活码破解详细教程亲测可用(Windows Linux Mac) ,对goland激活码注册码相关知识感兴趣的朋友跟随小编一起看看吧</div><span class="lbtn" style="float:right"> 2020-11-11 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/199819.htm" title="详解Go语言中用 os/exec 执行命令的五种方法" class="img-wrap" target="_blank"> <img alt="详解Go语言中用 os/exec 执行命令的五种方法" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/bcimg3.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/199819.htm" title="详解Go语言中用 os/exec 执行命令的五种方法">详解Go语言中用 os/exec 执行命令的五种方法</a></p><div class="item-info"><div class="js">这篇文章主要介绍了Go语言中用 os/exec 执行命令的五种方法,本文给大家介绍的非常详细，对大家的学习或工作具有一定的参考借鉴价值，需要的朋友可以参考下</div><span class="lbtn" style="float:right"> 2020-11-11 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/147161.htm" title="Go语言的http/2服务器功能及客户端使用" class="img-wrap" target="_blank"> <img alt="Go语言的http/2服务器功能及客户端使用" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/bcimg4.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/147161.htm" title="Go语言的http/2服务器功能及客户端使用">Go语言的http/2服务器功能及客户端使用</a></p><div class="item-info"><div class="js">Golang 有一个很棒的自带 http 服务器软件包，不用说就是： net/http， 它非常简单，但是功能非常强大。下面这篇文章主要给大家介绍了关于Go语言的http/2服务器功能及客户端使用的相关资料，需要的朋友可以参考下</div><span class="lbtn" style="float:right"> 2018-09-09 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/135264.htm" title="golang json性能分析详解" class="img-wrap" target="_blank"> <img alt="golang json性能分析详解" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/bcimg5.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/135264.htm" title="golang json性能分析详解">golang json性能分析详解</a></p><div class="item-info"><div class="js">json格式可以算我们日常最常用的序列化格式之一了，Go语言作为一个由Google开发，号称互联网的C语言的语言，自然也对JSON格式支持很好。下面这篇文章主要给大家详细分析介绍了golang json性能的相关资料，需要的朋友可以参考下。</div><span class="lbtn" style="float:right"> 2018-02-02 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/178647.htm" title="详解go语言 make(chan int, 1) 和 make (chan int) 的区别" class="img-wrap" target="_blank"> <img alt="详解go语言 make(chan int, 1) 和 make (chan int) 的区别" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/bcimg6.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/178647.htm" title="详解go语言 make(chan int, 1) 和 make (chan int) 的区别">详解go语言 make(chan int, 1) 和 make (chan int) 的区别</a></p><div class="item-info"><div class="js">这篇文章主要介绍了go语言 make(chan int, 1) 和 make (chan int) 的区别,本文给大家介绍的非常详细，具有一定的参考借鉴价值，需要的朋友可以参考下</div><span class="lbtn" style="float:right"> 2020-01-01 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/145758.htm" title="详解如何热重启golang服务器" class="img-wrap" target="_blank"> <img alt="详解如何热重启golang服务器" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/bcimg7.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/145758.htm" title="详解如何热重启golang服务器">详解如何热重启golang服务器</a></p><div class="item-info"><div class="js">这篇文章主要介绍了详解如何热重启golang服务器，小编觉得挺不错的，现在分享给大家，也给大家做个参考。一起跟随小编过来看看吧</div><span class="lbtn" style="float:right"> 2018-08-08 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/144788.htm" title="golang利用pprof与go-torch如何做性能分析" class="img-wrap" target="_blank"> <img alt="golang利用pprof与go-torch如何做性能分析" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/bcimg8.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/144788.htm" title="golang利用pprof与go-torch如何做性能分析">golang利用pprof与go-torch如何做性能分析</a></p><div class="item-info"><div class="js">这篇文章主要给大家介绍了关于golang利用pprof与go-torch如何做性能分析的相关资料，文中通过示例代码介绍的非常详细，对大家的学习或者工作具有一定的参考学习价值，需要的朋友们下面随着小编来一起学习学习吧</div><span class="lbtn" style="float:right"> 2018-07-07 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="https://www.jb51.net/article/150599.htm" title="go语言中int和byte转换方式" class="img-wrap" target="_blank"> <img alt="go语言中int和byte转换方式" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/bcimg9.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="https://www.jb51.net/article/150599.htm" title="go语言中int和byte转换方式">go语言中int和byte转换方式</a></p><div class="item-info"><div class="js">这篇文章主要介绍了go语言中int和byte转换方式,需要的朋友可以参考下</div><span class="lbtn" style="float:right"> 2018-11-11 </span></div></div></div></div></li>
+</ul>
+                        </div>
+                        <div class="lbd clearfix mt5">
+                            <div style=""><div id="odnzo" style="padding-right:0px;"><div id="mwhbzvk" style="padding-top:0px;"><div style="padding:0px;"><iframe width="820" frameborder="0" height="120" scrolling="no" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/s(1).html"></iframe></div></div></div></div><script type="text/javascript" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/qq.js"></script>
+
+                        </div>
+                        <a href="https://www.jb51.net/article/164869.htm#comments"></a>
+                        <div id="comments">
+                            <h2>最新评论</h2>
+                            <div class="pd5">
+                                <div id="SOHUCS" sid="art_164869"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--endborder-->
+                </div>
+                <!--end fl-->
+
+                <div class="main-right">
+                    <div id="sidebar-right">
+                        <div class="r300 clearfix"><script async="" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/f(8).txt"></script><ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-6384567588307613" data-ad-slot="4845332105" data-adsbygoogle-status="done"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_1_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;"><iframe id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;border:0;width:300px;height:250px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="300" height="250" frameborder="0" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/ads(1).html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!2" data-google-query-id="CKSe-KP64O0CFcEDlgodBOAO_Q" data-load-complete="true"></iframe></ins></ins></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+                        <div class="sidebox-recomm">						
+</div><div class="r300 clearfix"><a href="https://mp.weixin.qq.com/s/HFvRM6gpaACettv5ffM0tg" target="_blank"><img src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/msb300.jpg" alt="java" width="300" height="100"></a><div class="blank10"></div><a href="https://www.hostspaceidc.com/front/products/pop?from=jb51-pic" target="_blank"><img alt="" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/hsidc300.gif" width="300" height="100"></a></div>
+                        <div class="sidebox bor-blue">
+                            <div class="bor-default pb10">
+                                <h4 class="blue">大家感兴趣的内容</h4>
+                                <ul class="newsList newList-in">
+                                    <li><em class="no1">1</em><a href="https://www.jb51.net/article/56828.htm" title="Go语言中的Array、Slice、Map和Set使用详解" target="_blank">Go语言中的Array、Slice、Map和S</a></li><li><em class="no2">2</em><a href="https://www.jb51.net/article/119164.htm" title="Go语言string，int，int64 ,float之间类型转换方法" target="_blank">Go语言string，int，int64 ,floa</a></li><li><em class="no3">3</em><a href="https://www.jb51.net/article/56779.htm" title="Go语言的GOPATH与工作目录详解" target="_blank">Go语言的GOPATH与工作目录详解</a></li><li><em class="no4">4</em><a href="https://www.jb51.net/article/56812.htm" title="Go语言interface详解" target="_blank">Go语言interface详解</a></li><li><em class="no5">5</em><a href="https://www.jb51.net/article/62728.htm" title="五步让你成为GO 语言高手" target="_blank">五步让你成为GO 语言高手</a></li><li><em class="no6">6</em><a href="https://www.jb51.net/article/56781.htm" title="Go语言命令行操作命令详细介绍" target="_blank">Go语言命令行操作命令详细介绍</a></li><li><em class="no7">7</em><a href="https://www.jb51.net/article/73984.htm" title="Go语言编程中字符串切割方法小结" target="_blank">Go语言编程中字符串切割方法小结</a></li><li><em class="no8">8</em><a href="https://www.jb51.net/article/61445.htm" title="Go语言转换所有字符串为大写或者小写的方法" target="_blank">Go语言转换所有字符串为大写或者</a></li><li><em class="no9">9</em><a href="https://www.jb51.net/article/126998.htm" title="我放弃Python转Go语言的9大理由（附优秀书籍推荐）" target="_blank">我放弃Python转Go语言的9大理由（</a></li><li><em class="no10">10</em><a href="https://www.jb51.net/article/60882.htm" title="Go语言创建、初始化数组的常见方式汇总" target="_blank">Go语言创建、初始化数组的常见方</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="r300 clearfix mt10"><div style=""><iframe width="300" frameborder="0" height="250" scrolling="no" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/s(2).html"></iframe></div><script type="text/javascript" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/of.js"></script><a href="https://www.henghost.com/act/202011/newuser_cloud.html?jbzj" target="_blank"><img alt="" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/henghost300.png" width="300" height="100"></a><div class="blank10"></div><a href="https://www.50vm.com/server.html?pg=34" target="_blank"><img alt="" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/99idc300.jpg" width="300" height="100"></a>
+</div>
+                        <div class="sidebox bor-blue">
+                            <div class="bor-default pb10">
+                                <h4 class="blue">最近更新的内容</h4>
+                                <ul class="newsListA">
+                                    <li><a href="https://www.jb51.net/article/122774.htm" title="关于Golang中for-loop与goroutine的问题详解" target="_blank">关于Golang中for-loop与goroutine的问题详</a></li><li><a href="https://www.jb51.net/article/134507.htm" title="用Go写一个轻量级的ssh批量操作工具的方法" target="_blank">用Go写一个轻量级的ssh批量操作工具的方法</a></li><li><a href="https://www.jb51.net/article/196305.htm" title="如何使用大学教育邮箱下载golang等软件(推荐)" target="_blank">如何使用大学教育邮箱下载golang等软件(推</a></li><li><a href="https://www.jb51.net/article/186317.htm" title="VS Code配置Go语言开发环境的详细教程" target="_blank">VS Code配置Go语言开发环境的详细教程</a></li><li><a href="https://www.jb51.net/article/137597.htm" title="golang中定时器cpu使用率高的现象详析" target="_blank">golang中定时器cpu使用率高的现象详析</a></li><li><a href="https://www.jb51.net/article/61513.htm" title="Go语言MessageBox用法实例" target="_blank">Go语言MessageBox用法实例</a></li><li><a href="https://www.jb51.net/article/103376.htm" title="Go语言正则表达式示例" target="_blank">Go语言正则表达式示例</a></li><li><a href="https://www.jb51.net/article/56811.htm" title="Go语言method详解" target="_blank">Go语言method详解</a></li><li><a href="https://www.jb51.net/article/186266.htm" title="Go语言框架Beego项目搭建的方法步骤" target="_blank">Go语言框架Beego项目搭建的方法步骤</a></li><li><a href="https://www.jb51.net/article/118149.htm" title="利用golang实现封装trycatch异常处理实例代码" target="_blank">利用golang实现封装trycatch异常处理实例</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="r300 clearfix mt10">
+                            <div class="idc3"><a href="http://tools.jb51.net/" target="_blank"><h1>在线工具</h1><span>代码格式化等</span> </a><a href="https://www.jb51.net/s/idc/" target="_blank"><h1>高防主机</h1><span>600G 防护</span> </a><a href="http://www.33ip.com/" target="_blank"><h1>枫信科技</h1><span>IDC服务商</span> </a></div>
+
+                        </div>
+                        <div class="sidebox bor-blue">
+                            <div class="bor-default pb10">
+                                <h4 class="blue">常用在线小工具</h4>
+                                <ul class="newsListA"><li><a href="http://tools.jb51.net/code/css" target="_blank"><font color="red">CSS代码工具</font></a></li><li><a href="http://tools.jb51.net/code/js" target="_blank"><font color="red">JavaScript代码格式化工具</font></a></li><li><a href="http://tools.jb51.net/code/xmlformat" target="_blank">在线XML格式化/压缩工具</a></li><li><a href="http://tools.jb51.net/code/phpformat" target="_blank"><font color="red">php代码在线格式化美化工具</font></a></li><li><a href="http://tools.jb51.net/code/sqlcodeformat" target="_blank">sql代码在线格式化美化工具</a></li><li><a href="http://tools.jb51.net/transcoding/html_transcode" target="_blank">在线HTML转义/反转义工具</a></li><li><a href="http://tools.jb51.net/code/json" target="_blank">在线JSON代码检验/检验/美化/格式化</a></li><li><a href="http://tools.jb51.net/regex/javascript" target="_blank">JavaScript正则在线测试工具</a></li><li><a href="http://tools.jb51.net/transcoding/jb51qrcode" target="_blank">在线生成二维码工具(加强版)</a></li><li><a href="http://tools.jb51.net/" target="_blank">更多在线工具</a></li>
+</ul>
+                            </div>
+                        </div>
+                        <div class="r300 clearfix mt10"><a href="http://www.tuidc.com/indexhd.html" target="_blank"><img src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/tengyou300.gif" width="300" height="100"></a><div class="blank10"></div><a href="https://www.yiyangidc.com/" target="_blank"><img src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/yyqz300.gif" alt="服务器" width="300" height="100"></a>
+</div>
+                        <div class="mt10 rFixedBox" style="position: static; top: 0px;">
+                            <div class="r300 clearfix"><script async="" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/f(8).txt"></script><ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-6384567588307613" data-ad-slot="6500564943" data-adsbygoogle-status="done"><ins id="aswift_2_expand" style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_2_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent;"><iframe id="aswift_2" name="aswift_2" style="left:0;position:absolute;top:0;border:0;width:300px;height:250px;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" width="300" height="250" frameborder="0" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/ads(2).html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!3" data-google-query-id="CIDU-aP64O0CFUVNlgodn3wP_g" data-load-complete="true"></iframe></ins></ins></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+                            <div class="r300 clearfix mt10">
+                                <div style=""><iframe width="300" frameborder="0" height="250" scrolling="no" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/s(3).html"></iframe></div><script type="text/javascript" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/k-blu.js"></script>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end fr-->
+            </div>
+        </div>
+        <!--share start-->
+        <div id="right-share" style="display: block;">
+            <div class="right-share jb-share" id="jb-share">
+                <a class="rshare-weixin" title="">微信</a>
+                <a rel="nofollow" class="rshare-qzone" target="_blank" href="http://tougao.jb51.net/" title="投稿">投稿</a>
+                <a rel="nofollow" class="rshare-sqq" target="_blank" href="https://task.jb51.net/" title="脚本任务">脚本任务</a>
+                <a rel="nofollow" class="rshare-tsina" target="_blank" href="http://tools.jb51.net/" title="在线工具">在线工具</a>
+            </div>
+            <a class="rshare-top" onclick="javascript:;"></a>
+            <div id="weixin-code" class="hide">
+                <div class="popup_weixin_head">
+                    <p>关注微信公众号</p>
+                    <div id="code"><img src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/erwm.jpg" alt="扫一扫" width="100" height="100"></div>
+                </div>
+            </div>
+        </div>
+        <!--share end-->
+        <!-- 目录容器 -->
+        <div class="AutoCatelog">
+            <div class="AutoCatelogLlist" id="CatelogList" style=""></div>
+        </div>
+    </div>
+    <!--end content-->
+    <div id="footer">
+        <div class="footer-bottom">
+            <p>
+                <a rel="nofollow" href="https://www.jb51.net/about.htm" target="_blank">关于我们</a> -
+                <a rel="nofollow" href="https://www.jb51.net/support.htm" target="_blank">广告合作</a> -
+                <a rel="nofollow" href="https://www.jb51.net/linkus.htm" target="_blank">联系我们</a> -
+                <a rel="nofollow" href="https://www.jb51.net/sm.htm" target="_blank">免责声明</a> -
+                <a rel="nofollow" href="https://www.jb51.net/sitemap.htm" target="_blank">网站地图</a> -
+                <a rel="nofollow" href="tencent://message/?uin=461478385&amp;Site=https://www.jb51.net" target="_blank">投诉建议</a> -
+                <a rel="nofollow" href="https://www.jb51.net/up.htm" target="_blank">在线投稿</a>
+            </p>
+            <p>&#169;CopyRight 2006-2020 JB51.Net Inc All Rights Reserved. 脚本之家 版权所有</p>
+        </div>
+    </div>
+    <!--end footer-->
+    <link type="text/css" rel="stylesheet" href="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/shCore.css">
+    <link type="text/css" rel="Stylesheet" href="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/shThemeDefault.css">
+    <script type="text/javascript" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/shHighlighter.js"></script>
+    <script type="text/javascript">
+        /*更多导航*/
+        $("#nav p").hover(function() {
+            $(this).addClass("hover")
+        }, function() {
+            $(this).removeClass("hover")
+        });
+        if (top.location != self.location) top.location = self.location;
+        var varwindow = $(window);
+        $('#content').find('img').each(function() {
+            var img = this;
+            if (img.width >= 800 && !$(this).hasClass("nohref")) {
+                img.style.width = "800px";
+                img.style.height = "auto";
+            }
+        });
+        $(window).scroll(function() {
+            //rFixedBox跟随滚动
+            var h = varwindow.height();
+            var top = varwindow.scrollTop();
+            var rFixedBox = $('.rFixedBox').prev().offset();
+            var fixedTop = rFixedBox.top;
+
+            if (top >= fixedTop + 330) {
+                var h1 = parseInt($('#content').children('.main').height());
+                $('.rFixedBox').css({
+                    'position': 'fixed',
+                    'top': 0
+                });
+            } else {
+                $('.rFixedBox').css({
+                    'position': 'static',
+                    'top': 0
+                });
+            }
+            /* return true;*/
+
+            /*右侧快捷菜单*/
+            sideFixed();
+        });
+
+        var ww = varwindow.width();
+
+        function sideFixed() {
+            var scrolltop = document.body.scrollTop || document.documentElement.scrollTop;
+            var a1 = 550;
+            if (ww > 440) {
+                if (a1 <= scrolltop) {
+                    $('#right-share').slideDown();
+                    $('#CatelogList').fadeIn();
+                } else {
+                    $('#right-share').slideUp();
+                    $('#CatelogList').fadeOut();
+                }
+            }
+        }
+        $('.rshare-weixin').hover(function() {
+            $('#weixin-code').removeClass('hide');
+        }, function() {
+            $('#weixin-code').addClass('hide');
+        });
+        /*二维码*/
+        $('#right-share .rshare-top').on('click', function() {
+            $('html,body').animate({
+                'scrollTop': 0
+            }, 500);
+        });
+        $(window).resize(function() {
+            show_suoyin();
+        });
+
+        function show_suoyin() {
+            var vww = 0;
+            vww = varwindow.width();
+            if (suoyin == "ok") {
+                if (vww > 1600) {
+                    var catell = document.getElementById("CatelogList");
+                    if (vww < 1920) {
+                        catell.style.width = (((vww - 1200) / 2) - 20) + "px";
+                    } else {
+                        catell.style.width = "340px";
+                    }
+
+                    if (!window.suoyinobj) {
+                        window.suoyinobj = new katelog({
+                            contentEl: 'content',
+                            catelogEl: 'CatelogList',
+                            linkClass: 'AutoCatelogLink',
+                            linkActiveClass: 'CatelogActive',
+                            supplyTop: 20,
+                            selector: ['h2', 'h3', 'h4'],
+                            active: function(el) {
+                                //console.log(el);
+                            }
+                        });
+                    }
+                } else {
+                    window.suoyinobj = null;
+                    GenerateContentList();
+                }
+            }
+        }
+        show_suoyin();
+
+        SyntaxHighlighter.autoloader(
+            'applescript			/jslib/syntaxhighlighter/scripts/shBrushAppleScript.js',
+            'actionscript3 as3		/jslib/syntaxhighlighter/scripts/shBrushAS3.js',
+            'bash shell				/jslib/syntaxhighlighter/scripts/shBrushBash.js',
+            'coldfusion cf			/jslib/syntaxhighlighter/scripts/shBrushColdFusion.js',
+            'cpp c					/jslib/syntaxhighlighter/scripts/shBrushCpp.js',
+            'obj-c objc				/jslib/syntaxhighlighter/scripts/shBrushObjC.js',
+            'c# c-sharp csharp		/jslib/syntaxhighlighter/scripts/shBrushCSharp.js',
+            'css					/jslib/syntaxhighlighter/scripts/shBrushCss.js',
+            'delphi pascal			/jslib/syntaxhighlighter/scripts/shBrushDelphi.js',
+            'diff patch pas			/jslib/syntaxhighlighter/scripts/shBrushDiff.js',
+            'erl erlang				/jslib/syntaxhighlighter/scripts/shBrushErlang.js',
+            'groovy					/jslib/syntaxhighlighter/scripts/shBrushGroovy.js',
+            'haxe hx				/jslib/syntaxhighlighter/scripts/shBrushHaxe.js',
+            'java					/jslib/syntaxhighlighter/scripts/shBrushJava.js',
+            'jfx javafx				/jslib/syntaxhighlighter/scripts/shBrushJavaFX.js',
+            'js jscript javascript	/jslib/syntaxhighlighter/scripts/shBrushJScript.js',
+            'perl pl				/jslib/syntaxhighlighter/scripts/shBrushPerl.js',
+            'php					/jslib/syntaxhighlighter/scripts/shBrushPhp.js',
+            'text plain				/jslib/syntaxhighlighter/scripts/shBrushPlain.js',
+            'py python				/jslib/syntaxhighlighter/scripts/shBrushPython.js',
+            'ruby rails ror rb		/jslib/syntaxhighlighter/scripts/shBrushRuby.js',
+            'scala					/jslib/syntaxhighlighter/scripts/shBrushScala.js',
+            'sql					/jslib/syntaxhighlighter/scripts/shBrushSql.js',
+            'vb vbnet				/jslib/syntaxhighlighter/scripts/shBrushVb.js',
+            'ps powershell			/jslib/syntaxhighlighter/scripts/shBrushPowerShell.js',
+            'xml xhtml xslt html	/jslib/syntaxhighlighter/scripts/shBrushXml.js'
+        );
+        SyntaxHighlighter.all();
+
+        var ourl = "https://segmentfault.com/a/1190000019694913";
+
+        (function() {
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            } else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+
+    </script>
+
+    <script type="text/javascript" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/viewer.min.js"></script>
+<script type="text/javascript" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/arc2019.js"></script>
+<script>jbLoader();</script>
+<script>jbLoader();</script>
+<script>jbLoader();</script>
+<script>jbLoader();</script>
+<script>jbLoader();</script>
+<script>jbLoader();</script>
+<script>jbLoader();</script>
+<script>jbLoader();</script>
+<script>jbLoader();</script>
+<script>jbLoader();</script>
+<script>jbLoader();</script>
+<script>jbLoader();</script>
+<script>jbLoader();</script>
+<script>jbLoader();</script>
+<script>jbLoader();</script>
+<!--右侧浮动临时增加-->
+<script>jbLoader();</script><iframe id="google_osd_static_frame_5282034559005" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/saved_resource(3).html"></iframe>
+<div id="tongji">
+<script type="text/javascript" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/tongji.js"></script><script src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/stat.php" language="JavaScript"></script><script src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/core.php" charset="utf-8" type="text/javascript"></script><a href="https://www.cnzz.com/stat/website.php?web_id=1585378" target="_blank" title="站长统计">站长统计</a><script src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/stat(1).php" language="JavaScript"></script><script src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/core(1).php" charset="utf-8" type="text/javascript"></script><a href="https://www.cnzz.com/stat/website.php?web_id=1260728942" target="_blank" title="站长统计">站长统计</a>
+</div>
+<script type="text/javascript">
+if ('undefined' == typeof(window.Viewer)) {
+        document.write(unescape("%3Cscript src='/skin/js/viewer.min.js' type='text/javascript'%3E%3C/script%3E"));
+    }
+var viewer = new Viewer(document.getElementById('content'));
+(function(){
+var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba":"https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+document.write('<script src="' + src + '" id="sozz"><\/script>');
+})();
+</script><script src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/11.0.1.js" id="sozz"></script><script charset="utf-8" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/ab77b6ea7f3fbf79.js"></script>
+    <script type="text/javascript" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/pl.asp"></script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://ziyuan.baidu.com/contexts/cambrian.jsonld",
+            "@id": "https://www.jb51.net/article/164869.htm",
+            "appid": "1549322409310619",
+            "title": "go时间/时间戳操作大全(小结)",
+            "description": "这篇文章主要介绍了go时间/时间戳操作大全，文中通过示例代码介绍的非常详细，对大家的学习或者工作具有一定的参考学习价值，需要的朋友们下面随着小编来一起学习学习吧",
+            "pubDate": "2019-07-08T14:28:52",
+            "upDate": "2019-07-08T14:28:53"
+        }
+
+    </script>
+
+
+<!-- published at 2020/12/18 0:38:31By dxycms qq:461478385  -->
+<ins class="adsbygoogle adsbygoogle-noablate" data-adsbygoogle-status="done" style="display: none !important;"><ins id="aswift_3_expand" style="display:inline-table;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;" tabindex="0" title="Advertisement" aria-label="Advertisement"><ins id="aswift_3_anchor" style="display:block;border:none;height:0px;margin:0;padding:0;position:relative;visibility:visible;width:0px;background-color:transparent;"><iframe id="aswift_3" name="aswift_3" style="left:0;position:absolute;top:0;border:0;width:undefinedpx;height:undefinedpx;" sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" frameborder="0" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/ads(3).html" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" data-google-container-id="a!3" data-load-complete="true"></iframe></ins></ins></ins></body><iframe id="google_esf" name="google_esf" src="./go时间_时间戳操作大全(小结)_Golang_脚本之家_files/zrt_lookup.html" data-ad-client="ca-pub-6384567588307613" style="display: none;"></iframe></html>

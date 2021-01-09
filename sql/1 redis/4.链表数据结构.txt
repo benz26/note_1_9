@@ -1,0 +1,170 @@
+双向链表
+查找性能不佳
+
+-----
+
+【语法】：
+1、把node1加入链表左边
+lpush key node1[node2]..
+
+2、加到链表最右边
+rpush key node1[node2]...
+
+3、获取下标为index的节点，从0开始
+lindex key index
+
+4、求链表长度
+llen key
+
+5、删除左边第一个节点，并返回
+lpop key
+
+6、删除右边第一个节点，并返回
+rpop key
+
+7、插入一个几点node，指定在pivot值对应的 节点的前面或者后面
+linsert key before|after pivot node
+
+8、插入节点node，左一
+lpushx list node
+
+9、插入节点node,右一
+rpushx list node
+
+10、获取链表list 从start到end的节点值,包含start和end的值
+lrange list start end
+
+11、如果count为0，删除所有值为value的节点；
+	如果count不是0，删除最多|count|个值为value的节点
+lrem list count value
+	
+12、设置下标index的节点值为node
+lset key index node
+
+13、保留start到stop区间的节点
+ltrim key start stop
+
+------
+【例子】：
+lpush list node3 node2 node1，返回总数3
+向key为list 的链表里依次插入node3 node2 node1到最左边
+从左到右最终是node1 node2 node3 ...原本节点
+
+rpush list node4， 返回总数4
+node1 node2 node3 ...node4
+
+lindex list 0,读取下标0
+node1
+
+llen list ，返回4
+
+lpop list
+node1  
+剩下node2 node3 ...node4
+
+rpop list
+node4
+剩下node2 node3
+
+linsert list before node2 before_node，返回总数3
+在node2之前插入before_node
+剩下before_node node2 node3
+
+linsert list after node2 after_node，返回4
+before_node node2 after_node node3
+
+lpushx list head,返回总数5
+head before_node node2 after_node node3
+
+rpush list end，返回总数6
+head before_node node2 after_node node3 end
+
+lrange list 0 10
+head
+before_node
+node2
+after_node
+node3
+end
+
+lpush list node node node,插入三个，返回总数9
+node  node node head before_node node2 after_node node3 end
+
+lrem list 3 node，返回3 成功删除3个
+剩余head before_node node2 after_node node3 end
+
+lset list 0 new_head_value
+剩余new_head_value before_node node2 after_node node3 end
+
+ltrim list 0 2，只保留0-2
+剩余new_head_value before_node node2
+
+======================================================
+
+链表加锁
+【语法】：
+1、pop第一个元素，会阻塞直到超时
+blpop key timeout
+blpop是带锁的pop，相对于lpop，它是进程安全的
+
+2、移出并获得最后一个元素，会阻塞直到超时
+brpop key timeout
+
+3、删除最右元素，插入到目标链表左边（不能设置超时时间）
+rpoplpush key_src key_dest，
+
+4、删除最右元素，插入到目标链表最左边（可设置超时时间）
+brpoplpush key_src key_dest
+
+--------------
+
+【例子】：
+lpush list1 node1 node2 node3 node4 node5 ，返回总数5
+list1有节点 node5  node4  node3   node2  node1
+
+blpop list1 2     //2是超时时间
+list1剩余节点 node4  node3   node2  node1 ,返回取出的list，和取出的节点node5
+list1
+node5
+
+brpop list1 3     //3是超时时间
+list1剩余节点 node4  node3   node2, 返回取出的list，和取出的节点node1
+list1
+node1
+
+lpush list2 data1 data2 data3，返回3
+list2有data3 data2 data1
+
+----
+
+rpoplpush list1 list2 ，返回node2
+ 删除node4  node3   node2最右边的元素
+加在 data3 data2 data1最左边
+
+剩余node4  node3 
+node2 data3 data2 data1
+
+----
+
+brpoplpush list1 list2 3，返回node3
+剩余node4   
+node3 node2 data3 data2 data1
+
+----
+lrange list1 0 10
+
+node4
+lrange list2 0 10
+
+node3
+node2
+data3
+data2
+data1
+
+
+
+
+
+
+

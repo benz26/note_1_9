@@ -1,0 +1,15 @@
+
+package main
+ 
+import (
+	"fmt"
+	"strings"
+)
+ 
+func main() {
+	s := strings.ToLower("Python")
+	fmt.Println(s)
+}
+运行结果：
+
+python

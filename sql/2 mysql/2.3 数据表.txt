@@ -1,0 +1,71 @@
+1、创建表
+CREATE TABLE 'mydb'.'mytbl' 是合法的，但 'mydb.mytbl' 不合法。
+mysql> USE test_db;
+Database changed
+mysql> CREATE TABLE tb_emp1
+    -> (
+    -> id INT(11),
+    -> name VARCHAR(25),
+    -> deptId INT(11),
+    -> salary FLOAT
+    -> );
+Query OK, 0 rows affected (0.37 sec)
+
+
+2、修改表名
+ALTER TABLE <旧表名> RENAME [TO] <新表名>；
+
+3、修改字段名 或者 字段类型
+mysql> ALTER TABLE tb_emp1
+    -> CHANGE col1 col3 CHAR(30);
+	
+4、
+（1）、显示表字段，查看表结构
+DESC tb_emp1;
+
+（2）、SHOW CREATE TABLE tb_emp5
+查看表如何创建的；
+
+
+5、修改数据类型
+ALTER TABLE <表名> MODIFY <字段名> <数据类型>
+
+6、删除字段
+ALTER TABLE <表名> DROP <字段名>；
+
+
+7、删除表
+DROP TABLE [IF EXISTS] 表名1 [ ,表名2, 表名3 ...]
+
+
+8、删除外键
+mysql> SHOW CREATE TABLE tb_emp5\G;
+*************************** 1. row ***************************
+       Table: tb_emp5
+Create Table: CREATE TABLE `tb_emp5` (
+  `id` int(11) NOT NULL,
+  `name` varchar(25) DEFAULT NULL,
+  `deptId` int(11) DEFAULT NULL,
+  `salary` float DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_emp4_emp5` (`deptId`),
+  CONSTRAINT `fk_emp4_emp5` FOREIGN KEY (`deptId`) REFERENCES `tb_emp4` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+1 row in set (0.00 sec)
+
+//删除外键
+mysql> ALTER TABLE tb_emp5 DROP FOREIGN KEY fk_emp4_emp5;
+
+DROP TABLE tb_emp4;
+
+9、数据表添加字段
+（1）、末尾添加
+ALTER TABLE <表名> ADD <新字段名><数据类型>[约束条件];
+ALTER TABLE student ADD age INT(4);
+
+（2）、开头添加
+ALTER TABLE student ADD stuId INT(4) FIRST;
+
+（3）、在某字段之后添加
+mysql> ALTER TABLE student ADD stuno INT(11) AFTER name;
+

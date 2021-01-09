@@ -1,0 +1,40 @@
+索引就是根据表中的一列或若干列按照一定顺序建立的列值与记录行之间的对应关系表，实质上是一张描述索引列的列值与原表中记录行之间一 一对应关系的有序表。
+
+----存储方式区分：
+ (1)、B-树索引
+ (2)、HASH 索引
+ 
+ ----逻辑区分：
+ (1)、普通索引,可以重复或者是空值
+ 下面在 tb_student 表中的 id 字段上建立名为 index_id 的索引。
+CREATE INDEX index_id ON tb_student(id);
+
+（2）、唯一索引，可以为空，唯一
+CREATE UNIQUE INDEX index_id ON tb_student(id);
+
+（3）、主键索引
+ PRIMARY KEY 
+ 
+ 
+ ----
+ 1）单列索引
+单列索引就是索引只包含原表的一个列。在表中的单个字段上创建索引，单列索引只根据该字段进行索引。
+
+单列索引可以是普通索引，也可以是唯一性索引，还可以是全文索引。只要保证该索引只对应一个字段即可。
+
+例子：
+下面在 tb_student 表中的 address 字段上建立名为 index_addr 的单列索引，address 字段的数据类型为 VARCHAR(20)，索引的数据类型为 CHAR(4)。SQL 语句如下：
+CREATE INDEX index_addr ON tb_student(address(4));
+
+这样，查询时可以只查询 address 字段的前 4 个字符，而不需要全部查询。
+
+2）多列索引
+下面在 tb_student 表中的 name 和 address 字段上建立名为 index_na 的索引，SQL 语句如下：
+CREATE INDEX index_na ON tb_student(name,address);
+
+提示：一个表可以有多个单列索引，但这些索引不是组合索引。
+
+一个组合索引实质上为表的查询提供了多个索引，以此来加快查询速度。
+比如，在一个表中创建了一个组合索引(c1，c2，c3)，在实际查询中，系统用来实际加速的索引有三个：
+
+单个索引(c1)、双列索引(c1，c2)和多列索引(c1，c2，c3)。

@@ -1,0 +1,37 @@
+比如数字集合 {1,2,5,7,9,1,5,9} 的基数集合为 {1,2,5,7,9} 那么基数（不重复元素）就是 5，
+
+----
+【语法】：
+1、添加元素到HyperLogLog中
+pfadd key element
+向往键为key的HyperLogLog插入元素，计算基数
+
+2、返回HyperLogLog的基数值，就是存在的元素个数
+pfcount key
+
+3、合并多个HyperLogLog，并将其保存在desKey中
+pfmerge deskey key1 key2
+
+-----
+【例子】：
+pfadd h1 a，成功返回1
+pfadd h1 b
+pfadd h1 c
+pfadd h1 d
+pfadd h1 a  失败的话返回0
+h1的基数集合a b c d
+
+pfcount h1 ，返回基数4
+
+pfadd h2 a
+pfadd h2 z
+h2的基数集合a z
+
+pfmerge h3 h1 h2
+h3的基数集合a b c d z
+
+pfcount h3，返回基数5
+
+
+
+

@@ -1,0 +1,46 @@
+热备（Hot Backup）  //Online Backup（在线备份）。
+	逻辑备份      //sql语句
+	裸文件备份
+	
+冷备（Cold Backup） // Offline Backup（离线备份）。
+温备（Warm Backup） //在线，支持读，不支持写
+
+
+--------
+
+MySQL 中进行不同方式的备份还要考虑存储引擎是否支持，如 MyISAM 不支持热备，支持温备和冷备。而 InnoDB 支持热备、温备和冷备。
+
+--------
+
+一般情况下，我们需要备份的数据分为以下几种：
+表数据
+二进制日志、InnoDB 事务日志
+代码（存储过程、存储函数、触发器、事件调度器）
+服务器配置文件
+
+--------
+
+【冷备】：
+1、 FLUSH TABLES 写入数据
+2、停止服务
+mysqladmin -uroot -proot shutdown
+或者
+NET START mysql
+Scp -r /data/mysql/ root@远程备份机ip:/新的目录
+
+需要注意的是，通过复制数据文件这种方式实现数据恢复时，必须保证两个 MySQL 数据库的主版本号一致。
+只有两个 MySQL 数据库主版本号相同时，才能保证它们的数据文件类型是相同的。关于 MySQL 数据库服务器的版本号
+第一个数字表示主版本号，例如 MySQL 5.5.21 和 MySQL 5.5.01 这两个版本的主版本号都是 5，所以这两个数据库拥有相同类型的数据文件。
+
+----------------
+
+【热备】：
+1、逻辑备份
+（1）、mysqldump
+mysqldump 是 MySQL 自带的逻辑备份工具。
+将查询出的数据转换成对应的 INSERT 语句。
+mysql -uroot -p <backup.sql //未连接执行这个命令恢复
+source /path/backup.sql //已经连接上mysql服务器，通过这个命令恢复
+
+（3）、mydumper
+DBA 称 mydumper 和 myloader 为备份界的“小钢炮”。

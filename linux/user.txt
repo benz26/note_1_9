@@ -1,0 +1,45 @@
+
+$ cat .bashrc 
+
+export PTFS_PATH=~/repo
+
+source .bashrc
+
+/home/leyi2
+
+-------------
+
+leyi@leyi-System-Product-Name:/home$ su - leyi2
+Password: 
+su: Authentication failure
+
+leyi@leyi-System-Product-Name:/home$ sudo passwd leyi2
+Enter new UNIX password: 
+Retype new UNIX password: 
+passwd: password updated successfully
+leyi@leyi-System-Product-Name:/home$ su leyi2
+Password: 
+su: Authentication failure
+leyi@leyi-System-Product-Name:/home$ su - leyi2
+Password: 
+
+以leyi2用户运行程序能够获取环境变量PTFS_PATH
+每个用户可以执行程序（只要端口不占用）;ipfs init的id要求目录不一样，所以要不同用户
+
+-------
+
+	coverDir := os.Getenv("IPFS_COVER_DIR")
+	if len(coverDir) == 0 {
+		fmt.Println("IPFS_COVER_DIR not defined")
+		os.Exit(1)
+	}
+	
+---
+
+sar -n DEV 1 10000
+14时53分52秒     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+14时53分53秒    enp3s0    461.00    161.00     52.50     20.58      0.00      0.00    310.00      0.04
+14时53分53秒    virbr0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+14时53分53秒 virbr0-nic      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+14时53分53秒   docker0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+

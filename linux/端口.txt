@@ -1,0 +1,6 @@
+lsof -i tcp:5001
+
+natstat 
+
+nc -vz 127.0.0.1 5001
+

@@ -1,0 +1,11 @@
+1、go get 下载包 或者git clone手动下载
+
+https://github.com/grpc/grpc-go.git
+
+leyi@leyi-System-Product-Name:~/go/src$ go get github.com/grpc/grpc-go
+package github.com/grpc/grpc-go: code in directory /home/leyi/go/src/github.com/grpc/grpc-go expects import "google.golang.org/grpc"
+
+---------------
+
+2、替换
+CTRL + SHIFT + R

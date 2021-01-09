@@ -1,0 +1,100 @@
+http默认端口为80，但是也可以改为8080
+
+（Web服务器需要监听在80/TCP端口）
+
+HTTP协议是一个无状态的协议，同一个客户端的这次请求和上次请求是没有对应关系。
+
+
+--------
+
+web browser   --- http protocol  --- http server
+										|
+										cgi  program()
+										|
+										database
+										
+-------
+
+http客户端是一个应用程序（web浏览器或者其他任何客户端）
+http服务器也是一个应用程序（web服务，apache web服务器，nginx）
+
+
+=======================
+
+http请求格式：
+
+例子：
+GET /hello.txt HTTP/1.1
+User-Agent: curl/7.16.3 libcurl/7.16.3 OpenSSL/0.9.7l zlib/1.2.3
+Host: www.example.com
+Accept-Language: en, mi
+
+---
+格式:
+
+【请求行】:     //request line
+请求方法 空格 URL  空格  协议版本 回车符 换行符  
+
+//请求行，如：
+get  |空格| /hellotxt |空格|  HTTP/1.1  /n/r
+
+MIME信息：
+【请求头部】： //header
+key-value:
+
+【空行】：  //请求报文用空行表示header和请求数据的分隔
+
+【请求数据】：
+GET方法没有携带数据， POST方法会携带一个body
+
+
+=======================
+
+服务器响应消息：
+
+例子：
+
+HTTP/1.1 200 OK
+Date: Mon, 27 Jul 2009 12:28:53 GMT
+Server: Apache
+Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT
+ETag: "34aa387-d-1568eb00"
+Accept-Ranges: bytes
+Content-Length: 51
+Vary: Accept-Encoding
+Content-Type: text/plain
+
+----
+格式：
+
+状态行
+HTTP版本号，状态码和状态值组成。
+HTTP/1.1  200  OK
+
+消息报头
+Date:....
+Content-Type:...
+Content-Length:...
+
+
+空行
+//回车空行
+
+
+响应正文
+
+-------
+
+HTTP请求的一个完整过程
+
+建立 TCP 连接（之前可能还有一次DNS域名解析）
+三次握手建立TCP完成后，客户端向服务器发送请求命令，比如 GET https://www.baidu.com?name=xx&addr=xx HTTP1.1
+客户端发送请求头信息，发送完了header后会接着发送一个空白行，GET请求没有数据，POST请求要发送body数据
+服务器接收到以上信息后，开始处理业务，处理完有了结果以后，服务器开始应答
+服务器返回响应头信息，发送完response header以后，再发送一个空白行
+然后服务器向客户端发送数据
+发送完了服务器四次挥手关闭 TCP 连接
+
+
+
+

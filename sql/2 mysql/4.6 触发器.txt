@@ -1,0 +1,59 @@
+（1）、在 MySQL 中，只有执行 INSERT、UPDATE 和 DELETE 操作时才能激活触发器
+（2）、触发器可以实现表数据的级联更改，在一定程度上保证了数据的完整性。
+
+====================================
+
+（1）、INSERT 触发器、UPDATE 触发器和 DELETE 触发器。
+（2）、同一个表不能拥有两个具有相同触发时刻和事件的触发器
+（3）、注意：每个表都支持 INSERT、UPDATE 和 DELETE 的 BEFORE 与 AFTER，因此每个表最多支持 6 个触发器。
+
+========================================
+1、触发器创建：
+语法：
+CREATE TRIGGER <触发器名> < BEFORE | AFTER >
+<INSERT | UPDATE | DELETE >
+ON <表名> FOR EACH Row<触发器主体>
+
+（1）、BEFORE
+mysql> CREATE TRIGGER SumOfSalary  //SumOfSalary触发器名
+    -> BEFORE INSERT ON tb_emp8  //tb_emp8表名
+    -> FOR EACH ROW
+    -> SET @sum=@sum+NEW.salary;  //触发主体,对每一行加入到sum
+	
+SET @sum=0;
+
+mysql> INSERT INTO tb_emp8
+    -> VALUES(1,'A',1,1000),(2,'B',1,500);
+
+mysql> SELECT @sum;     //1500
+
+=======================================
+
+（2）、AFTER
+mysql> CREATE TRIGGER double_salary
+    -> AFTER INSERT ON tb_emp6
+    -> FOR EACH ROW
+    -> INSERT INTO tb_emp7
+    -> VALUES (NEW.id,NEW.name,deptId,2*NEW.salary);  //插入表tb_emp6的数据，同时插入表tb_emp7，工资2倍
+		//NEW表示被插入的新行
+		//对于 AUTO_INCREMENT 列，NEW 在 INSERT 执行之前包含的值是 0，在 INSERT 执行之后将包含新的自动生成值。
+	
+mysql> INSERT INTO tb_emp6
+-> VALUES (1,'A',1,1000),(2,'B',1,500);
+mysql> SELECT * FROM tb_emp7;
++----+------+--------+--------+
+| id | name | deptId | salary |
++----+------+--------+--------+
+|  1 | A    |      1 |   2000 |
+|  2 | B    |      1 |   1000 |
++----+------+--------+--------+
+
+=======================================
+
+2、触发器查看
+（1）、SHOW TRIGGERS 语句用来查看当前创建的所有触发器的信息。
+
+3、删除触发器
+DROP TRIGGER [ IF EXISTS ] [数据库名] <触发器名>
+
+

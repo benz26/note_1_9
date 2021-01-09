@@ -1,0 +1,42 @@
+xxx   string
+score double 
+
+1、添加一个或者多个成员
+redis 127.0.0.1:6379> ZADD KEY_NAME SCORE1 VALUE1.. SCOREN VALUEN
+
+redis> ZADD myzset 1 "one"
+(integer) 1
+redis> ZADD myzset 1 "uno"
+(integer) 1
+redis> ZADD myzset 2 "two" 3 "three"
+(integer) 2
+redis> ZRANGE myzset 0 -1 WITHSCORES
+1) "one"
+2) "1"
+3) "uno"
+4) "1"
+5) "two"
+6) "2"
+7) "three"
+8) "3"
+redis> 
+
+
+2、获取成员数
+redis 127.0.0.1:6379> ZCARD KEY_NAME
+
+redis> ZADD myzset 1 "one"
+(integer) 1
+redis> ZADD myzset 2 "two"
+(integer) 1
+redis> ZCARD myzset
+(integer) 2
+redis> 
+
+3、查询区间内的成员
+redis 127.0.0.1:6379> ZRANGE key start stop [WITHSCORES]
+redis 127.0.0.1:6379> ZRANGE salary 0 -1 WITHSCORES             # 显示整个有序集成员
+1) "jack"
+2) "3500"
+3) "tom"
+

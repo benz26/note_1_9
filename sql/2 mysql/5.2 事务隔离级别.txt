@@ -1,0 +1,121 @@
+MySQL 包括的事务隔离级别如下：
+读未提交（READ UNCOMITTED）        1 低级别
+读提交（READ COMMITTED）           2
+可重复读（REPEATABLE READ）         3
+串行化（SERIALIZABLE）              4 高级别
+
+MySQL 的事务的隔离级别由低到高分别为 READ UNCOMITTED、READ COMMITTED、REPEATABLE READ、SERIALIZABLE。
+
+低级别的隔离级别可以支持更高的并发处理，同时占用的系统资源更少。
+
+-----------
+
+1、读未提交
+
+可以读到未提交的内容。
+
+例子：
+（1）、
+//修改全局变量（事务隔离等级）
+mysql> SET GLOBAL TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
+mysql> show variables like '%tx_isolation%'\G
+*************************** 1. row ***************************
+Variable_name: tx_isolation
+        Value: READ-UNCOMMITTED
+		
+A读， B窗口修改（未提交），A读(脏读);
+B回滚，A读；
+		
+（2）、使用读提交隔离级别可以解决实例中产生的脏读问题。
+
+
+-------
+
+2、读提交
+
+只能读到已经提交了的内容。
+
+（1）、
+mysql> SET GLOBAL TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+mysql> show variables like '%tx_isolation%'\G
+*************************** 1. row ***************************
+Variable_name: tx_isolation
+        Value: READ-COMMITTED
+
+（2）、A读，B窗口修改（未提交），A读；
+	  B窗口提交，A读（不客重复读）；
+	  重复读，读到的内容前后不一致
+	  
+（3）、使用可重复读隔离级别可以解决实例中产生的不可重复读问题。	
+
+
+------
+3、可重复读
+
+(1)、一个事务只能读取到另一个已提交事务修改过的数据。（只能读一个事务已提交的数据，读已提交 & 某一事务已提交）
+
+（2）、但是第一次读过某条记录后，即使其它事务修改了该记录的值并且提交，之后该事务再读该条记录时，
+读到的仍是第一次读到的值，而不是每次都读到不同的数据。那么这种隔离级别就称之为可重复读。
+
+（3）、可重复读是 MySQL 的默认事务隔离级别。
+
+（4.1）、同一事务的多个实例在并发读取数据时，会看到同样的数据行。（自己读，总是一样的。）
+（4.2）、在该隔离级别下，如果有事务正在读取数据，就不允许有其它事务进行修改操作，这样就解决了可重复读问题。（自己读，别人不能改）
+
+（5）、使用串行化隔离级别可以解决实例中产生的幻读问题。
+
+例子：
+（1）、
+mysql> SET GLOBAL TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+
+（2）、A读(读不到某数据,key为1的数据)；B窗口BEGIN、插入（key为1的某数据）、commit；
+A再读（仍然读不到key为1的数据）；A插入（KEY为1的数据插入失败）
+
+A读不到B新插入的行，即使B已经提交了。（幻读）
+
+-------
+
+4、串行化
+
+========================================
+
+1、查看隔离级别
+
+mysql> show variables like '%tx_isolation%';
++---------------+-----------------+
+| Variable_name | Value           |
++---------------+-----------------+
+| tx_isolation  | REPEATABLE-READ |
++---------------+-----------------+
+
+mysql> select @@tx_isolation;
++-----------------+
+| @@tx_isolation  |
++-----------------+
+| REPEATABLE-READ |
++-----------------+
+
+2、查询全局和会话的事务隔离级别：
+
+SELECT @@global.tx_isolation;
+SELECT @@session.tx_isolation;      //单个会话的（单个连接，cmd窗口）
+
+----
+
+3、修改事务级别
+（1）、SET [SESSION | GLOBAL] TRANSACTION ISOLATION LEVEL {READ UNCOMMITTED | READ COMMITTED | REPEATABLE READ | SERIALIZABLE}
+
+其中，SESSION 和 GLOBAL 关键字用来指定修改的事务隔离级别的范围：
+SESSION：表示修改的事务隔离级别将应用于当前 session（当前 cmd 窗口）内的所有事务；
+GLOBAL：表示修改的事务隔离级别将应用于所有 session（全局）中的所有事务，且当前已经存在的 session 不受影响；
+如果省略 SESSION 和 GLOBAL，表示修改的事务隔离级别将应用于当前 session 内的下一个还未开始的事务。
+
+（2）、mysql> set tx_isolation='READ-COMMITTED';修改当前session
+
+
+
+
+
+	  

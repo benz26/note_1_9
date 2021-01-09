@@ -1,0 +1,10 @@
+//dock
+https://yeasy.gitbook.io/docker_practice/
+https://www.jianshu.com/p/2d9d4cdd3af7
+
+
+webhook（监听http请求，触发执行脚本）
+https://www.kancloud.cn/edk24/test/1925621
+
+gogs(私有的git服务器)
+https://www.jianshu.com/p/86c385682ac8

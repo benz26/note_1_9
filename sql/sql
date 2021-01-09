@@ -1,0 +1,52 @@
+select * from tb_user;
+select * from tb_device;
+
+select count(*) from tb_device;
+
+//like
+select * from tb_device where miner_sn like "SME14609D77FI%";
+
+
+//重复
+select * from ptfs.tb_device where miner_sn in (select   miner_sn from   ptfs.tb_device group by   miner_sn having count(miner_sn) > 1);
+select   miner_sn from   ptfs.tb_device group by   miner_sn having count(miner_sn) > 1;
+
+select * from ptfs.tb_device
+where miner_id in (select   miner_id from   ptfs.tb_device group by   miner_id having count(miner_id) > 1);
+
+
+//
+alter table ptfs.dev_online_log add rom_version char(32) NOT NULL;
+
+
+//创建
+CREATE TABLE `tb_device` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `miner_id` bigint(20) NOT NULL,
+  `miner_sn` char(32) NOT NULL,
+  `miner_mac` char(32) NOT NULL,
+  `cpu_id` char(32) NOT NULL,
+  `miner_name` char(255) NOT NULL,
+  `ipfs_id` char(64) DEFAULT '',
+  `miner_ip` char(32) NOT NULL,
+  `miner_type` int(11) NOT NULL,
+  `total_cap` bigint(20) NOT NULL,
+  `free_cap` bigint(20) NOT NULL,
+  `bind_state` int(11) NOT NULL,
+  `bind_user_id` bigint(20) NOT NULL,
+  `bind_user_tel_num` char(32) NOT NULL,
+  `online_state` int(11) NOT NULL,
+  `bind_timestamp` bigint(20) NOT NULL,
+  `rom_version` char(32) NOT NULL,
+  `rom_target` char(64) DEFAULT '',
+  `active_timestamp` bigint(20) NOT NULL DEFAULT '0',
+  `pri_chan_prv` varchar(256) NOT NULL DEFAULT '0',
+  `scd_chan_prv` varchar(256) NOT NULL DEFAULT '0',
+  `eqp_brd` int(11) NOT NULL DEFAULT '0',
+  `eqp_type` int(11) NOT NULL DEFAULT '0',
+  `hd_type` int(11) NOT NULL DEFAULT '0',
+  `op_sys` int(11) NOT NULL DEFAULT '0',
+  `time_create` bigint(20) NOT NULL,
+  `time_update` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3901 DEFAULT CHARSET=utf8

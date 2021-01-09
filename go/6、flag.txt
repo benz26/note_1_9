@@ -1,0 +1,55 @@
+1、
+var verbose = flag.Bool("v", false, "显示详细进度") 
+
+//verbose默认值是false,有-v的时候是true
+//在有-v标识的时候周期性的输出当前目录的总和，如果只想看到最终的结果（不周期性输出打印）省略-v即可。
+
+// 定期打印结果
+var tick <-chan time.Time
+if *verbose {                                      //如果verbose是true，就会给tick赋值一个通道
+	tick = time.Tick(500 * time.Millisecond)
+}
+
+======================================================================
+
+2、
+flag.StringVar(&configPath, "c", "configs/conf.json", "the path of the app config"
+flag.Parse()
+
+======================================================================
+
+3、
+打印和log
+(1)、打印结构体，不打印字段名，打印value，打印成一行
+//{{39.100.128.74 2468 110 8350 ./exportfile http://39.100.131.247:9890/ http://39.100.131.247:4321/ http://39.100.131.247:9080/} {127.0.0.1:8397 ipfsnodesvr2020 1 3 3 0s true} {39.100.131.247:3306 root ipfs@ZZB2020 ptfs 5 5 0s}}
+fmt.Println(Cfg)
+
+（2）、
+logrus.Infof("Config path: %s\n", configPath)
+logrus.Info("NodeMgmtSrv Version:", version)
+
+（3）、
+bytes, _ := json.Marshal(Cfg)
+logrus.Infof("config show:\n %s \n", string(bytes))
+logrus.Infof("config show:\n %v \n", Cfg)
+logrus.Infof("config show:\n %+v \n", Cfg)
+logrus.Infof("config show:\n %#v \n", Cfg)
+logrus.Infof("config show:\n %T \n", Cfg)
+
+//和下面差不多,传结构体和指针都可以
+bytes, _ := json.Marshal(&Cfg)
+logrus.Infof("config show:\n %s \n", string(bytes))
+logrus.Infof("config show:\n %v \n", &Cfg)
+logrus.Infof("config show:\n %+v \n", &Cfg)
+logrus.Infof("config show:\n %#v \n", &Cfg)
+logrus.Infof("config show:\n %T \n", &Cfg)
+
+
+time="2020-11-21T14:24:06+08:00" level=info msg="config show:\n {\"baseConfig\":{\"switchIP\":\"39.100.128.74\",\"switchPort\":2468,\"SrvType\":110,\"SrvId\":8350,\"saveExcelPath\":\"./exportfile\",\"exportDownURL\":\"http://39.100.131.247:9890/\",\"hlslist_download\":\"http://39.100.131.247:4321/\",\"sdk_report\":\"http://39.100.131.247:9080/\"},\"redisConfig\":{\"redisAddr\":\"127.0.0.1:8397\",\"pwd\":\"ipfsnodesvr2020\",\"dbIndex\":1,\"maxIdle\":3,\"maxActive\":3,\"idleTimeout\":0,\"wait\":true},\"mySqlConfig\":{\"dbAddr\":\"39.100.131.247:3306\",\"userName\":\"root\",\"pwd\":\"ipfs@ZZB2020\",\"dbName\":\"ptfs\",\"idleConns\":5,\"maxConns\":5,\"connLife\":0}} \n"
+time="2020-11-21T14:24:06+08:00" level=info msg="config show:\n {{39.100.128.74 2468 110 8350 ./exportfile http://39.100.131.247:9890/ http://39.100.131.247:4321/ http://39.100.131.247:9080/} {127.0.0.1:8397 ipfsnodesvr2020 1 3 3 0s true} {39.100.131.247:3306 root ipfs@ZZB2020 ptfs 5 5 0s}} \n"
+time="2020-11-21T14:24:06+08:00" level=info msg="config show:\n {BaseConf:{SwitchIP:39.100.128.74 SwitchPort:2468 SrvType:110 SrvId:8350 SaveExcelPath:./exportfile ExportDownURL:http://39.100.131.247:9890/ HlsListDownURL:http://39.100.131.247:4321/ SdkReportAddr:http://39.100.131.247:9080/} RedisConf:{RedisAddr:127.0.0.1:8397 Pwd:ipfsnodesvr2020 DbIndex:1 MaxIdle:3 MaxActive:3 IdleTimeout:0s Wait:true} MysqlConf:{DbAddr:39.100.131.247:3306 UserName:root PassWord:ipfs@ZZB2020 DbName:ptfs IdleConns:5 MaxConns:5 ConnLifeTime:0s}} \n"
+time="2020-11-21T14:24:06+08:00" level=info msg="config show:\n configs.Config{BaseConf:configs.BaseConfig{SwitchIP:\"39.100.128.74\", SwitchPort:0x9a4, SrvType:0x6e, SrvId:0x209e, SaveExcelPath:\"./exportfile\", ExportDownURL:\"http://39.100.131.247:9890/\", HlsListDownURL:\"http://39.100.131.247:4321/\", SdkReportAddr:\"http://39.100.131.247:9080/\"}, RedisConf:redis.RedisConfig{RedisAddr:\"127.0.0.1:8397\", Pwd:\"ipfsnodesvr2020\", DbIndex:1, MaxIdle:3, MaxActive:3, IdleTimeout:0, Wait:true}, MysqlConf:dataBase.SqlConfig{DbAddr:\"39.100.131.247:3306\", UserName:\"root\", PassWord:\"ipfs@ZZB2020\", DbName:\"ptfs\", IdleConns:5, MaxConns:5, ConnLifeTime:0}} \n"
+time="2020-11-21T14:24:06+08:00" level=info msg="config show:\n configs.Config \n"
+
+======================================================================
+

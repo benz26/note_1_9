@@ -1,0 +1,48 @@
+如果查询时不使用索引，那么查询语句将查询表中的所有字段（行，而不是列）。这样查询的速度会很慢。
+
+使用索引进行查询，查询语句不必读完表中的所有记录，而只查询索引字段。
+
+----------------------
+
+例子：
+（1）、
+mysql> EXPLAIN SELECT * FROM tb_students_info WHERE name='张三' \G
+           id: 1
+  select_type: SIMPLE
+        table: tb_students_info
+   partitions: NULL
+         type: ALL
+possible_keys: NULL
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: 8                            //8行
+     filtered: 12.50
+        Extra: Using where
+1 row in set, 1 warning (0.00 sec)
+
+没有索引的表就相当于一组无序的行，如果我们想找到某条记录就必须检查表的每一行，看看它是否与那个期望值相匹配。//无序的行
+
+这是一个全表扫描操作，其效率很低，如果表很大，而且仅有少数几条记录与搜索条件相匹配，那么整个扫描过程的效率将会超级低。//仅有少数几条记录与搜索条件匹配
+
+（2）、
+在 tb_students_info 表的 name 字段添加索引，SQL 语句和运行结果如下： //索引就是以name字段，创建有序的行
+mysql> CREATE INDEX index_name ON tb_students_info(name);
+
+mysql> EXPLAIN SELECT * FROM tb_students_info WHERE name='张三' \G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb_students_info
+   partitions: NULL
+         type: ref
+possible_keys: index_name
+          key: index_name
+      key_len: 63
+          ref: const
+         rows: 1
+     filtered: 100.00
+        Extra: NULL
+1 row in set, 1 warning (0.00 sec)
+
+-----------------

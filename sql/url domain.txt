@@ -1,0 +1,76 @@
+mysql> DESCRIBE url_mgmt;
++-------------+------------+------+-----+---------+----------------+
+| Field       | Type       | Null | Key | Default | Extra          |
++-------------+------------+------+-----+---------+----------------+
+| id          | bigint(20) | NO   | PRI | NULL    | auto_increment |
+| url         | text       | NO   |     | NULL    |                |
+| domain_id   | text       | NO   |     | NULL    |                |
+| state       | int(11)    | NO   |     | NULL    |                |
+| url_type    | int(11)    | NO   |     | NULL    |                |
+| url_name    | char(128)  | NO   |     | NULL    |                |
+| buser_id    | char(64)   | NO   |     | NULL    |                |
+| label       | char(64)   | NO   |     | NULL    |                |
+| label2      | bigint(20) | NO   |     | NULL    |                |
+| host_valid  | int(11)    | NO   |     | NULL    |                |
+| host_url    | text       | NO   |     | NULL    |                |
+| size        | int(11)    | NO   |     | NULL    |                |
+| cache_valid | int(11)    | NO   |     | NULL    |                |
+| cache_data  | text       | NO   |     | NULL    |                |
+| custom_page | text       | NO   |     | NULL    |                |
+| file_id     | char(64)   | NO   |     | NULL    |                |
+| seed_nodes  | text       | NO   |     | NULL    |                |
+| cache_nodes | text       | NO   |     | NULL    |                |
+| create_time | bigint(20) | NO   |     | NULL    |                |
+| time_create | bigint(20) | NO   |     | NULL    |                |
+| time_update | bigint(20) | NO   |     | NULL    |                |
++-------------+------------+------+-----+---------+----------------+
+21 rows in set (0.00 sec)
+
+mysql> DESCRIBE url_info;
++-----------------+--------------+------+-----+-------------------+-----------------------------+
+| Field           | Type         | Null | Key | Default           | Extra                       |
++-----------------+--------------+------+-----+-------------------+-----------------------------+
+| id              | bigint(20)   | NO   | PRI | NULL              | auto_increment              |
+| url_name        | varchar(256) | NO   | MUL | NULL              |                             |
+| chan_id         | varchar(32)  | NO   |     | NULL              |                             |
+| domain_id       | varchar(64)  | NO   |     | NULL              |                             |
+| vod_type        | tinyint(4)   | NO   |     | NULL              |                             |
+| playurl_path    | text         | NO   |     | NULL              |                             |
+| b2surl_path     | text         | NO   |     | NULL              |                             |
+| state           | tinyint(4)   | NO   |     | NULL              |                             |
+| expire_valid    | tinyint(4)   | YES  |     | 0                 |                             |
+| expire_config   | text         | YES  |     | NULL              |                             |
+| create_time     | bigint(64)   | NO   |     | NULL              |                             |
+| sys_time_create | timestamp    | NO   |     | CURRENT_TIMESTAMP |                             |
+| sys_time_update | timestamp    | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++-----------------+--------------+------+-----+-------------------+-----------------------------+
+13 rows in set (0.00 sec)
+
+mysql> DESCRIBE urldomain_mgmt;
++-------------+------------+------+-----+---------+----------------+
+| Field       | Type       | Null | Key | Default | Extra          |
++-------------+------------+------+-----+---------+----------------+
+| id          | bigint(20) | NO   | PRI | NULL    | auto_increment |
+| domain_id   | char(128)  | NO   |     | NULL    |                |
+| buser_id    | char(128)  | NO   |     | NULL    |                |
+| domain      | text       | NO   |     | NULL    |                |
+| state       | int(20)    | NO   |     | NULL    |                |
+| create_time | bigint(20) | NO   |     | NULL    |                |
+| time_create | bigint(16) | NO   |     | NULL    |                |
+| time_update | bigint(16) | NO   |     | NULL    |                |
++-------------+------------+------+-----+---------+----------------+
+
+mysql> DESCRIBE domain_info;
++-----------------+-------------+------+-----+-------------------+-----------------------------+
+| Field           | Type        | Null | Key | Default           | Extra                       |
++-----------------+-------------+------+-----+-------------------+-----------------------------+
+| id              | bigint(20)  | NO   | PRI | NULL              | auto_increment              |
+| domain_id       | varchar(64) | NO   |     | NULL              |                             |
+| chan_id         | varchar(32) | NO   |     | NULL              |                             |
+| domain          | text        | NO   |     | NULL              |                             |
+| state           | tinyint(4)  | NO   |     | NULL              |                             |
+| create_time     | bigint(20)  | NO   |     | NULL              |                             |
+| sys_time_create | timestamp   | NO   |     | CURRENT_TIMESTAMP |                             |
+| sys_time_update | timestamp   | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++-----------------+-------------+------+-----+-------------------+-----------------------------+
+8 rows in set (0.00 sec)

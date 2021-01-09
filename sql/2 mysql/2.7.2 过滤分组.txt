@@ -1,0 +1,13 @@
+WHERE 根据数据表中的字段直接进行过滤，而 HAVING 是根据前面已经查询出的字段进行过滤。
+
+1、相同
+mysql> SELECT name,sex,height FROM tb_students_info 
+    -> HAVING height>150;              //前面必须查询到height才能用HAVING
+	
+mysql> SELECT name,sex,height FROM tb_students_info 
+-> WHERE height>150;
+
+
+mysql> SELECT GROUP_CONCAT(name),sex,height FROM tb_students_info 
+    -> GROUP BY height 
+    -> HAVING AVG(height)>170;

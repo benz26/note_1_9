@@ -1,0 +1,27 @@
+1、创建时 非空约束
+mysql> CREATE TABLE tb_dept4
+    -> (
+    -> id INT(11) PRIMARY KEY,
+    -> name VARCHAR(22) NOT NULL,
+    -> location VARCHAR(50)
+    -> );
+	
+	<字段名> <数据类型> NOT NULL;
+	
+2、修改
+mysql> ALTER TABLE tb_dept4
+    -> CHANGE COLUMN location
+    -> location VARCHAR(50) NOT NULL;
+	
+ALTER TABLE <数据表名>
+CHANGE COLUMN <字段名>
+<字段名> <数据类型> NOT NULL;
+
+3、删除
+
+mysql> ALTER TABLE tb_dept4
+    -> CHANGE COLUMN location
+    -> location VARCHAR(50) NULL;
+	
+	ALTER TABLE <数据表名>
+CHANGE COLUMN <字段名> <字段名> <数据类型> NULL;

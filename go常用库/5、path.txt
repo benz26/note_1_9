@@ -1,0 +1,12 @@
+（1）、获取可执行文件相对于当前工作目录的相对路径
+root := filepath.Dir(os.Args[0])
+
+(2)、根据相对路径获取可执行文件的绝对路径,入参是path
+root, err := filepath.Abs(root)
+
+（3）、文件
+path.Base(os.Args[0])
+
+
+（4）、绝对路径加文件名
+path.Join(dir, path.Base(os.Args[0]))

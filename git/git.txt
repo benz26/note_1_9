@@ -1,0 +1,159 @@
+ssh root@119.29.194.101
+scp vodbackmgmtsrv root@119.29.194.101:/home/lvfengxian
+xYw756Od&#s2c0xe&
+
+----
+
+touch README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin http://129.211.138.245:3080/ipfs/vodbackmgmtsrv.git
+git push -u origin master  //github网页上的仓库
+
+账号：  ipfs    密码： xYw756Od&#s2c0xe&
+
+
+----------
+
+git 
+
+//配置用户信息
+git config --global user.name "life"
+git config --global user.email life@qq.com
+
+//查看
+git config -l
+user.name=life
+user.email=life@qq.com
+
+
+=============================
+
+1、
+（1）、
+git push -u origin master  //github网页上的仓库
+
+（2）、git工作区域
+1）git本地仓库
+
+2）暂缓区（git add）
+
+3）工作区
+
+
+
+2、
+（1）、git init
+
+（2）、git clone
+//克隆复制远程仓库到当前目录,生成test_1_t文件夹,里面会自动创建.git目录,并保存远程仓库信息
+git clone https://github.com/benz26/test_1_t.git
+
+（3）、git status
+-----
+1）//无修改
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+
+2）//有修改
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   main.go
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)         //等待被添加到暂缓区
+
+	git.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+3）
+leyi@leyi-System-Product-Name:~/benz26/test_1_t$ git add git.txt          //添加到 暂缓区
+leyi@leyi-System-Product-Name:~/benz26/test_1_t$ git add main.go 
+leyi@leyi-System-Product-Name:~/benz26/test_1_t$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   git.txt
+	modified:   main.go
+-----
+
+（3）、添加、删除暂缓区文件
+git add file 或者git add .
+git rm file
+
+（4）、git push origin main 
+----
+1)按tab键，main;origin master提示不匹配
+leyi@leyi-System-Product-Name:~/benz26/test_1_t$ git push origin master
+error: src refspec master does not match any.
+error: failed to push some refs to 'https://github.com/benz26/test_1_t.git'
+
+2)
+git rm git.txt 
+git status
+git commit -m "删除"
+git push origin main  //删除远程仓库的文件git.txt
+----
+
+（4）、撤销commit（撤销暂缓区，不commit某一文件或所有commit取消）
+
+HEAD^
+最新一次提交的第一个父提交。
+
+HEAD当前快照
+git reset HEAD^1     //撤销commit,如果想修改commit时的文件,则使用上面命令撤销
+git reset HEAD u-boot/drivers/video/jz_lcd/jz_lcd_v13.c 
+
+git show  HEAD^1      //上一次commit
+
+
+(5)ssh
+ssh git@github.com
+git clone git@github.com:lifeyx/test2.git 
+
+（6）查看本地文件修改了什么
+git diff Makefile 
+撤销本地修改，变成最新
+git checkout Makefile
+
+(7)更新
+git pull --rebase origin main 
+
+
+(8)git show
+查看最近一次提交
+
+
+（9）、
+放弃本地其它修改，直接覆盖,输入: 
+git reset --hard
+git pull
+
+（10）、
+查看每一行是哪次提交最后修改的
+git blame filename  
+
+
+（11）、列出文件的所有修改记录
+git log -p filename   
+
+
+ 
+
+
+
+
+
+

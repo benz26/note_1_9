@@ -1,0 +1,60 @@
+【字符串】
+1、设置键值对
+set key value
+
+set key1 value1
+set key2 value2
+
+2、通过键获取值
+get key
+get key1 返回value1
+
+
+3、删除键值对，返回删除数
+del key
+del key 1,返回1
+
+
+4、求key指向的字符串长度
+strlen key
+strlen key2返回value2长度6
+
+5、设置新值，返回旧值
+getset key value
+getset key2 new_value2.返回老的value2
+
+6、获取子字符串，start 和 end的取值范围是0到len-1
+getrange key start end
+getrange key2 0 3，返回new_value2的其中0-3,即new；但是内存中的依然是new_value2;//没有截断
+
+7、添加该字符串到原字符串末尾，返回总长度
+append key value
+append key2 _app，返回new_value2_app，//内存中数据添加了(更新了)
+
+-------
+
+【字符串是数字】
+如果字符串是数字（整数或者浮点数），那么 Redis 还能支持简单的运算。
+set val 8
+
+1、在原字段上加1
+incr key
+incr val,返回9
+
+2、在原字段上加整数increment
+incrby key increment
+
+3、在原字段减去1
+decr key
+decr val，返回8
+
+4、在原本字段减去整数decrement
+decrby key decrement
+decrby val 2，返回6
+
+上面命令只支持整数
+--
+
+5、在原本字段上加上浮点数或整数increment(支持整数加浮点数)
+incrbyfloat key incrememt
+incrbyfloat val 2.3，返回8.30000...01

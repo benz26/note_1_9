@@ -1,0 +1,26 @@
+1、唯一约束
+
+唯一约束和主键约束不同点:
+一张表只能有一个主键约束，可以有多个唯一约束
+主键约束不能有控制，唯一约束可以有一个空值
+
+
+mysql> CREATE TABLE tb_dept2
+    -> (
+    -> id INT(11) PRIMARY KEY,
+    -> name VARCHAR(22) UNIQUE,
+    -> location VARCHAR(50)
+    -> );
+	
+	<字段名> <数据类型> UNIQUE //唯一约束
+	
+2、	修改唯一约束
+mysql> ALTER TABLE tb_dept1
+    -> ADD CONSTRAINT unique_name UNIQUE(name);
+ALTER TABLE <数据表名> ADD CONSTRAINT <唯一约束名> UNIQUE(<列名>);
+
+
+3、删除唯一约束
+mysql> ALTER TABLE tb_dept1
+    -> DROP INDEX unique_name;
+ALTER TABLE <表名> DROP INDEX <唯一约束名>;

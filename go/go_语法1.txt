@@ -1,0 +1,49 @@
+1、标准格式：
+var 变量名 变量类型
+var name type
+var a, b *int
+
+---
+（1）、var hp int
+（2）、var hp int = 100
+（3）、var hp = 100
+---
+1.1、批量格式
+var (
+    a int
+    b string
+    c []float32
+    d func() bool
+    e struct {
+        x int
+    }
+)
+---
+2、简短格式（短变量声明并初始化）：
+
+名字 := 表达式
+i, j := 0, 1    //这些变量必须是第一次声明(定义)，使用:=就是一种声明，省去了var标准声明
+---
+func main() {
+   x:=100
+   a,s:=1, "abc"
+}
+
+----------------
+3、对比
+
+（1）、conn, err := net.Dial("tcp","127.0.0.1:8080")
+net.Dial 提供按指定协议和地址发起网络连接，这个函数有两个返回值，一个是连接对象（conn），一个是错误对象（err）。如果是标准格式将会变成：
+
+-----
+（2）、
+var conn net.Conn
+var err error
+conn, err = net.Dial("tcp", "127.0.0.1:8080")  //注意，这里有2个返回值
+
+（3）、由于conn2是新定义，因此err不会提示重复定义，可以使用:=  
+conn, err := net.Dial("tcp", "127.0.0.1:8080")
+conn2, err := net.Dial("tcp", "127.0.0.1:8080")
+上面的代码片段，编译器不会报 err 重复定义。
+
+-------

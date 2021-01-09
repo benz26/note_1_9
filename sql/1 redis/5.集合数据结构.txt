@@ -1,0 +1,174 @@
+redis集合是元素不重复的hash
+集合是无序的，c++集合是红黑树（有序的）
+
+集合的每一个元素都是 String 数据结构类型。
+
+--------
+
+【语法】：
+
+1、增加成员
+sadd key member1 member2 member3
+
+2、成员总数
+scard key
+
+3、找出两个集合的差集;或者参数是单key,返回这个key所有的元素
+sdiff key1 key2
+
+4、将差集存在des集合中，key1有而key2没有
+sdiffstore des key1 key2
+
+5、求交集;或者参数是单key,返回这个key所有的元素
+sinter key1 key2
+
+6、将交集保存在des中
+sinterstore des key1 key2
+
+7、判断member是否是键为key的集合的成员。是返回1，不是返回0
+sismember key member
+
+8、返回所有成员
+smembers key
+
+9、将成员移动到des
+smove src des member
+
+10、随机弹出一个元素
+spop key
+
+11、随机返回count各元素；count不填默认为1；
+srandmember key count
+
+12、移除元素
+srem key member1 member2
+
+13、求并集
+sunion key1 key2
+
+14、保存并集
+sunionstore des key1 key2
+
+集合是无序的，并且支持并集、交集和差集的运算
+
+----------
+
+【例子】：
+sadd set1 v1 v2 v3 v4 v5 v6,返回总数6
+set1里有v1 v2 v3 v4 v5 v6,
+
+sadd set2 v0 v2 v4 v6 v8，返回5
+v0 v2 v4 v6 v8
+
+scard set1，返回6
+
+sdif set1，返回set1各个元素
+v4
+v2
+v4
+v6
+v1
+v5  无序的
+
+sdiff set1 set2//set1有而sert2没有
+v1
+v5
+v3
+
+sinter set1 set2
+v2
+v4
+v6
+
+sismember set v2
+0
+sismember set1 v2
+1
+
+smembers set2
+v6
+v4
+v0
+v2
+v8
+
+spop set1
+v1
+
+
+smembers set1
+v6 
+v4
+v2
+v3
+v5
+
+srandmember set1 2 (随机返回2个)
+v2
+v5
+
+sunion set1 set2
+v6
+v4
+v0
+v8
+v2
+v3
+v5
+
+
+-----
+
+sadd set1  v1 v2 v3 v4 v5 v6
+
+sadd set2 v0 v2 v4 v6 v8
+
+sdiffstore diff_set set1 set2，返回3（v1 v3 v5）
+
+smembers diff_set
+v1
+v5
+v3
+
+sunionstore union_set set1 set2，返回8（0 ,1,2,3,4,5,6,8）
+
+smembers union_set
+...
+
+sinterstore inner_set set1 set2，返回3（2 4 6）
+
+smembers inner_set
+...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

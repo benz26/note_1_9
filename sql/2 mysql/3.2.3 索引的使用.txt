@@ -1,0 +1,39 @@
+1、
+使用 LIKE 关键字进行查询时，如果匹配字符串的第一个字符为“%”
+
+EXPLAIN SELECT * FROM tb_student WHERE name LIKE '%四'\G
+
+EXPLAIN SELECT * FROM tb_student WHERE name LIKE '李%'\G //使用索引
+
+2、
+多列索引是在表的多个字段上创建一个索引，只有查询条件中使用了这些字段中的第一个字段，索引才会被使用。
+
+mysql> CREATE INDEX index_name_age ON tb_student(name,age);
+mysql> EXPLAIN SELECT * FROM tb_student WHERE name LIKE '李%'\G //使用索引
+
+mysql> EXPLAIN SELECT * FROM tb_student WHERE age LIKE '12'\G
+
+3、
+如果 OR 前后的两个条件的列都是索引，那么查询中将使用索引。如果 OR 前后有一个条件的列不是索引，那么查询中将不使用索引。
+
+ EXPLAIN SELECT * FROM tb_student WHERE name='张三' or sex='男'\G
+
+
+ EXPLAIN SELECT * FROM tb_student WHERE name='张三' or id='12'\G  //使用索引
+    id: 1
+  select_type: SIMPLE
+        table: tb_student
+   partitions: NULL
+         type: index_merge
+possible_keys: PRIMARY,index_name,index_name_age 
+          key: index_name,PRIMARY   //使用索引
+      key_len: 77,4
+          ref: NULL
+         rows: 2
+     filtered: 100.00
+        Extra: Using union(index_name,PRIMARY); Using where
+1 row in set, 1 warning (0.01 sec)
+
+综上,使用索引查询记录时，一定要注意索引的使用情况。例如，LIKE 关键字配置的字符串不能以“%”开头；使用多列索引时，
+查询条件必须要使用这个索引的第一个字段；使用 OR 关键字时，OR 关键字连接的所有条件都必须使用索引。
+

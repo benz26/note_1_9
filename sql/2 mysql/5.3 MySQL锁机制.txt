@@ -1,0 +1,104 @@
+1、共享锁
+S（Share）；
+读锁，可以查看，不能修改、删除数据；
+粒度是行或者元组（多个行）；
+阻止其他事务获取写锁；
+
+2、排他锁
+X(eXclusive);
+写锁，可以读写；
+粒度是行或者元组（多个行）；
+阻止其他事务获得相同数据的共享锁或者排他锁
+
+3、意向锁（针对整张表）
+IS(意向共享锁)
+IX（意向排他锁）
+
+
+---------------
+
+1、表锁
+写锁可以插入到锁队列中读锁的前面，反之读锁则不能插入到写锁的前面。
+
+2、页锁
+页级锁的颗粒度介于行级锁与表级锁之间。
+
+3、行锁
+
+-------
+
+//InnoDB支持事务，
+InnoDB，是MySQL的数据库引擎之一，现为MySQL的默认存储引擎，为MySQL AB发布binary的标准之一。
+InnoDB由Innobase Oy公司所开发，2006年五月时由甲骨文公司并购。与传统的ISAM与MyISAM相比，
+InnoDB的最大特色就是支持了ACID兼容的事务（Transaction）功能，类似于PostgreSQL。
+
+----
+
+MySQL InnoDB的3种行锁定方式：
+
+nnoDB 支持 3 种行锁定方式：
+行锁（Record Lock）：直接对索引项加锁。
+间隙锁（Gap Lock）：锁加在索引项之间的间隙，也可以是第一条记录前的“间隙”或最后一条记录后的“间隙”。
+Next-Key Lock：行锁与间隙锁组合起来用就叫做 Next-Key Lock。 前两种的组合，对记录及其前面的间隙加锁。
+
+
+默认情况下，InnoDB 工作在可重复读（默认隔离级别）下（会有幻读），
+并且以 Next-Key Lock 的方式对数据行进行加锁，这样可以有效防止幻读的发生。（??）
+
+------
+
+例子：
+A B窗口都是重复读；
+
+（1）、A BEGIN;UPDATE一行;（立即返回，并未提交）；
+（2）、B BEGIN;UPDATE一行；（卡住，等待，不能立即返回）；
+（3）、A COMMIT
+ (4)、B UPDATE 成功
+（5）、查看MySQL 中 InnoDB 存储引擎的状态
+ mysql> SHOW ENGINE innodb status \G
+ 
+ ---------
+ 
+ MySQL 数据库采用 InnoDB 模式，默认参数 innodb_lock_wait_timeout 设置锁等待的时间是 50s，一旦数据库锁超过这个时间就会报错。可通过以下命令查看当前数据库锁等待的时间。
+mysql> SHOW GLOBAL VARIABLES LIKE 'innodb_lock_wait_timeout';
+ 
+ -------
+ 
+mysql> ALTER TABLE tb_dept1
+    -> ADD CONSTRAINT unique_name UNIQUE(name);
+	
+mysql> ALTER TABLE test.tb_student 
+	 -> ADD unique key idx_id(id);
+
+===================================================
+
+
+mysql> DESC tb_student;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(4)      | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(25) | NO   |     | NULL    |                |
+| age   | int(11)     | YES  | MUL | NULL    |               
+
+A:
+UPDATE tb_student SET num=5 WHERE age=13;
+
+B:
+UPDATE tb_student SET num=8 WHERE age=15;
+由于 age 是索引字段，与 A窗口中更新的是不同行的数据，所以这时不会出现锁等待现象。
+
+A:
+UPDATE tb_student SET num=10 WHERE age=15;
+等待B
+
+B:
+mysql> UPDATE tb_student SET num=12 WHERE age=13;
+等待A
+
+====================================================
+死锁检测
+innodb_deadlock_detect = ON ：默认值，打开死锁检测。数据库发生死锁时，系统会自动回滚其中的某一个事务，让其它事务可以继续执行。
+innodb_deadlock_detect = OFF：关闭死锁检测。发生死锁时，系统会用锁等待来处理。
+
+

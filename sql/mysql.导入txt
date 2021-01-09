@@ -1,0 +1,58 @@
+登录：
+mysql -u root -p
+
+benS@123456
+
+CREATE DATABASE test_db;
+
+
+show databases;
+
+use test_db;
+
+mysql -u username -P [dbname] < filename.sql  //导入
+
+source /home/leyi/Downloads/url_mgmt.sql;
+
+
+SHOW TABLES;
+
++-------------------+
+| Tables_in_test_db |
++-------------------+
+| domain_info       |
+| url_info          |
+| url_mgmt          |
+| urldomain_mgmt    |
++-------------------+
+-----------------------------------------------------
+
+
+select * from test_db.url_mgmt;
+select * from test_db.url_info;
+
+select * from test_db.urldomain_mgmt;
+select * from test_db.domain_info;
+
+
+//导入数据到新表
+insert into test_db.domain_info(id,domain_id,chan_id,domain,state,create_time) select id,domain_id,buser_id,domain,state,create_time from  test_db.urldomain_mgmt;
+
+insert into test_db.url_info(id,url_name,chan_id,domain_id,vod_type,playurl_path,b2surl_path,state,expire_valid,expire_config,create_time) select id,url_name,buser_id,domain_id,url_type,url,host_url,state,cache_valid,cache_data,create_time from  test_db.url_mgmt;
+
+//导出：
+sudo mysqldump -u root -p  test_db domain_info >new_domain_info.sql
+sudo mysqldump -u root -p  test_db url_info >new_url_info.sql
+
+----------------
+
+mysql> use mysql;
+Database changed
+
+SHOW TABLES；
+
+show columns from user;
+
+select authentication_string from user where User='root';
+
+update user set authentication_string=password("benS@123456")  where User="root" and Host="localhost";

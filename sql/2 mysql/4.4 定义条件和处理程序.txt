@@ -1,0 +1,78 @@
+1、定义条件
+语法：
+DECLARE condition_name CONDITION FOR SQLSTATE [VALUE] sqlstate_value
+例子：
+DECLARE can_not_find CONDITION FOR SQLSTATE '42S02';
+
+语法2：
+DECLARE condition_name CONDITION FOR mysql_error_code
+例子：
+DECLARE can_not_find CONDITION FOR 1146;
+
+2、定义处理程序
+语法：
+DECLARE handler_type HANDLER FOR condition_value[...] sp_statement
+//sp_statement 参数为程序语句段，表示在遇到定义的错误时，需要执行的一些存储过程或函数。
+
+handler_type:
+CONTINUE | EXIT | UNDO
+
+condition_value:
+SQLSTATE [VALUE] sqlstate_value | condition_name | SQLWARNING | NOT FOUND | SQLEXCEPTION | mysql_error_code
+
+例子(1)：
+DECLARE 
+	CONTINUE/EXIT/UNDO  
+HANDLER FOR 
+	SQLSTATE '42S02' / 1146     //即sqlstate_value(5个字符的字符串错误值) 或者 mysql_error_code	
+SET @info='CAN NOT FIND';	  //输出“CAN NOT FIND”信息。
+
+例子（2）：
+DECLARE can_not_find CONDITION FOR 1146;  //can_not_find是错误条件名称
+DECLARE CONTINUE HANDLER FOR can_not_find SET @info='CAN NOT FIND';
+
+例子(3):
+DECLARE EXIT HANDLER FOR SQLWARNING SET @info='ERROR';//匹配所有以 01 开头的 sqlstate_value 值；
+
+DECLARE EXIT HANDLER FOR NOT FOUND SET @info='CAN NOT FIND';//匹配所有以 02 开头的 sqlstate_value 值；
+
+DECLARE EXIT HANDLER FOR SQLEXCEPTION SET @info='ERROR';//匹配所有没有被 SQLWARNING 或 NOT FOUND 捕获的 sqlstate_value 值；
+
+----------------------------------------------------------------------------
+
+
+例 3
+定义条件和处理顺序，具体的执行过程如下：
+mysql> CREATE TABLE t8(s1 INT,PRIMARY KEY(s1));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE handlerdemo()
+    -> BEGIN
+    -> DECLARE CONTINUE HANDLER FOR SQLSTATE '23000' SET @X2=1;
+    -> SET @X=1;
+    -> INSERT INTO t8 VALUES(1);  //第一次插入
+    -> SET @X=2;
+    -> INSERT INTO t8 VALUES(1); //第二次插入，键值重复，一般会失败exit
+    -> SET @X=3;
+    -> END //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELIMITER ;
+mysql> CALL handlerdemo();
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT @X;
++------+
+| @X   |
++------+
+|    3 |
++------+
+1 row in set (0.00 sec)
+上述代码中，@X 是一个用户变量，执行结果 @X 等于 3，这表明 MySQL 执行到程序的末尾。
+
+如果DECLARE CONTINUE HANDLER FOR SQLSTATE '23000' SET @X2=1;这一行不存在，第二个 INSERT 因 PRIMARY KEY 约束而失败之后，MySQL 可能已经采取 EXIT 策略，且 SELECT @X 可能已经返回 2。
+
+注意：@X 表示用户变量，使用 SET 语句为其赋值，用户变量与连接有关，一个客户端定义的变量不能被其他客户端所使用，当客户端退出时，该客户端连接的所有变量将自动释放。
+
+//当客户端退出时，该客户端连接的所有变量将自动释放。

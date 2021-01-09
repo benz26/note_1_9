@@ -1,0 +1,39 @@
+1、交叉连接
+
+交叉连接的语法格式如下：
+SELECT <字段名> FROM <表1> CROSS JOIN <表2> [WHERE子句]
+
+或
+SELECT <字段名> FROM <表1>, <表2> [WHERE子句] //CROSS JOIN可以用,代替
+
+
+mysql> SELECT * FROM tb_course CROSS JOIN tb_students_info 
+    -> WHERE tb_students_info.course_id = tb_course.id;
+	// CROSS JOIN ...WHERE
+	
+	
+2、内连接
+SELECT <字段名> FROM <表1> INNER JOIN <表2> [ON子句]
+
+mysql> SELECT s.name,c.course_name FROM tb_students_info s INNER JOIN tb_course c 
+    -> ON s.course_id = c.id;
+	//s.name,c.course_name （表）别名.列名
+	//tb_students_info s 表名 别名
+	//ON s.course_id = c.id; ON(类似where)
+	//INNER JOIN...ON
+	
+3、外连接
+左连接
+mysql> SELECT s.name,c.course_name FROM tb_students_info s LEFT OUTER JOIN tb_course c 
+    -> ON s.`course_id`=c.`id`;
+| Thomas | C++         |
+| Tom    | C++         |
+| LiMing | NULL        |//tb_course c没有这学生的课程7对应的课程信息（以左为准，右为NULL）
+
+右连接
+mysql> SELECT s.name,c.course_name FROM tb_students_info s RIGHT OUTER JOIN tb_course c 
+    -> ON s.`course_id`=c.`id`;
+| Tom    | C++         |
+| NULL   | HTML        |//名称为 HTML 的课程目前没有学生（以右为准，左为NULL）
++--------+-------------+
+

@@ -1,0 +1,8 @@
+1、
+文档：
+http://doc.oschina.net/grpc?t=60133
+
+package
+leyi@leyi-System-Product-Name:~/go/src$ go get github.com/grpc/grpc-go
+package github.com/grpc/grpc-go: code in directory /home/leyi/go/src/github.com/grpc/grpc-go expects import "google.golang.org/grpc"
+

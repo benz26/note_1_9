@@ -1,0 +1,239 @@
+导入：
+import "database/sql"
+_ "github.com/jackx/pgx/stdlib" 或者	_ "github.com/go-sql-driver/mysql" // 导入驱动
+
+
+3. 访问数据（sql.DB）
+func main() {
+    db, err := sql.Open("pgx","postgres://localhost:5432/postgres")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer db.Close()
+}
+
+4. 获取结果
+Query与Exec。
+两者的区别在于前者会返回结果，而后者不会。
+
+4.1 获取数据
+func example() {
+    var sum, n int32
+
+    // invoke query
+    rows, err := db.Query("SELECT generate_series(1,$1)", 10)
+    // handle query error
+    if err != nil {
+        fmt.Println(err)
+    }
+    // defer close result set
+    defer rows.Close()
+
+    // Iter results
+    for rows.Next() {
+        if err = rows.Scan(&n); err != nil {
+            fmt.Println(err)    // Handle scan error
+        }
+        sum += n                // Use result
+    }
+
+    // check iteration error
+    if rows.Err() != nil {
+        fmt.Println(err)
+    }
+
+    fmt.Println(sum)
+}
+整体工作流程如下：
+
+使用db.Query()来发送查询到数据库，获取结果集Rows，并检查错误。
+使用rows.Next()作为循环条件，迭代读取结果集。
+使用rows.Scan从结果集中获取一行结果。
+使用rows.Err()在退出迭代后检查错误。
+使用rows.Close()关闭结果集，释放连接。
+---------------------------
+
+4.2 单行查询
+如果一个查询每次最多返回一行，那么可以用快捷的单行查询来替代冗长的标准查询，例如上例可改写为：
+
+var sum int
+err := db.QueryRow("SELECT sum(n) FROM (SELECT generate_series(1,$1) as n) a;", 10).Scan(&sum)
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println(sum)
+--------------------------
+
+4.3 修改数据
+func (s *Stmt) Query(args ...interface{}) (*Rows, error)
+func (s *Stmt) Exec(args ...interface{}) (Result, error) 
+Exec不需要返回数据集，返回的结果是Result，Result接口允许获取执行结果的元数据
+
+type Result interface {
+    // 用于返回自增ID，并不是所有的关系型数据库都有这个功能。
+    LastInsertId() (int64, error)
+    // 返回受影响的行数。
+    RowsAffected() (int64, error)
+}
+==============================
+
+db.Exec(`CREATE TABLE test_users(id INTEGER PRIMARY KEY ,name TEXT);`)
+db.Exec(`TRUNCATE test_users;`)
+stmt, err := db.Prepare(`INSERT INTO test_users(id,name) VALUES ($1,$2) RETURNING id`)
+if err != nil {
+    fmt.Println(err.Error())
+}
+res, err := stmt.Exec(1, "Alice")
+
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(res.RowsAffected())
+    fmt.Println(res.LastInsertId())
+}
+
+----
+
+db.Exec(`CREATE TABLE test_users(id INTEGER PRIMARY KEY ,name TEXT);`)
+db.Exec(`TRUNCATE test_users;`)
+stmt, err := db.Prepare(`INSERT INTO test_users(id,name) VALUES ($1,$2) RETURNING id`)
+if err != nil {
+    fmt.Println(err.Error())
+}
+var returnID int
+err = stmt.QueryRow(4, "Alice").Scan(&returnID)
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(returnID)
+}
+-------
+
+数据库连接其实是实现了Begin,Close,Prepare方法的接口。
+
+type Conn interface {
+        Prepare(query string) (Stmt, error)
+        Close() error
+        Begin() (Tx, error)
+}
+所以连接接口上实际并没有Exec，Query方法，这些方法其实定义在Prepare返回的Stmt上。对于Go而言，这意味着db.Query()实际上执行了三个操作：首先对查询语句做了准备，然后执行查询语句，最后关闭准备好的语句。这对数据库而言，其实是3个来回。
+
+
+------
+如果驱动实现sql.Queryer接口：
+
+type Queryer interface {
+        Query(query string, args []Value) (Rows, error)
+}
+那么database/sql就不会再进行Prepare-Execute-Close的查询模式。
+
+===================
+
+5. 使用事务（批量，多条有关联的数据一起执行）
+事物是关系型数据库的核心特性。Go中事务（Tx）是一个持有数据库连接的对象，它允许用户在同一个连接上执行上面提到的各类操作。
+
+mysql> use RUNOOB;
+Database changed
+mysql> CREATE TABLE runoob_transaction_test( id int(5)) engine=innodb;  # 创建数据表
+Query OK, 0 rows affected (0.04 sec)
+ 
+mysql> select * from runoob_transaction_test;
+Empty set (0.01 sec)
+ 
+mysql> begin;  # 开始事务
+Query OK, 0 rows affected (0.00 sec)
+ 
+mysql> insert into runoob_transaction_test value(5);
+Query OK, 1 rows affected (0.01 sec)
+ 
+mysql> insert into runoob_transaction_test value(6);
+Query OK, 1 rows affected (0.00 sec)
+ 
+mysql> commit; # 提交事务
+Query OK, 0 rows affected (0.01 sec)
+ 
+mysql>  select * from runoob_transaction_test;
++------+
+| id   |
++------+
+| 5    |
+| 6    |
++------+
+2 rows in set (0.01 sec)
+ 
+mysql> begin;    # 开始事务
+Query OK, 0 rows affected (0.00 sec)
+ 
+mysql>  insert into runoob_transaction_test values(7);
+Query OK, 1 rows affected (0.00 sec)
+ 
+mysql> rollback;   # 回滚
+Query OK, 0 rows affected (0.00 sec)
+ 
+mysql>   select * from runoob_transaction_test;   # 因为回滚所以数据没有插入
++------+
+| id   |
++------+
+| 5    |
+| 6    |
++------+
+2 rows in set (0.01 sec)
+ 
+mysql>
+======================================
+
+上面的defer会安装stmt2 -> stmt1 -> tx -> db的顺序来关闭连接。
+如果将tx.Commit()写在stmt.Close()之前，则会出错。
+
+package main 
+import(
+    "fmt"
+    "log"
+    "database/sql"
+    _ "github.com/go-sql-driver/mysql"
+)
+
+func checkErr(err error){
+    if err != nil{
+        log.Fatal(err)
+    }  
+}
+
+func main() {
+    db, err := sql.Open("mysql", "root:user78@/test") //后面格式为"user:password@/dbname"
+    defer db.Close()
+    checkErr(err)
+
+    //使用Ping检查数据库是否实际可用
+    if err = db.Ping(); err != nil{
+        log.Fatal(err)
+    }
+    tx, err := db.Begin()
+    checkErr(err)
+    defer tx.Commit()
+
+    stmt1, err := tx.Prepare("insert userinfo set username =?,department=?,created=?")
+    checkErr(err)
+
+    result, err := stmt1.Exec("testTx", "PD", "2019-02-21")
+    checkErr(err)
+    id, err := result.LastInsertId()
+    checkErr(err)
+    defer stmt1.Close()
+
+    stmt2, err := tx.Prepare("select * from userinfo where uid =?")
+    checkErr(err)
+
+    //查询数据
+    var uid int 
+    var username, department, created string
+    err = stmt2.QueryRow(id).Scan(&uid, &username, &department, &created)
+    checkErr(err)
+    fmt.Printf("Uid is %v, username is %s, department is %s, created at %s\n", uid, username, department, created)
+    defer stmt2.Close()
+
+}
+
+
+
+

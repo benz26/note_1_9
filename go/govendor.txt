@@ -1,0 +1,35 @@
+1、
+go get -u -v github.com/kardianos/govendor
+
+2、
+govendor init
+govendor add +external       //添加外部依赖，vendor.json变化
+
+
+3、
+govendor list                 //
+govendor list -no-status      //不显示状态（全部）
+govendor list -no-status  +e  //外部的（部分）
+
+//govendor list -no-status  +e | grep -v ipfs | xargs govendor add
+
+4、
+govendor fetch
+
+5、
+只提交 vendor/vendor.json 文件
+govendor sync
+
+---
+
+其他：
+
+govendor list -no-status +e| wc
+  1       1      22
+  
+1行 1 个字符串 22个字符
+-c或--bytes或--chars 只显示Bytes数。
+-l或--lines 显示行数。
+-w或--words 只显示字数。
+
+----

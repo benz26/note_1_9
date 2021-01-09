@@ -1,0 +1,51 @@
+【string类】:
+
+（1）、
+string对象创建可以传地址和len  string(p,len);
+std::string(path+find_flag_index,strlen(path)-find_flag_index);
+
+(2)、
+auto find_pos = item_value.find("MemTotal");
+		if( find_pos == std::string::npos ){
+			continue;
+		}
+
+（3）、
+char* temp;
+kb_main_total = strtoull(number,&temp,10);
+字符串转换十进制数
+
+---
+【进程】:
+fork两次避免僵尸进程
+子进程fork出孙进程之后立即return
+
+getpid()获取当前进程id
+
+---
+
+【libcurl】:
+
+curl_global_init(CURL_GLOBAL_ALL);
+整个进程调用一次就行。
+
+
+-----
+【套接字】:
+监听，只接受5个请求：
+listen(service_id, 5);
+
+----
+
+【输入输出文件流】
+每次读取文件的一行
+std::fstream file_meminfo("/proc/meminfo",std::ios::in);
+	if( !file_meminfo ){
+		return 0;
+	}
+
+	for( std::string item_value;std::getline(file_meminfo,item_value,'\n'); )
+	
+----------
+
+https://juejin.cn/post/6844904194764177416

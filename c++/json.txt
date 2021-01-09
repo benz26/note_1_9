@@ -1,0 +1,100 @@
+写入字符串,传指针：
+doc_write.AddMember("dev_sn", "", doc_write.GetAllocator());
+doc_write["dev_sn"].SetString(dev_sn.c_str(), doc_write.GetAllocator());
+----------------------------
+
+array带key:
+rapidjson::Value item;
+item.SetObject(); 
+item.AddMember("total_com_power",dcp.m_total_value,doc.GetAllocator());
+Array_info.PushBack(item, doc.GetAllocator());
+------------------------
+
+array不带ke:
+JSON::Value json_time_stamp;
+json_time_stamp.SetInt(utpi.m_time_stamp);
+Array_info1.PushBack(json_time_stamp, doc_write.GetAllocator());
+doc_write.AddMember("col_value", Array_info1, doc_write.GetAllocator());
+------------------------
+
+JSON::Value row_array_jval;
+row_array_jval.SetArray();
+
+JSON::Value dev_sn_jstr;
+dev_sn_jstr.SetString(dev_sn.c_str(), dev_sn.size(), root_doc.GetAllocator());
+row_array_jval.PushBack(dev_sn_jstr, root_doc.GetAllocator());
+-------------------------
+
+
+{
+"version":"v1.0.0.2",
+"msgId":100,
+"taskId":"11c7a3bb-1b38-45ab-9631-3635f82a88fe",
+"chanId":"158000000008",
+"domain":"www.123.com",
+"uri":"/index.html",
+"urlName":"sdktest",
+"pureCDNFlow":123456,
+"CDNFlow":123456,
+"P2PFlow":258963,
+"nodeList":
+["f_harddiskbox.rouji_channelexample01_CiZh8w7GaC7geKgdeHZ3CoVw7FE9SATz1rZYLRZfPK7jyL",
+"f_harddiskbox.rouji_channelexample02_CibuRNcdwis8TkV9AbvERMxG1hrL9vuFqiWuBTV8VHrqpy"],
+"P2PSwitchCount":1,
+"CDNSwitchCount":1,
+"SDKIPList":["192.168.0.12","10.0.0.5"],
+"SDKType":0,
+"SDKNetType":0,
+"curAccelState":0,
+"curTimeStamp":231231231,
+"startTimeStamp":1232423444,
+"endTimeStamp":1232343554,
+"exceptionCount":2,
+"exceptionType":0,
+"exceptionStatus":1
+}
+
+{
+"version":"v1.0.0.2",
+"msgId":101,
+"taskId":"11c7a3bb-1b38-45ab-9631-3635f82a88fe",
+"chanId":"158000000008",
+"domain":"www.123.com",
+"uri":"index.html",
+"urlName":"sdktest",
+"phaseQuery":
+{"state":0,
+"consume":50
+},
+"phaseDLHlsList":
+{"state":0,
+"consume":50
+},
+"phaseHole":
+{"state":0,
+"consume":50
+},
+"phaseRequest":
+{"state":0,
+"consume":50
+},
+"state":0,
+"totalConsume":180,
+"startTime":15888888888,
+"endTime":15899999999,
+"timeStamp":15899999999
+}
+
+{
+"version":"v1.0.0.2",
+"msgId":102,
+"taskId":"11c7a3bb-1b38-45ab-9631-3635f82a88fe",
+"chanId":"158000000008",
+"domain":"www.123.com",
+"uri":"/index.html",
+"urlName":"sdktest",
+"nodeId":"f_harddiskbox.rouji_channelexample01_CiZh8w7GaC7geKgdeHZ3CoVw7FE9SATz1rZYLRZfPK7jyL",
+"state":0,
+"consume":50,
+"timeStamp":15899999999}
+

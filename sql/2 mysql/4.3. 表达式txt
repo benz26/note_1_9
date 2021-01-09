@@ -1,0 +1,19 @@
+1、定义变量
+DECLARE var_name[,...] type [DEFAULT value]
+
+DECLARE my_sql INT DEFAULT 10;
+
+2、变量赋值
+SET var_name = expr[,var_name = expr]...
+
+SET my_sql=30;
+
+3、
+SELECT col_name [...] INTO var_name[,...]
+FROM table_name WEHRE condition
+
+将该记录的 id 值赋给变量 my_sql
+my_sql = id
+SELECT id INTO my_sql FROM tb_student WEHRE id=2；
+
+

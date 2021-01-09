@@ -1,0 +1,122 @@
+一、
+logrus.WithFields(logrus.Fields{
+		"animal": "walrus",                   //字段值
+	}).Info("A walrus appears")               //提示信息
+	
+	time="2018-08-11T15:42:22+08:00" level=info msg="A walrus appears" animal=walrus
+
+--------------
+
+l, err := log.ParseLevel(configload.Cfg.LogConf.Level)//字符串转换为Level l
+
+（1）、
+// 设置日志格式为json格式
+log.SetFormatter(&log.JSONFormatter{})
+
+{"level":"warning","msg":"The group's number increased tremendously!","number":122,"omg":true,"time":"2020-12-31T13:57:49+08:00"}
+{"level":"fatal","msg":"The ice breaks!","number":100,"omg":true,"time":"2020-12-31T13:57:49+08:00"}
+
+（2）、
+log.SetFormatter(&log.TextFormatter{
+		DisableColors: false,
+		FullTimestamp: true,
+	})
+	
+
+
+time="2020-12-31T13:58:50+08:00" level=warning msg="The group's number increased tremendously!" number=122 omg=true
+time="2020-12-31T13:58:50+08:00" level=fatal msg="The ice breaks!" number=100 omg=true
+
+
+
+		logrus.SetFormatter(&logrus.TextFormatter{
+		ForceQuote:      false,
+		FullTimestamp:   true,
+		TimestampFormat: "2006-01-02 15:04:05",
+	})
+	
+time="2020-12-31 16:05:20" level=info msg="A group of walrus emerges from the ocean" animal=walrus size=10
+time="2020-12-31 16:05:20" level=warning msg="The group's number increased tremendously!" number=122 omg=true
+time="2020-12-31 16:05:20" level=fatal msg="The ice breaks!" number=100 omg=true
+
+
+
+----------
+
+//true 打印函数名和行号
+log.SetReportCaller(false)
+
+----------
+
+
+	debug、info、warn、error、fatal和panic
+
+	// 设置日志级别为warn以上
+	log.SetLevel(log.WarnLevel)
+	
+-----
+
+日志分割：
+比如：
+storagePath是metalog/log
+filepath.Join(storagePath, "log.%Y%m%d%H%M") 是metalog/log/log.%Y%m%d%H%M，是文件格式
+
+lrwxrwxrwx 1 leyi leyi      28 12月 31 14:53 log -> metalog/log/log.202012311400     //log是软链接名
+
+----
+	writer, err := rotatelogs.New(
+		filepath.Join(storagePath, "log.%Y%m%d%H%M"),                    //文件名的格式
+		
+		// WithLinkName为最新的日志建立软连接，以方便随着找到当前日志文件
+		rotatelogs.WithLinkName(path.Join(storagePath, "log")),          //metalog/log/log 是软链接的名字
+
+		// WithRotationTime设置日志分割的时间，这里设置为一小时分割一次
+		rotatelogs.WithRotationTime(time.Duration(configload.Cfg.LogConf.RotationTime)*time.Hour),
+
+		// WithMaxAge和WithRotationCount二者只能设置一个，
+		// WithMaxAge设置文件清理前的最长保存时间，
+		// WithRotationCount设置文件清理前最多保存的个数。
+		//rotatelogs.WithMaxAge(time.Hour*24),
+		rotatelogs.WithRotationCount(uint(configload.Cfg.LogConf.RotationCoun)),
+	)
+
+	logrus.SetOutput(writer)
+	
+---
+
+软连接创建：
+ln -s 01.txt soft  //-s 源文件
+ls 
+01.txt
+soft -> 01.txt   //soft是01.txt的软链接
+----
+
+	// 设置将日志输出到标准输出（默认的输出为stderr，标准错误）
+	// 日志消息输出可以是任意的io.writer类型
+	log.SetOutput(os.Stdout)
+	
+-------
+
+------
+
+二、
+这里是使用logrus.New()创建了实例log(后续调用都需要使用log实例调用)
+否则logrus会默认使用内部std = New()，创建实例std
+
+	// logrus提供了New()函数来创建一个logrus的实例。
+	// 项目中，可以创建任意数量的logrus实例。
+	var log = logrus.New()
+	
+	  // 为当前logrus实例设置消息的输出，同样地，
+    // 可以设置logrus实例的输出到任意io.writer
+	log.Out = os.Stdout
+
+    // 为当前logrus实例设置消息输出格式为json格式。
+    // 同样地，也可以单独为某个logrus实例设置日志级别和hook，这里不详细叙述。
+    log.Formatter = &logrus.JSONFormatter{}
+
+	log.WithFields(logrus.Fields{
+		"animal": "walrus",
+		"size":   10,
+	}).Info("A group of walrus emerges from the ocean")
+------------	

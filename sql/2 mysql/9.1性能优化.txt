@@ -1,0 +1,31 @@
+为了使 MySQL 数据库运行速度更快、占用的磁盘空间更小。
+
+当长时间运行，并且有大量用户进行频繁操作时，MySQL 数据库的性能才能体现出来。
+
+一个每天有几万用户同时在线的大型网站，它的数据库性能的优劣就很明显。
+这么多用户同时连接 MySQL 数据库，并且进行查询、插入和更新的操作。
+
+--------
+
+1、查看使用次数
+SHOW STATUS LIKE 'value';
+
+Connections：连接 MySQL 服务器的次数；
+Uptime：MySQL 服务器的上线时间；
+Slow_queries：慢查询的次数；
+Com_select：查询操作的次数；
+Com_insert：插入操作的次数，对于批量插入操作，只累加一次；
+Com_update：更新操作的次数；
+Com_delete：删除操作的次数。
+
+以上参数针对于所有存储引擎的表，下面几个参数只针对 InnoDB 存储引擎。
+Innodb_rows_read：表示 SELECT 语句查询的记录数；
+Innodb_rows_inserted：表示 INSERT 语句插入的记录数；
+Innodb_rows_updated：表示 UPDATE 语句更新的记录数；
+Innodb_rows_deleted：表示 DELETE 语句删除的记录数。
+
+------
+
+2、 EXPLAIN 语句来分析一个查询语句。
+mysql> EXPLAIN SELECT * FROM tb_student \G
+

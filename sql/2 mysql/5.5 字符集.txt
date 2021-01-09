@@ -1,0 +1,115 @@
+字符集：
+字符集定义了字符和二进制的对应关系，为字符分配了唯一编号。
+常见的字符集有 ASCII、GBK、IOS-8859-1 等。
+
+ASCII编码，将英文存储到计算机
+GB2312编码和GBK编码，将中文存储到计算机
+Unicode字符集，将全世界的文字存储到计算机
+--
+
+字符编码：
+ASCII（字符集） -- ASCII（字符编码）
+Unicode -- UTF-8、UTF-16 和 UTF-32
+
+--
+
+校队规则：
+即排序规则。（一个字符集可能有多种校对规则，默认有一个校对规则）
+
+-----------
+
+查看字符集：
+mysql> SHOW VARIABLES LIKE 'character%';
+
+查看校队规则：
+mysql> SHOW VARIABLES LIKE 'collation\_%';
+
+-----------
+
+（1）、
+mysql> SHOW CHARACTER set;
++----------+---------------------------------+---------------------+--------+
+| Charset  | Description                     | Default collation   | Maxlen |
++----------+---------------------------------+---------------------+--------+
+| big5     | Big5 Traditional Chinese        | big5_chinese_ci     |      2 |
+| dec8     | DEC West European               | dec8_swedish_ci     |      1 |
+其中：
+第一列（Charset）为字符集名称；
+第二列（Description）为字符集描述；
+第三列（Default collation）为字符集的默认校对规则；
+第四列（Maxlen）表示字符集中一个字符占用的最大字节数。
+
+或者查看字符集
+mysql> SELECT * FROM information_schema.character_sets;
+
+（2）、查看校队规则
+
+mysql> SHOW COLLATION LIKE 'gbk%';
+mysql> SELECT * FROM information_schema.COLLATIONS;
+
+举例：
+gbk_chinese_ci忽略大小写
+gbk_bin不忽略大小写
+mysql> SELECT CASE 
+ 	-> WHEN 'A' COLLATE gbk_chinese_ci = 'a' COLLATE gbk_chinese_ci 
+ 	-> then 1
+    -> else 0
+	-> end;
+	
+mysql> SELECT CASE
+	-> WHEN 'A' COLLATE gbk_bin = 'a' COLLATE gbk_bin   //字符集的A和a
+	-> then 1
+    -> else 0 
+	-> end;
+
+====================================
+字符集设置：
+MySQL 的字符集和校对规则有 4 个级别的默认设置，即服务器级、数据库级、表级和字段级。
+
+节我们讲到，ALTER DATABASE 或 ALTER TABLE 命令对已经存在的数据没有作用，只对新创建的表或记录生效。
+如果想修改已存在数据的字符集，需要先将数据导出，经过适当的调整后，再重新导入。
+
+例子：
+（1）、创建 testset 数据库，设置其字符集为 gb2312，并添加数据。
+mysql> CREATE TABLE test.testset(
+    -> id INT(11) DEFAULT NULL,
+    -> name VARCHAR(25) DEFAULT NULL
+    -> )CHARSET=gb2312;
+
+mysql> INSERT INTO test.testset VALUES (1,'C语言');
+
+（2）、
+mysqldump -uroot -p --default-character-set=gbk -d test testset> D:\testset.sql
+--default-character-set=gbk  示以什么字符集连接；
+-d 表示只导出表结构，不导出数据。
+打开 testset.sql 文件，修改表结构定义中的字符集为新的字符集
+
+（3）、
+mysqldump -uroot -p --quick --no-create-info --extended-insert --default-character-set=gb2312 test testset> D:\testdata.sql
+导出所有记录。
+//这样能获取没有乱码的记录（的insert语句）。
+(4)、把记录中的字符集改成新的gbk(后续按gbk插入)
+
+（5）、
+使用新的字符集创建新的数据库。
+CREATE DATABASE test2 DEFAULT CHARSET gbk;
+
+创建表，执行 testset.sql。
+mysql -uroot -p test2 < D:\testset.sql
+
+导入数据，执行 testdata.sql。
+mysql -uroot -p test2 < D:\testdata.sql
+
+选择目标字符集的时候，要注意最好的是原字符集的超集
+
+=======================
+
+字符集：
+（1）、如果数据库只需要支持一般中文，数据量很大，性能要求也很高，那就应该选择双字节定长编码的中文字符集，比如 GBK。
+
+因为，相对于 UTF-8 而言，GBK 比较“小”，每个汉字只占 2 个字节，而 UTF-8 汉字编码需要 3 个字节，
+
+（2）、如果应用主要处理英文字符，仅有少量汉字数据，那么选择 UTF-8 更好
+（3）、有很多字符集都可以保存汉字，比如 UTF-8、GB2312、GBK、Latin1 等等。但是常用的是 GB2312 和 GBK。
+因为 GB2312 字库比 GBK 字库小，有些偏僻字（例如：洺）不能保存。
+

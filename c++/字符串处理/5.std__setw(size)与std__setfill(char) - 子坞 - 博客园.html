@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<!-- saved from url=(0062)https://www.cnblogs.com/ziwuge/archive/2011/10/11/2206983.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <meta property="og:description" content="头文件:#include &amp;lt;iostream&amp;gt;#include &amp;lt;iomanip&amp;gt;using namespace std;功能:std::setw ：需要填充多少个字符,默认填">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>[转]std::setw(size)与std::setfill(char) - 子坞 - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.ico?v=20200522" type="image/x-icon">
+    
+    <link rel="stylesheet" href="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/bundle-cogitation.min.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/bundle-cogitation-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/ziwuge/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/ziwuge/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/ziwuge/wlwmanifest.xml">
+    <script async="" src="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/analytics.js"></script><script type="text/javascript" src="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/encoder.js"></script><script>
+        var currentBlogId = 81638;
+        var currentBlogApp = 'ziwuge';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'Cogitation';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2011-10-11 11:17';
+        </script>
+    <script src="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/jquery-2.2.0.min.js"></script>
+    <script src="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/blog-common.min.js"></script>
+    
+    
+    
+<script src="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/pubads_impl_2020082701.js" async=""></script><link rel="preload" href="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/f.txt" as="script"><script type="text/javascript" src="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/f.txt"></script><link rel="prefetch" href="https://7136771ba80a5abfcf350045944b4038.safeframe.googlesyndication.com/safeframe/1-0-37/html/container.html"><link rel="prefetch" href="https://tpc.googlesyndication.com/safeframe/1-0-37/html/container.html"></head>
+<body>
+    <a name="top"></a>
+    
+    <div id="top">
+	
+<div>
+	<table>
+		<tbody><tr>
+			<td class="HeaderTitles">
+				<h1 class="HeaderTitle"><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/ziwuge/"></a>
+</h1>
+				<p id="tagline">
+人较笨且记性不好,故记录在此.折叠代码打不开请F5.本博中很多是转载收录其他网友的文章(原文地址请见博文末尾),所有权为原作者所有!!!<br>此博客已不再更新和维护，欢迎关注我的<a href="https://github.com/stelalae">github</a>和<a href="http://stelalae.github.io/blog/">新博客</a>。<br>
+</p>
+			</td>
+		</tr>
+	</tbody></table>
+</div>
+<div class="HeaderBar">
+	<table id="HeaderBar" class="HeaderBar" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+			<td class="HeaderBarTab" nowrap="">
+&nbsp;
+<a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+ ::
+
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/ziwuge/">
+首页</a>
+ ::
+<a href="http://q.cnblogs.com/" class="menu">博问</a> ::
+<a href="http://home.cnblogs.com/ing/" class="menu">闪存</a> ::
+
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+ ::
+
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/%E5%AD%90%E5%9D%9E">
+联系</a> ::
+
+
+
+ ::
+
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+ ::
+
+
+</td>
+			<td><img id="Header1_BlueTab" src="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/BlueTabRight.gif" align="absmiddle" alt=""></td>
+			<td class="HeaderBarTabBack" nowrap="" width="100%">
+				<div class="BlogStatsBar">
+	<table class="BlogStatsBar">
+		<tbody><tr>
+			<td width="100%">
+			</td>
+			<td class="BlogStatsBar" nowrap="">
+				&nbsp;
+				
+124 
+				随笔&nbsp;::
+				
+0 文章
+				::
+				
+37 评论
+				::
+				
+0 引用
+			</td>
+		</tr>
+	</tbody></table>
+</div>
+
+
+			</td>
+		</tr>
+	</tbody></table>
+</div>
+
+
+</div>
+<div id="leftmenu">	
+
+	    <div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2020/08/05&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2020年9月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2020/10/05&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="" align="center">
+                            3
+                        </td>
+                        <td class="" align="center">
+                            4
+                        </td>
+                    <td class="CalTodayDay" align="center">
+                        5
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            6
+                        </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                            <td class="" align="center">
+                                11
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            13
+                        </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                            <td class="" align="center">
+                                18
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            20
+                        </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            27
+                        </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            3
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            4
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                8
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                9
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            10
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>
+		
+<div id="sidebar_news" class="newsItem"><h3>公告</h3>
+<div class="News">
+	
+<div id="blog-news">
+    此博客已不再更新和维护，欢迎关注我的<a href="https://github.com/stelalae">github</a>和<a href="http://stelalae.github.io/blog/">新博客</a>。<br>
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/ziwuge/">
+            子坞
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/ziwuge/" title="入园时间：2010-11-27">
+            9年9个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/ziwuge/followers/">
+            43
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/ziwuge/followees/">
+            41
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow(&#39;72bf28e5-01fa-df11-ac81-842b2b196315&#39;)">+加关注</a></div>
+        <script>getFollowStatus('72bf28e5-01fa-df11-ac81-842b2b196315');</script>
+    </div>
+</div>
+</div>
+
+</div>
+
+<div id="sidebar_ad"></div>
+		<div id="blog-sidecolumn">
+<!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block">
+    
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    
+<li><a href="https://www.cnblogs.com/ziwuge/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/ziwuge/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/ziwuge/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/ziwuge/RecentComments.html" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/ziwuge/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+
+<!-- 我的标签 -->
+
+
+<!-- 积分与排名 -->
+<div id="sidebar_scorerank" class="sidebar-block">
+    <h3>积分与排名</h3>
+<ul>
+    <li>
+        积分 - 
+185241
+    </li>
+    <li>
+        排名 - 
+3237
+    </li>
+</ul>
+</div>
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+    
+		<h3>
+随笔分类
+<span style="font-size:11px;font-weight:normal">(131)</span>
+
+</h3>
+				<ul>
+			
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/277100.html" rel="" target="">
+    Algorithm(2)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/277090.html" rel="" target="">
+    C/C++(33)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/286999.html" rel="" target="">
+    Computer(10)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/323425.html" rel="" target="">
+    Cryptography(1)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/277093.html" rel="" target="">
+    Datebase(1)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/308352.html" rel="" target="">
+    Driver Studio(5)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/303882.html" rel="" target="">
+    Linux(3)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/323387.html" rel="" target="">
+    Math(6)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/277091.html" rel="" target="">
+    MFC(10)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/323412.html" rel="" target="">
+    Mobile(1)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/277092.html" rel="" target="">
+    Network(4)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/303876.html" rel="" target="">
+    Office(1)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/277525.html" rel="" target="">
+    TinySoft(1)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/303879.html" rel="" target="">
+    Visual Studio(28)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/305681.html" rel="" target="">
+    Win SDK(24)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/category/323417.html" rel="" target="">
+    XML(1)
+</a>
+ 
+</li>
+			
+				</ul>
+		<h3>
+随笔档案
+<span style="font-size:11px;font-weight:normal">(124)</span>
+
+</h3>
+				<ul>
+			
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2012/05.html" rel="" target="">
+    2012年5月(1)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2012/04.html" rel="" target="">
+    2012年4月(4)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2012/03.html" rel="" target="">
+    2012年3月(11)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2012/02.html" rel="" target="">
+    2012年2月(7)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2012/01.html" rel="" target="">
+    2012年1月(10)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2011/12.html" rel="" target="">
+    2011年12月(17)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2011/11.html" rel="" target="">
+    2011年11月(5)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2011/10.html" rel="" target="">
+    2011年10月(5)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2011/09.html" rel="" target="">
+    2011年9月(12)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2011/08.html" rel="" target="">
+    2011年8月(10)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2011/07.html" rel="" target="">
+    2011年7月(14)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2011/06.html" rel="" target="">
+    2011年6月(13)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2011/04.html" rel="" target="">
+    2011年4月(2)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2011/03.html" rel="" target="">
+    2011年3月(6)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2011/01.html" rel="" target="">
+    2011年1月(2)
+</a>
+ 
+</li>
+				<li>
+<a href="https://www.cnblogs.com/ziwuge/archive/2010/12.html" rel="" target="">
+    2010年12月(5)
+</a>
+ 
+</li>
+			
+				</ul>
+
+
+</div>
+
+<!-- 最新评论 -->
+<div id="sidebar_recentcomments" class="sidebar-block">
+    <div id="recent_comments_wrap" class="RecentComment">
+    <h3 class="catListTitle">最新评论</h3>
+    <div class="RecentCommentBlock">
+        <ul>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/ziwuge/archive/2012/03/19/2407117.html">1. Re:SHGetFolderPath执行权限问题</a></li>
+                    <li class="recent_comment_body">这个问题的根源据说是程序以 system 用户权限运行时获取的路径就会这样，所以 SHGetFolderPath 的 hToken 要传入正确的当前用户的 HANDLE，而不是直接用偷懒的读取注册表方...</li>
+                    <li class="recent_comment_author">--Jacky_CN</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/ziwuge/archive/2011/09/27/2193385.html">2. Re:[转]HTTP 头部详细解释</a></li>
+                    <li class="recent_comment_body">推荐+1</li>
+                    <li class="recent_comment_author">--InkFx</li>
+                    <li class="recent_comment_title"><a href="https://www.cnblogs.com/ziwuge/archive/2011/07/04/2097799.html">3. Re:WinPcap移植出现“const long *__w64 ”转换为“const time_t *”问题</a></li>
+                    <li class="recent_comment_body">受益匪浅，谢谢</li>
+                    <li class="recent_comment_author">--jiwy</li>
+        </ul>
+    </div>
+</div>
+</div>
+
+
+
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block">
+    
+<div id="topview_posts_wrap">
+    <h3 class="catListTitle">阅读排行榜</h3>
+    <div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/ziwuge/archive/2012/01/06/2315342.html">
+                            1. SetForegroundWindow的正确用法(42911)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/ziwuge/archive/2011/11/13/2247105.html">
+                            2. [转]Linux-Ubuntu 启用root账户(42427)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/ziwuge/archive/2011/11/05/2236968.html">
+                            3. MultiByteToWideChar和WideCharToMultiByte的正确使用方法及参数详解(33923)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+</div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block">
+    
+<div id="topfeedback_posts_wrap">
+    <h3 class="catListTitle">评论排行榜</h3>
+    <div id="TopFeedbackPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/ziwuge/archive/2011/07/28/2120446.html">
+                            1. [转]NPF驱动核心指南(含与NDIS区别)(7)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/ziwuge/archive/2011/12/03/2272868.html">
+                            2. WaitForInputIdle 的注意细节(4)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/ziwuge/archive/2010/12/27/1917765.html">
+                            3. 【转】C/C++中的联合体union及CPU大小端判定(3)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+</div>
+
+<!-- 推荐排行榜 -->
+</div>
+                    <script>loadBlogSideColumn();</script>
+	
+</div>
+<div id="main">
+	<div id="post_detail">
+<div class="post">
+	<div class="postTitle">
+		
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/ziwuge/archive/2011/10/11/2206983.html">
+    <span>[转]std::setw(size)与std::setfill(char)</span>
+    
+
+
+</a>
+
+	</div>
+	
+	<div class="postText">
+		
+<div id="cnblogs_post_body" class="blogpost-body">
+    <p><span style="line-height: normal; font-family: Arial; font-size: 12px;"><span face="Times New Roman" style="line-height: normal; font-family: &#39;Times New Roman&#39;;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;"></span></span></span></span></span></span></p>
+<p style="line-height: normal;"><span size="3" style="line-height: normal; font-size: small;">头文件:<br style="line-height: normal;">#include &lt;iostream&gt;<br style="line-height: normal;">#include &lt;iomanip&gt;<br style="line-height: normal;">using namespace std;</span></p>
+<p><span style="line-height: normal; font-family: Arial; font-size: 12px;"><span face="Times New Roman" style="line-height: normal; font-family: &#39;Times New Roman&#39;;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;"></span></span></span></span></span></span></p>
+<p style="line-height: normal;"><span size="3" style="line-height: normal; font-size: small;">功能:</span></p>
+<p><span style="line-height: normal; font-family: Arial; font-size: 12px;"><span face="Times New Roman" style="line-height: normal; font-family: &#39;Times New Roman&#39;;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;"></span></span></span></span></span></span></p>
+<p style="line-height: normal; font-family: Arial; font-size: 12px;"><span style="line-height: normal;"><span face="Times New Roman" size="3" style="line-height: normal; font-family: &#39;Times New Roman&#39;; font-size: small;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;">std::setw ：需要填充多少个字符,默认填充的字符为' '空格</span></span></span></span></span></span></p>
+<p style="line-height: normal; font-family: Arial; font-size: 12px;"><span style="line-height: normal;"><span face="Times New Roman" size="3" style="line-height: normal; font-family: &#39;Times New Roman&#39;; font-size: small;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;">std::setfill：设置<span style="line-height: normal;"><span face="Times New Roman" style="line-height: normal; font-family: &#39;Times New Roman&#39;;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;">std::setw将</span></span></span></span></span></span>填充什么样的字符,如:std::setfill('*')</span></span></span></span></span></span></p>
+<p style="line-height: normal; font-family: Arial; font-size: 12px;"><span style="line-height: normal;"><span face="Times New Roman" size="3" style="line-height: normal; font-family: &#39;Times New Roman&#39;; font-size: small;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;">示例:<br></span></span></span></span></span></span></p>
+<div class="cnblogs_code" onclick="cnblogs_code_show(&#39;ac57b881-8893-4d04-8018-7cebb1e6fbea&#39;)"><img src="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/ContractedBlock.gif" class="code_img_closed" id="code_img_closed_ac57b881-8893-4d04-8018-7cebb1e6fbea"><img src="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/ExpandedBlockStart.gif" class="code_img_opened" id="code_img_opened_ac57b881-8893-4d04-8018-7cebb1e6fbea" onclick="cnblogs_code_hide(&#39;ac57b881-8893-4d04-8018-7cebb1e6fbea&#39;,event)" style="display: none;"><span class="cnblogs_code_collapse">View Code </span>
+<div id="cnblogs_code_open_ac57b881-8893-4d04-8018-7cebb1e6fbea" class="cnblogs_code_hide">
+<pre>#include &lt;stdio.h&gt;<br>#include &lt;tchar.h&gt;<br>#include &lt;iostream&gt;<br>#include &lt;iomanip&gt;<br><br><span style="color: #0000ff;">int</span> _tmain(<span style="color: #0000ff;">int</span> argc, _TCHAR* argv[])<br>{<br>     <span style="color: #0000ff;">int</span> a = <span style="color: #800080;">1</span>;<br>     <span style="color: #008000;">//</span><span style="color: #008000;">输出:    1</span><span style="color: #008000;"><br></span>     std::cout&lt;&lt;std::setw(<span style="color: #800080;">4</span>)&lt;&lt;a&lt;&lt;std::endl;<br>     <span style="color: #008000;">//</span><span style="color: #008000;">输出: ***1</span><span style="color: #008000;"><br></span>     std::cout&lt;&lt;std::setw(<span style="color: #800080;">4</span>)&lt;&lt;std::setfill(<span style="color: #800000;">'</span><span style="color: #800000;">*</span><span style="color: #800000;">'</span>)&lt;&lt;a&lt;&lt;std::endl;<br><br>     <span style="color: #008000;">//</span><span style="color: #008000;">输出:***12</span><span style="color: #008000;"><br></span>     <span style="color: #0000ff;">int</span> b = <span style="color: #800080;">2</span>;<br>     std::cout&lt;&lt;std::setw(<span style="color: #800080;">4</span>)&lt;&lt;std::setfill(<span style="color: #800000;">'</span><span style="color: #800000;">*</span><span style="color: #800000;">'</span>)&lt;&lt;a&lt;&lt;b&lt;&lt;std::endl;<br>     system(<span style="color: #800000;">"</span><span style="color: #800000;">pause</span><span style="color: #800000;">"</span>);<br>     <span style="color: #0000ff;">return</span> <span style="color: #800080;">0</span>;<br>}</pre>
+</div>
+</div>
+<p style="line-height: normal; font-family: Arial; font-size: 12px;"><span style="line-height: normal;"><span face="Times New Roman" size="3" style="line-height: normal; font-family: &#39;Times New Roman&#39;; font-size: small;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;"><span style="line-height: normal;">【参考资料 感谢作者】<br><a href="http://hi.baidu.com/kety19850518/blog/item/6d0e70c259fb6059b219a875.html">http://hi.baidu.com/kety19850518/blog/item/6d0e70c259fb6059b219a875.html</a><br>&nbsp;</span></span></span></span></span></span></p>
+</div>
+<div id="MySignature" style="display: block;"><br><b>快捷操作：</b>
+<br>
+<br>
+<br>
+<br>
+<b>坚其志，苦其心，劳其力，事无大小，必有所成。</b>
+<br>@如有侵权，请作者本人尽快与我(chrayo#163.com)联系，我将及时删除侵权内容。
+<br></div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/ziwuge/category/277090.html" target="_blank">C/C++</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(2206983,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;72bf28e5-01fa-df11-ac81-842b2b196315&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/ziwuge/" target="_blank"><img src="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/u217252.jpg" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/ziwuge/">子坞</a><br>
+            <a href="https://home.cnblogs.com/u/ziwuge/followees/">关注 - 41</a><br>
+            <a href="https://home.cnblogs.com/u/ziwuge/followers/">粉丝 - 43</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;72bf28e5-01fa-df11-ac81-842b2b196315&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(2206983,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(2206983,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/ziwuge/archive/2011/10/04/2199141.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/ziwuge/archive/2011/10/04/2199141.html" title="发布于 2011-10-04 22:11">Windows XP电源管理及注册表分析</a>
+    <br>
+    <a href="https://www.cnblogs.com/ziwuge/archive/2011/10/11/2207383.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/ziwuge/archive/2011/10/11/2207383.html" title="发布于 2011-10-11 15:40">[转]windows性能计时器</a>
+
+</div>
+</div>
+	</div>
+	
+	<div class="postfoot">
+		posted on 
+<span id="post-date">2011-10-11 11:17</span>&nbsp;
+<a href="https://www.cnblogs.com/ziwuge/">子坞</a>&nbsp;
+阅读(<span id="post_view_count">6919</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=2206983" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(2206983);return false;">收藏</a>
+	</div>
+</div>
+
+
+<script src="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 81638, cb_blogApp = 'ziwuge', cb_blogUserGuid = '72bf28e5-01fa-df11-ac81-842b2b196315';
+    var cb_entryId = 2206983, cb_entryCreatedDate = '2011-10-11 11:17', cb_postType = 1;
+    loadViewCount(cb_entryId);
+</script><a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<script>
+    var commentManager = new blogCommentManager();
+    commentManager.renderComments(0);
+</script>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/ziwuge/archive/2011/10/11/2206983.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/ziwuge/archive/2011/10/11/2206983.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    注册用户登录后才能发表评论，请 
+    <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a>
+     或 
+    <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，
+    <a href="https://www.cnblogs.com/">访问</a> 网站首页。
+</div></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-ucancode&#39;)">【推荐】超50万行VC++源码: 大型组态工控、电力仿真CAD与GIS源码库</a><br><a href="https://tianchi.aliyun.com/specials/promotion/supercoder" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-阿里云 在线编程&#39;)">【推荐】1200件T恤+6万奖金，阿里云编程大赛报名开启</a><br><a href="https://brands.cnblogs.com/agora" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-声网专区&#39;)">【推荐】未知数的距离，毫秒间的传递，声网与你实时互动</a><br><a href="https://brands.cnblogs.com/huawei" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-华为专区&#39;)">【推荐】了不起的开发者，挡不住的华为，园子里的品牌专区</a><br><a href="https://developer.aliyun.com/article/726190?utm_content=g_1000088941" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-阿里云开发者社区&#39;)">【推荐】深度回顾！30篇好文，解析历年双十一背后的阿里技术秘籍</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="CJT048qn0esCFfvGTAIdHKUFZA"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C1_0" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" sandbox="allow-forms allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation" style="border: 0px; vertical-align: bottom;" data-google-container-id="1" data-load-complete="true" src="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/saved_resource.html"></iframe></div></div>
+    </div>
+    <div id="under_post_news"><div class="recomm-block"><b>相关博文：</b><br>·  <a title="C++流控制函数setw()、setfill()、setbase()、setprecision()的使用" href="https://www.cnblogs.com/byteHuang/p/9968167.html" target="_blank" onclick="clickRecomItmem(9968167)">C++流控制函数setw()、setfill()、setbase()、setprecision()的使用</a><br>·  <a title="setw()函数使用" href="https://www.cnblogs.com/zhizhan/p/3822494.html" target="_blank" onclick="clickRecomItmem(3822494)">setw()函数使用</a><br>·  <a title="std::tr1::function" href="https://www.cnblogs.com/qlee/archive/2011/07/04/2097594.html" target="_blank" onclick="clickRecomItmem(2097594)">std::tr1::function</a><br>·  <a title="C++ std::pair 与 std::make_pair" href="https://www.cnblogs.com/Nimeux/archive/2010/10/05/1844191.html" target="_blank" onclick="clickRecomItmem(1844191)">C++ std::pair 与 std::make_pair</a><br>·  <a title="std::string与int、double相互转换" href="https://www.cnblogs.com/zqrferrari/archive/2010/05/18/1738408.html" target="_blank" onclick="clickRecomItmem(1738408)">std::string与int、double相互转换</a><br>»  <a target="_blank" href="https://recomm.cnblogs.com/blogpost/2206983">更多推荐...</a><div id="cnblogs_t5"><a href="https://www.sheca.com/assets/wwx/page3.html?site=bokeyuan" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T5-上海CA-大家签&#39;)">【推荐】电子签名认准大家签，上海CA权威认证</a></div></div></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id="div-gpt-ad-1592366332455-0" style="width: 468px; height: 60px;" data-google-query-id="CJiK48qn0esCFfvGTAIdHKUFZA"><div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C2_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C2_0" width="468" height="60" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; vertical-align: bottom;" data-google-container-id="2" data-load-complete="true" src="./5.std__setw(size)与std__setfill(char) - 子坞 - 博客园_files/saved_resource(1).html"></iframe></div></div>
+    </div>
+    <div id="under_post_kb">
+<div class="itnews c_ad_block">
+    <b>最新 IT 新闻</b>:
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/672160/" target="_blank">Deepfake平民化，10美元加一台笔记本，人人都能“换脸”阿汤哥</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/672157/" target="_blank">美式“闯关东”，科技人才北上加拿大</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/672156/" target="_blank">为游戏人物「捏脸」还能拿10万奖金？EA做了一档游戏真人秀节目</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/672159/" target="_blank">终于，Spotify也要开始做直播了</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/672161/" target="_blank">逆向工程、软件后门……原来美剧《硅谷》里藏着这么多知识点</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+        fixPostBody();
+        deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+        loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div></div>
+
+
+</div>
+<div class="footer">
+<p id="footer">
+	Powered by: 
+	<br>
+	
+	<a href="https://www.cnblogs.com/" id="footer_site_link">博客园</a>
+	<br>
+	Copyright © 2020 子坞
+<br><span id="poweredby">Powered by .NET Core on Kubernetes</span>
+
+</p>
+
+
+</div>
+
+
+    
+
+
+</body></html>

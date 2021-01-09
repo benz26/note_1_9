@@ -1,0 +1,15 @@
+1、
+（1）、恶意拼接
+SELECT * FROM users WHERE user_id = $user_id
+SELECT * FROM users WHERE user_id = 1234; DELETE FROM users  //删除users表所有数据
+
+（4）添加额外条件
+UPDATE users SET userpass='$userpass' WHERE user_id=$user_id;
+UPDATE users SET userpass= '123456' WHERE user_id=1234 OR TRUE; //更新所有用户的密码
+
+2、避免sql注入
+2. 参数化查询
+参数化查询目前被视作是预防 SQL 注入攻击最有效的方法。参数化查询是指在设计与数据库连接并访问数据时，在需要填入数值或数据的地方，使用参数（Parameter）来给值。
+
+MySQL 的参数格式是以“?”字符加上参数名称而成，如下所示：
+UPDATE myTable SET c1 = ?c1, c2 = ?c2, c3 = ?c3 WHERE c4 = ?c4

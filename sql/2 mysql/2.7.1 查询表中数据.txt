@@ -1,0 +1,85 @@
+1、查看
+SELECT * FROM 表名;
+
+SELECT < 列名 > FROM < 表名 >;
+SELECT name FROM tb_students_info;
+ 
+ 
+ 2、去重
+ mysql> SELECT DISTINCT age FROM student; （age一样，则去重）
+ mysql> SELECT DISTINCT name,age FROM student; （两个字段和别的rows一样，则去重）
+ mysql> SELECT DISTINCT * FROM student;(每个字段一样则去重）
+ mysql> SELECT COUNT(DISTINCT name,age) FROM student;
+ 
+ 
+ 3、别名
+为 tb_students_info 表指定别名 stu
+mysql> SELECT stu.name,stu.height FROM tb_students_info AS stu;
+
+为 name 指定别名 student_name，为 age 指定别名 student_age，
+mysql> SELECT name AS student_name, age AS student_age FROM tb_students_info;
+
+
+4、limit
+（1）、
+SELECT * FROM tb_students_info LIMIT 3,5;
+	 |.........|
+0 1 2 3 4 5 6 7 
+第一个数字“3”表示从第 4 行开始
+第二个数字 5 表示返回的行数。
+
+（2）、
+mysql> SELECT * FROM tb_students_info LIMIT 4;  返回前4行
+
+（3）、返回第4条开始的5条记录
+mysql> SELECT * FROM tb_students_info LIMIT 5 OFFSET 3;
+
+
+5、排序
+mysql> SELECT * FROM tb_students_info ORDER BY height;//单字段
+mysql> SELECT name,height FROM tb_students_info ORDER BY height,name;//多字段
+ORDER BY <字段名> [ASC|DESC]
+ASC表示字段按升序排序；DESC表示字段按降序排序。
+
+6、条件查询
+mysql> SELECT name,age,height FROM tb_students_info 
+    -> WHERE age>21 XOR height>=175;
+	
+7、模糊查询	
+mysql> SELECT name FROM tb_students_info
+    -> WHERE name [NOT] LIKE 'T%';   //LIKE 不区分大小写
+	 LIKE BINARY 't%';         //区分大小写
+	 
+8、	范围查询 
+mysql> SELECT name,age FROM tb_students_info 
+    -> WHERE age BETWEEN 20 AND 23;
+	
+9、是否是空值
+IS NULL
+IS NOT NULL
+
+10、分组查询
+mysql> SELECT `sex`, GROUP_CONCAT(name) FROM tb_students_info 
+    -> GROUP BY sex;
+//GROUP BY sex ,根据sex分组，
+//GROUP_CONCAT(name)， 打出所有的name
+
+mysql> SELECT age,sex,GROUP_CONCAT(name) FROM tb_students_info 
+    -> GROUP BY age,sex;
+//    -> GROUP BY age,sex;, 根据age,sex两个字段排序
+
+
+mysql> SELECT sex,COUNT(sex) FROM tb_students_info 
+    -> GROUP BY sex;
++------+------------+
+| sex  | COUNT(sex) |
++------+------------+
+| 女   |          5 |
+| 男   |          5 |
++------+------------+
+//COUNT(sex)记录数
+
+
+
+
+	

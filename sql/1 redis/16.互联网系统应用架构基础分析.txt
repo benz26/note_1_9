@@ -1,0 +1,55 @@
+手机\pc
+|
+---   www
+|
+|
+----  防火墙
+|
+|
+---- 负载均衡				//负载均衡可以判断验证码
+|
+|
+-----   NoSQL_1   	    NoSQL_2     	 NoSQL_3  //redis缓存验证码
+			|			|					|
+------  web_server_1    web_server_2        web_server_3
+			|
+		database_1    	database_2         	database_3
+		
+
+负载均衡器有以下几个功能：
+
+1）对业务请求做初步的分析，决定分不分发请求到 Web 服务器，这就好比一个把控的关卡，
+常见的分发软件比如 Nginx 和 Apache 等反向代理服务器，它们在关卡处可以通过配置禁止一些无效的请求
+
+2）提供路由算法，它可以提供一些负载均衡的算法，根据各个服务器的负载能力进行合理分发，
+每一个 Web 服务器得到比较均衡的请求，从而降低单个服务器的压力，提高系统的响应能力。
+
+3）限流，对于一些高并发时刻，如双十一、新产品上线，需要通过限流来处理，
+因为可能某个时刻通过上述的算法让有效请求过多到达服务器，使得一些 Web 服务器或者数据库服务器产生宕机。
+
+----------
+
+1、
+在开发网站中使用更新语句和复杂查询语句要时刻记住更新是表锁定还是行锁定，比如 id 是主键，
+而 user_name 是用户名称，也是唯一索引，更新用户的生日，可以使用以下两条SQL中的任何一条：
+update t_user set birthday = #{birthday} where id = #{id};
+update t_user set birthday = #{birthday} where user_name = #{userName};
+
+上述逻辑都是正确的，但是优选使用主键更新，其原因是在 MySQL 的运行过程
+第二句 SQL 会锁表，即不仅锁定更新的数据，而且锁定其他表的数据，从而影响并发，而使用主键的更新则是行锁定。 //索引使用会锁表
+
+-----
+2、
+对于 SQL 的优化还有很多细节，比如可以使用连接查询代替子查询。查询一个没有分配角色的用户 id，可能有人使用这样的一个 SQL：
+select u.id from t_user u
+where u.id not in (select ur.user_id from t_user_role ur);
+
+这是一个 not in 语句，性能低下，对于这样的 not in 和 not exists 语句，应该全部修改为连接语句去执行，
+从而极大地提高 SQL 的性能，比如这条 not in 语句可以修改为：
+select u.id from t_user u left join t_user_role ur
+on u.id = ur.user_id
+where ur.user_id is null;
+
+not in 语句消失了，使用了连接查询，大大提高了 SQL 的执行性能。
+
+-------------------

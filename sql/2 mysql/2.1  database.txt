@@ -1,0 +1,50 @@
+-- SQL（Structured Query Language，结构化查询语言
+ 
+-- 注意：SQL 语句不区分大小写，许多 SQL 开发人员习惯对 SQL 本身的关键字进行大写，而对表或者列的名称使用小写，这样可以提高代码的可阅读性和可维护性。
+
+-- SQL 语句要以分号;结尾
+	SQL 语句不区分大小写
+	
+--SQL 语句中含有字符串的时候，需要像 'abc' 这样
+  在 SQL 语句中书写数字的时候，不需要使用任何符号标识，
+  
+  =================================================================================================
+  
+-- 查看或显示数据库
+	SHOW DATABASES                           查看全部
+  	SHOW DATABASES [LIKE '数据库名'];
+		--- SHOW DATABASES LIKE 'test_db';   完全匹配
+		--- SHOW DATABASES LIKE '%test%';    包含test
+		--- SHOW DATABASES LIKE 'db%';       以db开头
+		--- SHOW DATABASES LIKE '%db';       以db结尾
+
+-- 创建数据库
+	CREATE DATABASE 
+	[IF NOT EXISTS] <数据库名>                      //存在则不创建
+	[[DEFAULT] CHARACTER SET <字符集名>]           //字符集是用来定义 MySQL 存储字符串的方式
+	[[DEFAULT] COLLATE <校对规则名>];              //校对规则定义了比较字符串的方式
+例子：mysql> CREATE DATABASE test_db;
+	
+-- 修改数据库	
+	ALTER DATABASE [数据库名] { 
+[ DEFAULT ] CHARACTER SET <字符集名> 
+[ DEFAULT ] COLLATE <校对规则名>}
+
+--  删除数据库
+DROP DATABASE [ IF EXISTS ] <数据库名>
+
+--  选择数据库
+	USE <数据库名>
+例子：mysql> USE test_db;
+
+--------
+mysql> HELP'contents';
+
+mysql> HELP 'Data Types';
+topics:
+   AUTO_INCREMENT
+   BIGINT
+mysql> HELP 'INT';
+   
+mysql> HELP 'CREATE TABLE'
+

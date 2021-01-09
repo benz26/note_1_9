@@ -1,0 +1,69 @@
+1、更新
+mysql> UPDATE tb_courses_new
+    -> SET course_grade=4;
+	
+mysql> UPDATE tb_courses_new
+    -> SET course_name='DB',course_grade=3.5
+    -> WHERE course_id=2;
+	
+2、删除
+DELETE FROM tb_courses_new; 删除全部
+
+mysql> DELETE FROM tb_courses
+    -> WHERE course_id=4;
+	
+3、清空
+TRUNCATE TABLE tb_student_course;
+DELETE 是逐行一条一条删除记录的；TRUNCATE 则是直接删除原来的表，再重新创建一个一模一样的新表；
+DELETE 删除数据后，配合事件回滚可以找回数据；TRUNCATE 不支持事务的回滚，数据删除后无法找回；
+DELETE 删除数据后，系统不会重新设置自增字段的计数器；TRUNCATE 清空表记录后，系统会重新设置自增字段的计数器。
+DELETE 的使用范围更广，因为它可以通过 WHERE 子句指定条件来删除部分数据；而 TRUNCATE 不支持 WHERE 子句，只能删除整体。
+DELETE 会返回删除数据的行数，但是 TRUNCATE 只会返回 0，没有任何意义。
+当不需要该表时，用 DROP；当仍要保留该表，但要删除所有记录时，用 TRUNCATE；当要删除部分记录时，用 DELETE。
+
+--------------------------
+
+
+3、根据别的表更新本表（多表）
+mysql> UPDATE product p, product_price pp SET pp.price = p.price * 0.8 WHERE p.productid= pp.productId;
+
+UPDATE product p INNER JOIN product_price pp ON p.productid= pp.productid SET pp.price = p.price * 0.8;
+
+mysql> UPDATE product p LEFT JOIN product_price pp ON p.productid= pp.productid SET p.isdelete = 1 WHERE pp.productid IS NULL;
+
+UPDATE product_price pp SET price=(SELECT price*0.8 FROM product WHERE productid = pp.productid);
+
+
+
+mysql> SELECT * FROM product;
++----+-----------+-----------------------+-------+----------+
+| id | productid | productname           | price | isdelete |
++----+-----------+-----------------------+-------+----------+
+|  1 |      1001 | C语言中文网Java教程   |   100 |        0 |
+|  2 |      1002 | C语言中文网MySQL教程  |   110 |        0 |
+|  3 |      1003 | C语言中文网Python教程 |   120 |        0 |
+|  4 |      1004 | C语言中文网C语言教程  |   150 |        0 |
+|  5 |      1005 | C语言中文网GoLang教程 |   160 |        0 |
++----+-----------+-----------------------+-------+----------+
+5 rows in set (0.02 sec)
+
+mysql> SELECT * FROM product_price;
++----+-----------+-------+
+| id | productid | price |
++----+-----------+-------+
+|  1 |      1001 |  NULL |
+|  2 |      1002 |  NULL |
+|  3 |      1003 |  NULL |
+|  4 |      1004 |  NULL |
+|  5 |      1005 |  NULL |
++----+-----------+-------+
+5 rows in set (0.01 sec)
+
+//两个表都更新
+UPDATE product p INNER JOIN product_price pp ON p.productid= pp.productid SET pp.price = p.price * 0.8, p.dateUpdate = CURDATE()
+
+
+
+
+
+

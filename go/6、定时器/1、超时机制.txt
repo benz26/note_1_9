@@ -1,0 +1,80 @@
+
+func main() {
+	//closeChannel()
+	c := make(chan int)
+	timeout := time.After(time.Second * 2) //
+	t1 := time.NewTimer(time.Second * 3)   // 效果相同 只执行一次
+	var i int
+	go func() {
+		for {
+			select {
+			case <-c:
+				fmt.Println("channel sign")
+				return
+			case <-t1.C:      // 代码段2
+				fmt.Println("3s定时任务")
+			case <-timeout:   // 代码段1
+				i++
+				fmt.Println(i, "2s定时输出")
+			case <-time.After(time.Second * 4):    // 代码段3，ley:永远不会执行到，因为有default语句
+				fmt.Println("4s timeout。。。。") 
+			default:                               // 代码段4
+				fmt.Println("default")
+				time.Sleep(time.Second * 1)
+			}
+		}
+	}()
+	time.Sleep(time.Second * 6)
+	close(c)
+	time.Sleep(time.Second * 2)
+	fmt.Println("main退出")
+}
+备注：
+是本次监听动作的超时时间， 意思就说，只有在本次select 操作中会有效， 再次select 又会重新开始计时（从当前时间+4秒后）， 但是有default ，那case 超时操作，肯定执行不到了。
+=======================================================================
+
+//发送者
+func sender(c chan int) {
+	for i := 0; i < 100; i++ {
+		c <- i
+		if i >= 5 {
+			time.Sleep(time.Second * 7)
+		} else {
+			time.Sleep(time.Second)
+		}
+	}
+}
+
+
+func main() {
+	c := make(chan int)
+	go sender(c)
+	timeout := time.After(time.Second * 3)
+	for {
+		select {
+		case d := <-c:
+			fmt.Println(d)
+		case <-timeout:                                   //ley:按记录的时间，固定执行一次（下一次过来时候，固定时间已经经过）
+			fmt.Println("这是定时操作任务 >>>>>")
+		case dd := <-time.After(time.Second * 3):           //ley:执行一次后,下次进入select后，会重新按新的当前时间算三秒后。如果select一直进入分之不阻塞，则此处不会超时
+			fmt.Println(dd, "这是超时*****")
+		}
+
+		fmt.Println("for end")
+	}
+}
+
+=====================================
+
+ch := make(chan int, 1)  //带缓冲，1，异步，否则同步会阻塞
+for {
+    select {
+        case ch <- 0:
+        case ch <- 1:
+    }
+    i := <-ch
+    fmt.Println("Value received:", i)
+}
+
+//这个程序实现了一个随机向 ch 中写入一个 0 或者 1 的过程。当然，这是个死循环。关于 select 的详细使用方法，请参考下节的示例。
+//time.After 返回一个通道，这个通道在指定时间后，通过通道返回当前时间。

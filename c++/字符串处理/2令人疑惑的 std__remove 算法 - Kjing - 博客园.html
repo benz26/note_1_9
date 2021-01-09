@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)https://www.cnblogs.com/jingyg/p/5613303.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin">
+    <meta property="og:description" content="摘自《Effective STL》第32条 remove的声明： 如同所有的算法一样，remove 也需要一对迭代器来指定所要进行操作的元素区间。它并不接受容器作为参数，所以 remove 并不知道这">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>令人疑惑的 std::remove 算法 - Kjing - 博客园</title>
+    <link id="favicon" rel="shortcut icon" href="https://common.cnblogs.com/favicon.ico?v=20200522" type="image/x-icon">
+    
+    <link rel="stylesheet" href="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/blog-common.min.css">
+    <link id="MainCss" rel="stylesheet" href="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/bundle-imetro_hd.min.css">
+    
+    <link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/bundle-imetro_hd-mobile.min.css">
+    
+    <link type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/jingyg/rss">
+    <link type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/jingyg/rsd.xml">
+    <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/jingyg/wlwmanifest.xml">
+    <script async="" src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/analytics.js"></script><script type="text/javascript" src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/encoder.js"></script><script>
+        var currentBlogId = 250454;
+        var currentBlogApp = 'jingyg';
+        var cb_enable_mathjax = false;
+        var isLogined = false;
+        var isBlogOwner = false;
+        var skinName = 'iMetro_HD';
+        var visitorUserId = '';
+    </script>
+        <script>
+            var currentPostDateAdded = '2016-06-24 10:21';
+        </script>
+    <script src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/jquery-2.2.0.min.js"></script>
+    <script src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/blog-common.min.js"></script>
+    
+    
+    
+<script src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/pubads_impl_2020082701.js" async=""></script><link rel="preload" href="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/f.txt" as="script"><script type="text/javascript" src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/f.txt"></script><link rel="prefetch" href="https://5e3dff86bcce52e27a71dd1910f15714.safeframe.googlesyndication.com/safeframe/1-0-37/html/container.html"><link rel="prefetch" href="https://tpc.googlesyndication.com/safeframe/1-0-37/html/container.html"></head>
+<body>
+    <a name="top"></a>
+    
+    
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+        <a id="lnkBlogLogo" href="https://www.cnblogs.com/jingyg/"><img id="blogLogo" src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/logo.gif" alt="返回主页"></a>		
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle HeaderMainTitle" href="https://www.cnblogs.com/jingyg/">jingyigang</a>
+</h1>
+<h2>
+
+</h2>
+
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">
+博客园</a>
+</li>
+<li>
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/jingyg/">
+首页</a>
+</li>
+<li>
+
+<a id="blog_nav_newpost" class="menu" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">
+新随笔</a>
+</li>
+<li>
+<a id="blog_nav_contact" class="menu" href="https://msg.cnblogs.com/send/Kjing">
+联系</a></li>
+<li>
+<a id="blog_nav_rss" class="menu" href="javascript:void(0)" data-rss="https://www.cnblogs.com/jingyg/rss/">
+订阅</a>
+<!--<partial name="./Shared/_XmlLink.cshtml" model="Model" /></li>--></li>
+<li>
+<a id="blog_nav_admin" class="menu" href="https://i.cnblogs.com/">
+管理</a>
+</li>
+</ul>
+
+
+		<div class="blogStats">
+			
+			<span id="stats_post_count">随笔 - 
+47&nbsp; </span>
+<span id="stats_article_count">文章 - 
+0&nbsp; </span>
+<span id="stats-comment_count">评论 - 
+0</span>
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		<div id="post_detail">
+    <!--done-->
+    <div id="topics">
+        <div class="post">
+            <h1 class="postTitle">
+                
+<a id="cb_post_title_url" class="postTitle2 vertical-middle" href="https://www.cnblogs.com/jingyg/p/5613303.html">
+    <span>令人疑惑的 std::remove 算法</span>
+    
+
+
+</a>
+
+            </h1>
+            <div class="clear"></div>
+            <div class="postBody">
+                
+<div id="cnblogs_post_body" class="blogpost-body">
+    <p>摘自《Effective STL》第32条</p>
+<p>remove的声明：</p>
+<div class="cnblogs_code">
+<pre><span style="color: #008080;">1</span> template&lt;<span style="color: #0000ff;">class</span> ForwardIterator, <span style="color: #0000ff;">class</span> T&gt;
+<span style="color: #008080;">2</span> ForwardIterator remove(ForwardIterator first, ForwardIterator last, <span style="color: #0000ff;">const</span> T&amp; value);</pre>
+</div>
+<p>如同所有的算法一样，remove 也需要一对迭代器来指定所要进行操作的元素区间。它并不接受容器作为参数，所以 remove 并不知道这些元素被存放在哪个容器中。并且，remove 也并不能从迭代器推知对应的容器和容器类型。</p>
+<p>唯一可以从容器中删除元素的方法是调用容器的成员函数 erase （list有几个可以删除元素的成员函数，但是没有命名为 erase）。remove 算法并不知道它操作的元素的所在容器，所以不可能从容器中删除元素。</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #008080;"> 1</span> #include &lt;iostream&gt;
+<span style="color: #008080;"> 2</span> #include &lt;memory&gt;
+<span style="color: #008080;"> 3</span> #include &lt;vector&gt;
+<span style="color: #008080;"> 4</span> #include &lt;algorithm&gt;
+<span style="color: #008080;"> 5</span> 
+<span style="color: #008080;"> 6</span> <span style="color: #0000ff;">using</span> <span style="color: #0000ff;">namespace</span><span style="color: #000000;"> std;
+</span><span style="color: #008080;"> 7</span> 
+<span style="color: #008080;"> 8</span> <span style="color: #0000ff;">int</span><span style="color: #000000;"> main()
+</span><span style="color: #008080;"> 9</span> <span style="color: #000000;">{
+</span><span style="color: #008080;">10</span>     vector&lt;<span style="color: #0000ff;">int</span>&gt; c = {<span style="color: #800080;">1</span>,<span style="color: #800080;">2</span>,<span style="color: #800080;">3</span>,<span style="color: #800080;">4</span>,<span style="color: #800080;">5</span>,<span style="color: #800080;">6</span>,<span style="color: #800080;">7</span>,<span style="color: #800080;">8</span>,<span style="color: #800080;">9</span>,<span style="color: #800080;">1</span><span style="color: #000000;">};
+</span><span style="color: #008080;">11</span>     cout &lt;&lt; <span style="color: #800000;">"</span><span style="color: #800000;">size : </span><span style="color: #800000;">"</span> &lt;&lt; c.size() &lt;&lt;<span style="color: #000000;"> endl;
+</span><span style="color: #008080;">12</span> 
+<span style="color: #008080;">13</span>     remove(c.begin(), c.end(), <span style="color: #800080;">1</span><span style="color: #000000;">);
+</span><span style="color: #008080;">14</span>     cout &lt;&lt; <span style="color: #800000;">"</span><span style="color: #800000;">size : </span><span style="color: #800000;">"</span> &lt;&lt; c.size() &lt;&lt;<span style="color: #000000;"> endl;
+</span><span style="color: #008080;">15</span>     
+<span style="color: #008080;">16</span> }</pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>执行后显示：</p>
+<div class="cnblogs_code">
+<pre>size : <span style="color: #800080;">10</span><span style="color: #000000;">
+size : </span><span style="color: #800080;">10</span></pre>
+</div>
+<p>使用 remove 后，容器中的元素并没有减少。</p>
+<p>remove 到底做了什么？</p>
+<p>简而言之，remove 移动了区间中的元素。其结果是，“需要被删除”的元素被移到了区间的尾部。它返回一个迭代器，指向第一个“需要被删除”的元素。</p>
+<p>调用 remove 之前，c 的布局如下：</p>
+<p><img src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/710068-20160624095426203-61187503.png" alt=""></p>
+<p>调用 remove 之后：</p>
+<div class="cnblogs_code">
+<pre>vector&lt;<span style="color: #0000ff;">int</span>&gt;::iterator newEnd(remove(c.begin(), c.end(), <span style="color: #800080;">1</span>));</pre>
+</div>
+<p>c 的布局如下<br><img src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/710068-20160624100230000-410492278.png" alt=""></p>
+<p>你会发现最后两个元素的值没有发生变化。。。</p>
+<p>这个是 remove 算法的附带结果。在内部，remove 遍历整个区间，用需要保留的元素的值覆盖掉那些要被删除的元素的值。这种覆盖是通过对那些需要被覆盖的元素的赋值来完成的。</p>
+<p>&nbsp;</p>
+<p>因此，要想删除这些元素，必须调用区间形式的 erase。</p>
+<p>还用两个类似的算法：remove_if&nbsp; 和 unique。都需要在调用 remove_if 和 unique 后调用 erase。</p>
+<p>其中 list 的调用是不一致的，list::remove 会真正删除元素（并且比使用 erase-remove 习惯用法更加高效），list::unique 也会真正删除元素（并且比使用 erase-unique 更加高效）</p>
+<p>&nbsp;</p>
+<p><span style="color: #ff0000; font-size: 16px;">注意：当容器中存放的是指向动态分配的对象的指针时，应该避免使用 remove 和类似的算法（remove_if 和 unique）。</span></p>
+<p>可以使用智能指针。</p>
+</div>
+<div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block"><div id="BlogPostCategory">
+    分类: 
+            <a href="https://www.cnblogs.com/jingyg/category/793191.html" target="_blank">C++</a></div>
+
+
+    <div id="blog_post_info">
+<div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(5613303,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+        <a id="green_channel_follow" onclick="follow(&#39;a728f82d-c493-e411-b908-9dcfd8948a71&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/jingyg/" target="_blank"><img src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/sample_face.gif" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="https://home.cnblogs.com/u/jingyg/">Kjing</a><br>
+            <a href="https://home.cnblogs.com/u/jingyg/followees/">关注 - 31</a><br>
+            <a href="https://home.cnblogs.com/u/jingyg/followers/">粉丝 - 5</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;a728f82d-c493-e411-b908-9dcfd8948a71&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(5613303,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">0</span>
+    </div>
+    <div class="buryit" onclick="votePost(5613303,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+    <div class="clear"></div>
+    <div id="post_next_prev">
+
+    <a href="https://www.cnblogs.com/jingyg/p/5610426.html" class="p_n_p_prefix">« </a> 上一篇：    <a href="https://www.cnblogs.com/jingyg/p/5610426.html" title="发布于 2016-06-23 13:20">慎重选择删除元素的方法</a>
+    <br>
+    <a href="https://www.cnblogs.com/jingyg/p/5684377.html" class="p_n_p_prefix">» </a> 下一篇：    <a href="https://www.cnblogs.com/jingyg/p/5684377.html" title="发布于 2016-07-19 13:15">线程 ID</a>
+
+</div>
+</div>
+            </div>
+            <div class="postDesc">posted @ 
+<span id="post-date">2016-06-24 10:21</span>&nbsp;
+<a href="https://www.cnblogs.com/jingyg/">Kjing</a>&nbsp;
+阅读(<span id="post_view_count">4202</span>)&nbsp;
+评论(<span id="post_comment_count">0</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=5613303" rel="nofollow">编辑</a>&nbsp;
+<a href="javascript:void(0)" onclick="AddToWz(5613303);return false;">收藏</a></div>
+        </div>
+	    
+	    
+    </div><!--end: topics 文章、评论容器-->
+</div>
+<script src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/highlight.min.js"></script>
+<script>markdown_highlight();</script>
+<script>
+    var allowComments = true, cb_blogId = 250454, cb_blogApp = 'jingyg', cb_blogUserGuid = 'a728f82d-c493-e411-b908-9dcfd8948a71';
+    var cb_entryId = 5613303, cb_entryCreatedDate = '2016-06-24 10:21', cb_postType = 1;
+    loadViewCount(cb_entryId);
+</script><a name="!comments"></a>
+<div id="blog-comments-placeholder"></div>
+<script>
+    var commentManager = new blogCommentManager();
+    commentManager.renderComments(0);
+</script>
+<div id="comment_form" class="commentform">
+    <a name="commentform"></a>
+    <div id="divCommentShow"></div>
+    <div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/jingyg/p/5613303.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/jingyg/p/5613303.html#top">返回顶部</a></div>
+    <div id="comment_form_container" style="visibility: visible;"><div class="login_tips">
+    注册用户登录后才能发表评论，请 
+    <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a>
+     或 
+    <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，
+    <a href="https://www.cnblogs.com/">访问</a> 网站首页。
+</div></div>
+    <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+    <div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-ucancode&#39;)">【推荐】超50万行VC++源码: 大型组态工控、电力仿真CAD与GIS源码库</a><br><a href="https://tianchi.aliyun.com/specials/promotion/supercoder" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-阿里云 在线编程&#39;)">【推荐】1200件T恤+6万奖金，阿里云编程大赛报名开启</a><br><a href="https://brands.cnblogs.com/agora" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-声网专区&#39;)">【推荐】未知数的距离，毫秒间的传递，声网与你实时互动</a><br><a href="https://brands.cnblogs.com/huawei" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-华为专区&#39;)">【推荐】了不起的开发者，挡不住的华为，园子里的品牌专区</a><br><a href="https://developer.aliyun.com/group/interview?utm_content=g_1000088932" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-阿里云开发者社区&#39;)">【推荐】斩获阿里offer的必看12篇面试合辑</a><br></div>
+    <div id="opt_under_post"></div>
+    <div id="cnblogs_c1" class="c_ad_block">
+        <div id="div-gpt-ad-1592365906576-0" style="width: 300px; height: 250px;" data-google-query-id="CLSWh-Tz0OsCFZrDTAIdUxwOfA"><div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C1_0" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; vertical-align: bottom;" data-google-container-id="1" data-load-complete="true" src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/saved_resource.html"></iframe></div></div>
+    </div>
+    <div id="under_post_news"><div class="recomm-block"><b>相关博文：</b><br>·  <a title="C++中vector的remove用法" href="https://www.cnblogs.com/warmbeast/p/5325874.html" target="_blank" onclick="clickRecomItmem(5325874)">C++中vector的remove用法</a><br>·  <a title="STL --&gt; remove和remove_if()" href="https://www.cnblogs.com/jeakeven/p/5013691.html" target="_blank" onclick="clickRecomItmem(5013691)">STL --&gt; remove和remove_if()</a><br>·  <a title="std::vector介绍" href="https://www.cnblogs.com/yxnchinahlj/archive/2011/03/06/1972435.html" target="_blank" onclick="clickRecomItmem(1972435)">std::vector介绍</a><br>·  <a title="Remove_if 删除vector数据" href="https://www.cnblogs.com/dongzhiquan/archive/2011/12/06/2278658.html" target="_blank" onclick="clickRecomItmem(2278658)">Remove_if 删除vector数据</a><br>·  <a title="STL的remove函数和list的remove成员函数" href="https://www.cnblogs.com/kinuxroot/archive/2013/01/25/stl_remove_problem.html" target="_blank" onclick="clickRecomItmem(2877264)">STL的remove函数和list的remove成员函数</a><br>»  <a target="_blank" href="https://recomm.cnblogs.com/blogpost/5613303">更多推荐...</a><div id="cnblogs_t5"><a href="https://www.sheca.com/assets/wwx/page3.html?site=bokeyuan" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T5-上海CA-大家签&#39;)">【推荐】电子签名认准大家签，上海CA权威认证</a></div></div></div>
+    <div id="cnblogs_c2" class="c_ad_block">
+        <div id="div-gpt-ad-1592366332455-0" style="width: 468px; height: 60px;" data-google-query-id="CLWWh-Tz0OsCFZrDTAIdUxwOfA"><div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C2_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C2_0" width="468" height="60" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; vertical-align: bottom;" data-google-container-id="2" data-load-complete="true" src="./2令人疑惑的 std__remove 算法 - Kjing - 博客园_files/saved_resource(1).html"></iframe></div></div>
+    </div>
+    <div id="under_post_kb">
+<div class="itnews c_ad_block">
+    <b>最新 IT 新闻</b>:
+    <br>
+ ·          <a href="https://news.cnblogs.com/n/672163/" target="_blank">支付宝吃肉，支付宝挨揍</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/672158/" target="_blank">麒麟芯片将成绝唱，华为Mate30 Pro等手机普遍涨价</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/672151/" target="_blank">我为什么弃用GAN？</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/672150/" target="_blank">频繁巨额融资 猿辅导是想杀个痛快？</a>
+        <br>
+ ·          <a href="https://news.cnblogs.com/n/672149/" target="_blank">微信读书的社交"无限卡"失效了？</a>
+        <br>
+    » <a href="https://news.cnblogs.com/" title="IT 新闻" target="_blank">更多新闻...</a>
+</div></div>
+    <div id="HistoryToday" class="c_ad_block"></div>
+    <script type="text/javascript">
+        fixPostBody();
+        deliverBigBanner();
+setTimeout(function() { incrementViewCount(cb_entryId); }, 50);        deliverT2();
+        deliverC1C2();
+        loadNewsAndKb();
+        loadBlogSignature();
+LoadPostCategoriesTags(cb_blogId, cb_entryId);        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+        loadOptUnderPost();
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    </script>
+</div>
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<div id="sidebar_news" class="newsItem"><!--done-->
+<h3 class="catListTitle">公告</h3>
+
+<div id="blog-news">
+    
+    <div id="profile_block">
+        昵称：
+        <a href="https://home.cnblogs.com/u/jingyg/">
+            Kjing
+        </a>
+        <br>
+        园龄：
+        <a href="https://home.cnblogs.com/u/jingyg/" title="入园时间：2015-01-04">
+            5年8个月
+        </a>
+        <br>
+        粉丝：
+        <a href="https://home.cnblogs.com/u/jingyg/followers/">
+            5
+        </a>
+        <br>
+        关注：
+        <a href="https://home.cnblogs.com/u/jingyg/followees/">
+            31
+        </a>
+        <div id="p_b_follow">
+<a href="javascript:void(0)" onclick="follow(&#39;a728f82d-c493-e411-b908-9dcfd8948a71&#39;)">+加关注</a></div>
+        <script>getFollowStatus('a728f82d-c493-e411-b908-9dcfd8948a71');</script>
+    </div>
+</div>
+
+</div>
+
+<div id="sidebar_ad"></div>
+			<div id="blog-calendar" style="">
+
+<table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar" border="0">
+    <tbody>
+        <tr>
+            <td colspan="7">
+                <table class="CalTitle" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2020/08/05&#39;); return false;">&lt;</a>
+                            </td>
+                            <td align="center">2020年9月</td>
+                            <td align="right" class="CalNextPrev">
+                                <a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2020/10/05&#39;); return false;">&gt;</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+    </tr>
+            <tr>
+                            <td class="CalOtherMonthDay" align="center">30</td>
+                            <td class="CalOtherMonthDay" align="center">31</td>
+                        <td class="" align="center">
+                            1
+                        </td>
+                        <td class="" align="center">
+                            2
+                        </td>
+                        <td class="" align="center">
+                            3
+                        </td>
+                        <td class="" align="center">
+                            4
+                        </td>
+                    <td class="CalTodayDay" align="center">
+                        5
+                    </td>
+            </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            6
+                        </td>
+                            <td class="" align="center">
+                                7
+                            </td>
+                            <td class="" align="center">
+                                8
+                            </td>
+                            <td class="" align="center">
+                                9
+                            </td>
+                            <td class="" align="center">
+                                10
+                            </td>
+                            <td class="" align="center">
+                                11
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            12
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            13
+                        </td>
+                            <td class="" align="center">
+                                14
+                            </td>
+                            <td class="" align="center">
+                                15
+                            </td>
+                            <td class="" align="center">
+                                16
+                            </td>
+                            <td class="" align="center">
+                                17
+                            </td>
+                            <td class="" align="center">
+                                18
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            19
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            20
+                        </td>
+                            <td class="" align="center">
+                                21
+                            </td>
+                            <td class="" align="center">
+                                22
+                            </td>
+                            <td class="" align="center">
+                                23
+                            </td>
+                            <td class="" align="center">
+                                24
+                            </td>
+                            <td class="" align="center">
+                                25
+                            </td>
+                        <td class="CalWeekendDay" align="center">
+                            26
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalWeekendDay" align="center">
+                            27
+                        </td>
+                            <td class="" align="center">
+                                28
+                            </td>
+                            <td class="" align="center">
+                                29
+                            </td>
+                            <td class="" align="center">
+                                30
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                1
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                2
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            3
+                        </td>
+                </tr>
+                <tr>
+                        <td class="CalOtherMonthDay" align="center">
+                            4
+                        </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                5
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                6
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                7
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                8
+                            </td>
+                            <td class="CalOtherMonthDay" align="center">
+                                9
+                            </td>
+                        <td class="CalOtherMonthDay" align="center">
+                            10
+                        </td>
+                </tr>
+    </tbody>
+</table></div><script>loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn">
+<!-- 搜索 -->
+<div id="sidebar_search" class="sidebar-block">
+    <div id="sidebar_search" class="mySearch">
+        <h3 class="catListTitle">搜索</h3>
+        <div id="sidebar_search_box">
+            <div id="widget_my_zzk" class="div_my_zzk">
+                <input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk">
+            </div>
+            <div id="widget_my_google" class="div_my_zzk">
+                <input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 常用链接 -->
+<div id="sidebar_shortcut" class="sidebar-block">
+    <div class="catListLink">
+<h3 class="catListTitle">
+常用链接
+</h3>
+<ul>
+    
+<li><a href="https://www.cnblogs.com/jingyg/p/" title="我的博客的随笔列表">我的随笔</a></li>
+<li><a href="https://www.cnblogs.com/jingyg/MyComments.html" title="我的发表过的评论列表">我的评论</a></li>
+<li><a href="https://www.cnblogs.com/jingyg/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li>
+<li><a href="https://www.cnblogs.com/jingyg/RecentComments.html" title="我的博客的评论列表">最新评论</a></li>
+<li><a href="https://www.cnblogs.com/jingyg/tag/" title="我的博客的标签列表">我的标签</a></li>
+
+</ul>
+</div>
+
+
+</div>
+
+<!-- 最新随笔 -->
+
+
+
+<!-- 我的标签 -->
+<div id="sidebar_toptags" class="sidebar-block">
+    
+</div>
+
+<!-- 积分与排名 -->
+
+
+<!-- 随笔分类、随笔档案、文章分类、新闻分类、相册、链接 -->
+<div id="sidebar_categories">
+    
+        <div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+            <h3 class="catListTitle">
+                
+随笔分类
+<span style="font-size:11px;font-weight:normal">(47)</span>
+
+
+            </h3>
+
+
+            <ul>
+
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/category/1095726.html" rel="" target="">
+    Algorithm(3)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/category/793191.html" rel="" target="">
+    C++(13)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/category/1104587.html" rel="" target="">
+    Go(1)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/category/768430.html" rel="" target="">
+    Linux(23)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/category/861630.html" rel="" target="">
+    Ncurses(3)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/category/1107819.html" rel="" target="">
+    PyQt5(2)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/category/1012157.html" rel="" target="">
+    Tensorflow(2)
+</a>
+ 
+
+                        </li>
+
+            </ul>
+
+
+        </div>
+        <div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+            <h3 class="catListTitle">
+                
+随笔档案
+<span style="font-size:11px;font-weight:normal">(47)</span>
+
+
+            </h3>
+
+
+            <ul>
+
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2019/01.html" rel="" target="">
+    2019年1月(2)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2017/12.html" rel="" target="">
+    2017年12月(1)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2017/11.html" rel="" target="">
+    2017年11月(3)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2017/10.html" rel="" target="">
+    2017年10月(4)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2017/08.html" rel="" target="">
+    2017年8月(1)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2017/06.html" rel="" target="">
+    2017年6月(3)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2017/05.html" rel="" target="">
+    2017年5月(1)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2017/04.html" rel="" target="">
+    2017年4月(2)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2016/10.html" rel="" target="">
+    2016年10月(2)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2016/09.html" rel="" target="">
+    2016年9月(1)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2016/08.html" rel="" target="">
+    2016年8月(3)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2016/07.html" rel="" target="">
+    2016年7月(2)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2016/06.html" rel="" target="">
+    2016年6月(2)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2016/04.html" rel="" target="">
+    2016年4月(4)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2016/03.html" rel="" target="">
+    2016年3月(2)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2016/02.html" rel="" target="">
+    2016年2月(9)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2016/01.html" rel="" target="">
+    2016年1月(1)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2015/12.html" rel="" target="">
+    2015年12月(3)
+</a>
+ 
+
+                        </li>
+                        <li>
+                            
+<a href="https://www.cnblogs.com/jingyg/archive/2015/10.html" rel="" target="">
+    2015年10月(1)
+</a>
+ 
+
+                        </li>
+
+            </ul>
+
+
+        </div>
+
+</div>
+
+<!-- 最新评论 -->
+<div id="sidebar_recentcomments" class="sidebar-block">
+    
+</div>
+
+
+
+<!-- 阅读排行榜 -->
+<div id="sidebar_topviewedposts" class="sidebar-block">
+    <div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock">
+        <ul style="word-break:break-all">
+                    <li>
+                        <a href="https://www.cnblogs.com/jingyg/p/6931902.html">
+                            1. 安装 Tensorflow(15751)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/jingyg/p/5613303.html">
+                            2. 令人疑惑的 std::remove 算法(4202)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/jingyg/p/5970359.html">
+                            3. thread - 传递引用参数(3730)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/jingyg/p/6961232.html">
+                            4. MNIST数字识别问题(3052)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.cnblogs.com/jingyg/p/5069964.html">
+                            5. 进程结构和内存布局(2674)
+                        </a>
+                    </li>
+        </ul>
+    </div>
+</div>
+
+
+</div>
+
+<!-- 评论排行榜 -->
+<div id="sidebar_topcommentedposts" class="sidebar-block">
+    
+</div>
+
+<!-- 推荐排行榜 -->
+<div id="sidebar_topdiggedposts" class="sidebar-block">
+    
+<div id="topdigg_posts_wrap">
+    <div class="catListView">
+        <h3 class="catListTitle">推荐排行榜</h3>
+        <div id="TopDiggPostsBlock">
+            <ul style="word-break: break-all">
+                        <li>
+                            <a href="https://www.cnblogs.com/jingyg/p/5082291.html">
+                                1. 栈和栈帧(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/jingyg/p/5179658.html">
+                                2. signal() 和 sigaction()(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/jingyg/p/5189086.html">
+                                3. 信号的其它特性(1)
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.cnblogs.com/jingyg/p/6931902.html">
+                                4. 安装 Tensorflow(1)
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div></div>
+                    <script>loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		<!--done-->
+Copyright © 2020 Kjing
+<br><span id="poweredby">Powered by .NET Core on Kubernetes</span>
+
+
+
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+    
+
+
+</body></html>

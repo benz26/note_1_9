@@ -1,0 +1,179 @@
+1、声明游标
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE processnames()
+    -> BEGIN
+    -> DECLARE nameCursor CURSOR          //游标name nameCursor
+    -> FOR
+    -> SELECT name FROM tb_student;   //select语句
+    -> END//
+	
+2、打开游标
+OPEN cursor_name;
+打开一个游标时，游标并不指向第一条记录，而是指向第一条记录的前边。
+
+3、使用游标
+FETCH cursor_name INTO var_name [,var_name]...
+当第一次使用游标时，此时游标指向结果集的第一条记录。
+上述语句中，将游标 cursor_name 中 SELECT 语句的执行结果保存到变量参数 var_name 中。
+
+4、关闭游标
+CLOSE cursor_name;
+
+--------
+
+游标使用：
+例 2
+创建 users 数据表，并插入数据，SQL 语句和运行结果如下：
+mysql> CREATE TABLE `users`
+    ->  (
+    ->  `ID` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    ->  `user_name` VARCHAR(60),
+    ->  `user_pass` VARCHAR(64),
+    ->  PRIMARY KEY (`ID`)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO users VALUES(null,'sheng','sheng123'),
+    -> (null,'yu','yu123'),
+    -> (null,'ling','ling123');
+Query OK, 3 rows affected (0.01 sec)
+
+创建存储过程 test_cursor，并创建游标 cur_test，查询 users 数据表中的第 3 条记录，SQL 语句和执行过程如下：
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE test_cursor (in param INT(10),out result VARCHAR(90))
+    -> BEGIN
+    -> DECLARE name VARCHAR(20);
+    -> DECLARE pass VARCHAR(20);
+    -> DECLARE done INT;  //临时变量
+    -> DECLARE cur_test CURSOR FOR SELECT user_name,user_pass FROM users; //游标
+    -> DECLARE continue handler FOR SQLSTATE '02000' SET done = 1;//条件 判断读完？？
+    -> IF param THEN INTO result FROM users WHERE id = param; //如果第一个参数存在
+    -> ELSE
+    -> OPEN cur_test;
+    -> repeat
+    -> FETCH cur_test into name,pass;               //使用游标，读取一行记录
+    -> SELECT concat_ws(',',result,name,pass) INTO result;//在result中添加这条记录
+    -> until done  //直到读完
+    -> END repeat; //repeat, 重复执行
+    -> CLOSE cur_test;
+    -> END IF;
+    -> END //
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> call test_cursor(3,@test)//          //传入3，输出出参test；传入0，则输出所有
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select @test//                      //打印出餐
++-----------+
+| @test     |
++-----------+
+| ling,ling123 |
++-----------+
+1 row in set (0.00 sec)
+
+----------
+
+创建 pro_users() 存储过程，定义 cur_1 游标，将表 users 中的 user_name 字段全部修改为 MySQL，SQL 语句和执行过程如下。
+mysql> CREATE PROCEDURE pro_users()
+    -> BEGIN
+    -> DECLARE result VARCHAR(100);
+    -> DECLARE no INT;
+    -> DECLARE cur_1 CURSOR FOR SELECT user_name FROM users;
+    -> DECLARE CONTINUE HANDLER FOR NOT FOUND SET no=1;  //读完？？
+    -> SET no=0;
+    -> OPEN cur_1;
+    -> WHILE no=0 do                          //while
+    -> FETCH cur_1 into result;               //每个name读取到result
+    -> UPDATE users SET user_name='MySQL'
+    -> WHERE user_name=result;
+    -> END WHILE;
+    -> CLOSE cur_1;
+    -> END //
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> call pro_users() //
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> SELECT * FROM users //
++----+-----------+-----------+
+| ID | user_name | user_pass |
++----+-----------+-----------+
+|  1 | MySQL     | sheng      |
+|  2 | MySQL     | zhang     |
+|  3 | MySQL     | ying      |
++----+-----------+-----------+
+3 rows in set (0.00 sec)
+
+--------
+
+IF语句：
+IF age>20 THEN SET @count1=@count1+1;
+    ELSEIF age=20 THEN @count2=@count2+1;
+    ELSE @count3=@count3+1;
+END lF;
+
+----
+
+case语句：
+CASE age
+    WHEN 20 THEN SET @count1=@count1+1;
+    ELSE SET @count2=@count2+1;
+END CASE;
+代码也可以是下面的形式：
+CASE
+    WHEN age=20 THEN SET @count1=@count1+1;
+    ELSE SET @count2=@count2+1;
+END CASE;
+
+------
+
+LOOP
+
+add_num:LOOP                //add_num 循环开始和结束的标志
+    SET @count=@count+1;
+END LOOP add_num;
+
+------
+
+LEAVE
+
+add_num:LOOP
+    SET @count=@count+1;
+    IF @count=100 THEN
+        LEAVE add_num;
+END LOOP add num;
+
+------
+
+ITERATE  //类似continue
+
+add_num:LOOP
+    SET @count=@count+1;
+    IF @count=100 THEN
+        LEAVE add_num;
+    ELSE IF MOD(@count,3)=0 THEN  //整除3等于0
+        ITERATE add_num;
+    SELECT * FROM employee;
+END LOOP add_num;
+
+
+------
+
+REPEAT
+    SET @count=@count+1;
+    UNTIL @count=100  //到100跳出循环，条件满足跳出循环
+END REPEAT;
+
+------
+
+WHILE @count<100 DO   //条件满足，继续执行循环
+    SET @count=@count+1;
+END WHILE;
+
+-----
+
+
+
+
+
+

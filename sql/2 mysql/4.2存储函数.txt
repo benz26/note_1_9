@@ -1,0 +1,23 @@
+1、创建存储函数
+mysql> USE test;
+Database changed
+mysql> DELIMITER //
+mysql> CREATE FUNCTION func_student(id INT(11))
+    -> RETURNS VARCHAR(20)
+    -> COMMENT '查询某个学生的姓名'
+    -> BEGIN
+    -> RETURN(SELECT name FROM tb_student WHERE tb_student.id = id);
+    -> END //
+	
+mysql> DELIMITER ;
+
+存储过程和存储函数都是存储在服务器端的 SQL 语句集合。
+
+
+2、调用存储过程
+mysql> DELIMITER ;
+mysql> CALL ShowStuScore();
+
+
+3、调用存储函数
+mysql> SELECT func_student(3);

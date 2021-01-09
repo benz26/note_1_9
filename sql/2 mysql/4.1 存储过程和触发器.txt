@@ -1,0 +1,40 @@
+0、
+存储过程封装了 SQL 语句，
+“CALL存储过程名字”
+
+
+1、创建
+ CREATE PROCEDURE  名称应当尽量避免选取与 MySQL 内置函数相同的名称，否则会发生错误。
+ 
+
+ 
+--- 
+ mysql > DELIMITER ??  
+ 成功执行这条 SQL 语句后，任何命令、语句或程序的结束标志就换为两个问号“??”了。
+ 
+--- 
+ mysql> DELIMITER //
+mysql> CREATE PROCEDURE ShowStuScore()
+    -> BEGIN
+    -> SELECT * FROM tb_students_score;
+    -> END //
+Query OK， 0 rows affected (0.09 sec)
+
+----
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE GetScoreByStu
+    -> (IN name VARCHAR(30))
+    -> BEGIN
+    -> SELECT student_score FROM tb_students_score
+    -> WHERE student_name=name;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+
+
+
+2、查看存储过程状态
+SHOW PROCEDURE STATUS LIKE 存储过程名;
+
+SHOW CREATE PROCEDURE 存储过程名;
+

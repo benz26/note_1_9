@@ -1,0 +1,41 @@
+1、
+mysql> INSERT INTO tb_courses
+    -> (course_id,course_name,course_grade,course_info)
+    -> VALUES(1,'Network',3,'Computer Network');
+	
+	
+使用 INSERT…VALUES 语句可以向表中插入一行数据，也可以插入多行数据；
+
+（1）、按列名插入
+（2）、列名可以和定义的列名顺序不一致
+（3）、省略列名时，值（需要完整），且和定义的列名顺序一致
+（4）、插入时候缺省的字段，如果是主键不能为空；某些字段没有指定插入值，将插入默认值或者系统自动增加的值
+
+（5）、插入多行
+mysql> CREATE TABLE `tb_student_course` (
+    -> `id` int(4) NOT NULL AUTO_INCREMENT,
+    -> `name` varchar(25) NOT NULL,
+    -> PRIMARY KEY (`id`)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+
+mysql> INSERT INTO tb_student_course(name) VALUES ('Java'),('MySQL'),('Python');
+Query OK, 3 rows affected (0.05 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM tb_student_course;
++----+--------+
+| id | name   |
++----+--------+
+|  1 | Java   |
+|  2 | MySQL  |
+|  3 | Python |
++----+--------+
+
+使用 INSERT…SET 语句可以指定插入行中每列的值，也可以指定部分列的值；
+
+2、mysql> INSERT INTO tb_courses_new
+    -> (course_id,course_name,course_grade,course_info)
+    -> SELECT course_id,course_name,course_grade,course_info
+    -> FROM tb_courses;

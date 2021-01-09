@@ -1,0 +1,56 @@
+1、主键约束
+该字段能唯一标识该表中的每条信息。
+
+//创建
+//单字段主键 
+mysql> CREATE TABLE tb_emp3
+    -> (
+    -> id INT(11) PRIMARY KEY,
+    -> name VARCHAR(25),
+    -> deptId INT(11),
+    -> salary FLOAT
+    -> );
+	
+	
+//创建
+//或者是在定义完所有字段之后指定主键	
+[CONSTRAINT <约束名>] PRIMARY KEY [字段名]
+
+mysql> CREATE TABLE tb_emp4
+-> (
+-> id INT(11),
+-> name VARCHAR(25),
+-> deptId INT(11),
+-> salary FLOAT,
+-> PRIMARY KEY(id)
+-> );
+
+//创建
+//多字段联合主键。
+mysql> CREATE TABLE tb_emp5
+    -> (
+    -> name VARCHAR(25),
+    -> deptId INT(11),
+    -> salary FLOAT,
+    -> PRIMARY KEY(id,deptId)
+    -> );
+
+//修改表时候添加主键约束：
+ALTER TABLE tb_emp2
+    -> ADD PRIMARY KEY(id);
+
+//删除主键约束
+mysql> ALTER TABLE tb_emp2
+    -> DROP PRIMARY KEY;
+
+--------------------
+
+2、外键约束
+
+3、唯一约束
+
+4、检查约束
+
+5、非空约束
+
+6、默认值约束

@@ -1,0 +1,29 @@
+
+#include <iostream> 
+#include <string>
+using namespace std;
+int main(){
+	string str="123";
+	int a=stoi(str);
+	//如果遇到非法输入，stoi会自动截取最前面的数字，知道遇到不是数字为止
+	//所以说如果是浮点数，会截取前面的整数部分
+	cout << a << endl;
+	str = "123.4354";
+	double b=stod(str);
+	//如果是非法输入，stod会截取最前面的浮点数，知道遇到不满足浮点数为止 
+	cout << b;
+ 
+	/*
+	string s1=to_string(123); //把123这个数字转成字符串
+	cout << s1 <<endl;
+	string s2=to_string(3.5); //把4.5这个数字转成字符串
+	cout << s2 <<endl;
+	cout << s1+s2 <<endl; //把s1和s2两个字符串拼接起来并输出
+	printf("%s\n",(s1+s2).c_str());
+	//如果想用printf输出string，得加一个c_str()
+	*/
+	system("pause");
+	return 0;
+	
+}
+

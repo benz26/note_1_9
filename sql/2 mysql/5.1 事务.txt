@@ -1,0 +1,75 @@
+1、事务
+事务数据库的事务（Transaction）是一种机制、一个操作序列，包含了一组数据库操作命令。
+事务把所有的命令作为一个整体一起向系统提交或撤销操作请求，
+即这一组数据库命令要么都执行，要么都不执行，因此事务是一个不可分割的工作逻辑单元。
+
+（1）、
+事务是一个完整的操作。事务的各元素是不可分的（原子的）。
+
+（2）、
+对数据进行修改的所有并发事务是彼此隔离的，这表明事务必须是独立的，它不应以任何方式依赖于或影响其他事务。
+
+
+
+2、创建事务
+（1）、开启事务
+BEGIN;
+或者
+START TRANSACTION;
+
+（2）、提交事务
+COMMIT;
+COMMIT 表示提交事务，即提交事务的所有操作，
+具体地说，就是将事务中所有对数据库的更新都写到磁盘上的物理数据库中，事务正常结束。
+
+（3）、回滚事务
+ROLLBACK;
+
+总结
+BEGIN 或 START TRANSACTION 语句后面的 SQL 语句对数据库数据的
+更新操作都将记录在事务日志中，直至遇到 ROLLBACK 语句或 COMMIT 语句。
+
+例子：
+A：窗口
+mysql> USE mybank;
+Database changed
+mysql> BEGIN;
+Query OK, 0 rows affected (0.00 sec)
+mysql> UPDATE bank SET currentMoney = currentMoney-500
+    -> WHERE customerName='张三';
+								//此时B：窗口 SELECT * FROM mybank.bank;查看数据，还未更改
+								
+mysql> UPDATE bank SET currentMoney = currentMoney+500
+    -> WHERE customerName='李四';
+
+mysql> COMMIT;
+
+
+3、事务自动提交
+MySQL 默认开启事务自动提交模式，
+即除非显式的开启事务（BEGIN 或 START TRANSACTION），否则每条 SOL 语句都会被当做一个单独的事务自动执行。
+
+mysql> SHOW VARIABLES LIKE 'autocommit';
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| autocommit    | ON    |
++---------------+-------+
+
+SET autocommit = 0|1|ON|OFF;
+
+对取值的说明：
+值为 0 和值为 OFF：关闭事务自动提交。如果关闭自动提交，用户将会一直处于某个事务中，只有提交或回滚后才会结束当前事务，重新开始一个新事务。
+（此时查询可以立即生效，更新没有生效，没有commit）
+
+值为 1 和值为 ON：开启事务自动提交。如果开启自动提交，则每执行一条 SQL 语句，事务都会提交一次。
+
+关闭自动提交功能后，只用当执行 COMMIT 命令后，MySQL 才将数据表中的资料提交到数据库中。如果执行 ROLLBACK 命令，数据将会被回滚。
+
+如果不提交事务，而终止 MySQL 会话，数据库将会自动执行回滚操作。
+
+---------
+
+
+
+

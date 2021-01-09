@@ -1,0 +1,44 @@
+事件，又称事件调度器。定时器。
+
+1、查看事件是否开启
+ SHOW VARIABLES LIKE 'event_scheduler';
+ SELECT @@event_scheduler;
+ mysql> SHOW PROCESSLIST; //只显示开启的
+ 
+ 2、开启事件
+ mysql> SET GLOBAL event_scheduler = ON ;
+ 
+ 3、创建事件
+
+语法：
+ CREATE EVENT [IF NOT EXISTS] event_name
+    ON SCHEDULE schedule
+    [ON COMPLETION [NOT] PRESERVE]
+    [ENABLE | DISABLE | DISABLE ON SLAVE]   //默认ENABLE,调度器检查它是否应该调用
+    [COMMENT 'comment']   //注释
+    DO event_body;
+ 
+例子：
+ mysql> CREATE TABLE tb_eventtest(
+    -> id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    -> user VARCHAR(20),
+    -> createtime DATETIME);
+
+
+mysql> CREATE EVENT IF NOT EXISTS e_test       //e_test     事件名
+    -> ON SCHEDULE EVERY 5 SECOND              //EVERY 5 SECOND   每隔5秒
+    -> ON COMPLETION PRESERVE                  //默认执行一次，NOT PRESERVE
+    -> DO INSERT INTO tb_eventtest(user,createtime)VALUES('MySQL',NOW());
+	
+//改为每30s一次插入
+mysql> ALTER EVENT e_test 
+    -> ON SCHEDULE EVERY 30 SECOND           //改为每30s一次插入
+    -> ON COMPLETION PRESERVE
+    -> DO INSERT INTO tb_eventtest(user,createtime) VALUES('MySQL',NOW());
+
+//临时关闭事件
+mysql> ALTER EVENT e_test DISABLE;
+
+//删除事件
+DROP EVENT [IF EXISTS] event_name;
+

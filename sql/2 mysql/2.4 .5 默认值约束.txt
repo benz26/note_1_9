@@ -1,0 +1,28 @@
+1、默认值约束
+mysql> CREATE TABLE tb_dept3
+    -> (
+    -> id INT(11) PRIMARY KEY,
+    -> name VARCHAR(22),
+    -> location VARCHAR(50) DEFAULT 'Beijing'
+    -> );
+	
+	<字段名> <数据类型> DEFAULT <默认值>;
+	
+2、修改默认值约束
+mysql> ALTER TABLE tb_dept3
+    -> CHANGE COLUMN location
+    -> location VARCHAR(50) DEFAULT 'Shanghai';
+	
+	ALTER TABLE <数据表名>
+CHANGE COLUMN <字段名>
+<字段名><数据类型> DEFAULT <默认值>;
+	
+	
+3、删除默认值约束
+mysql> ALTER TABLE tb_dept3
+    -> CHANGE COLUMN location
+    -> location VARCHAR(50) DEFAULT NULL;
+	
+	ALTER TABLE <数据表名>
+CHANGE COLUMN <字段名> 
+<字段名> <数据类型> DEFAULT NULL;
